@@ -15,6 +15,19 @@
         include "../includes/menu.php";
     ?>
 
-    <h1>Olá criatura! Você fez cadastro ou login!</h1>
+    <div class="global-containers">
+        <div>
+            <img src="" alt="">
+            <a href="">Pacientes</a>
+        </div>
+        <div>
+            <img src="" alt="">
+            <a href="">Consultas</a>
+        </div>
+        <div>
+            <img src="" alt="">
+            <a href="">Médicos</a>
+        </div>
+    </div>
 </body>
 </html>

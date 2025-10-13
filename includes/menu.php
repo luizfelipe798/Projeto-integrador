@@ -20,15 +20,16 @@
 <?php else:?>
 <menu class="menuPrincipal">
         <div class="logotipoLinks">
-                <a href="index.php" class="logotipoMenu"><img class="logotipoMenu" src="../imagens/logotiposalus.png" alt="Logotipo Sailus"></a>
+                <a href="home_usuario.php" class="logotipoMenu"><img class="logotipoMenu" src="../imagens/logotiposalus.png" alt="Logotipo Sailus"></a>
         </div>
 
-        <div class="botoesCadastroLogin">
-            <form action="../core/usuario_repositorio.php" method="POST"> 
+        <div class="btnsUserLogado">
+            <form action="../core/usuario_repositorio.php" method="POST">
                 <input type="hidden" name="acao" value="logout">
-                <button type="submit" class="btnLogin">Sair</button>
+                <button type="submit" class="btnSair">Sair</button>
             </form>
-            <a href="" class="imgPerfilMenu"><img src="" alt="Perfil do usuário"></a>
+
+            <a href=""><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
         </div>
 </menu>
 <?php endif; ?>

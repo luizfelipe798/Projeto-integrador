@@ -66,9 +66,10 @@ body
     justify-content: end;
 }
 
-.btnLogin, .btnCadastro
+.btnLogin, .btnCadastro, .btnSair
 {
-    width: 25%;
+    /* ... propriedades de estilo dos botões ... */
+    width: 100px; /* Ajustei a largura para um valor fixo, pois 25% com justify-content: end pode ser problemático. */
     height: 40px;
     border: 1px solid #fff;
     color: #183459;
@@ -85,15 +86,59 @@ body
     transition: 0.3s;
 }
 
-.btnLogin:hover, .btnCadastro:hover
+.btnLogin:hover, .btnCadastro:hover, .btnSair:hover
 {
     color: #fff;
     background-color: #183459;
 }
 
-.imgPerfilMenu
+/* 🚀 SELETORES CORRIGIDOS PARA O MENU LOGADO 🚀 */
+.btnsUserLogado
 {
-    width: 30%;
-    height: 40px;
-    border-radius: 100%;
+    width: 35%;
+    height: 50px;
+    /* 🔑 Adicionar display: flex é crucial para o layout */
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    /* 🔑 Alinha os itens (botão e imagem) à direita */
+    justify-content: flex-end; 
+    gap: 15px;
+    /* Adicionar um padding-right para afastar da borda */
+    padding-right: 40px;
+}
+
+.btnsUserLogado form
+{
+    /* Garante que o formulário não ocupe mais espaço que o botão "Sair" */
+    width: auto; 
+    height: auto; 
+    /* Adicione display: flex para garantir que o botão preencha o formulário */
+    display: flex;
+}
+
+/* Ajuste o botão Sair para ter a mesma largura do login/cadastro, ou um valor adequado */
+/* O seletor .btnSair já existe, só precisamos garantir que ele funcione dentro do formulário */
+
+
+/* Aplicar as propriedades de imagem apenas à tag <img> para evitar problemas de layout */
+.btnsUserLogado img
+{
+    width: 45px; /* Tamanho do ícone de perfil */
+    height: 45px; 
+    /* Arredondamento para deixar a imagem circular */
+    border-radius: 50%;
+    /* Garante que a imagem se ajuste ao seu tamanho */
+    object-fit: cover; 
+    /* Remove a borda se houver uma */
+    border: none;
+}
+
+/* Remover a definição que aplica largura e altura à tag <a>, se não for necessária */
+.btnsUserLogado a {
+    /* O 'a' funciona como um contêiner, podemos remover as definições de tamanho que atrapalhavam */
+    width: auto; 
+    height: auto;
+    /* Adicionar margem se precisar de mais espaço à direita da imagem de perfil */
+    margin-left: 0;
 }
