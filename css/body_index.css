@@ -1,0 +1,151 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #20638e;
+}
+
+/*Parte Principal*/
+.textoImagemExplicativos 
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px;
+}
+
+.textoExplicativo 
+{
+    max-width: 50%;
+}
+
+.tituloDestacado 
+{
+    font-size: 55px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.paragrafoExplicativo
+{
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.btnsExplicativo a {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btnEntrarAgora, .btnConhecaNos {
+    background-color: white;
+    color: #20638e;
+    transition: 0.2s;
+}
+
+.btnEntrarAgora:hover, .btnConhecaNos:hover 
+{
+    background-color: #183459;
+    color: white;
+    cursor: pointer;
+}
+
+.imagemExplicativa img 
+{
+    max-width: 400px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Sobre nós */
+.sobrenosBody 
+{
+    padding: 50px;
+}
+
+.ContainerTituloAndTextoSobrenosBody, .ContainerTituloAndImagensDesenvolvedoresBody
+{
+    margin: 1px solid black;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.ContainerTituloAndImagensDesenvolvedoresBody
+{
+    margin-bottom: 50px;
+}
+
+.tituloSobreNosBody h1,
+.tituloDesenvolvedoresBody h1 {
+    color: white;
+    font-size: 55px;
+    margin-bottom: 50px;
+    text-align: center;
+    margin: 1px solid black;
+}
+
+.textoSobrenosBody p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: white;
+}
+
+/* Desenvolvedores */
+.imagensDesenvolvedoresBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.desenvolvedor {
+    text-align: center;
+    width: 200px;
+}
+
+.desenvolvedor img {
+    width: 150px;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.desenvolvedor p {
+    margin-top: 10px;
+    color: white;
+}
+
+/* Rodapé */
+.footer {
+    background-color: #183459;
+    color: white;
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logoFooter {
+    height: 75px;
+    width: 200px;
+    margin-right: 15px;
+}
+
+.footer p {
+    margin-top: 10px;
+    font-size: 0.9em;
+}
