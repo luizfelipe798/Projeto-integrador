@@ -7,6 +7,8 @@
     <link rel="shortcut icon" href="../imagens/logotiposalus.png" type="image/x-icon">
 
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/rodape.css">
+    <link rel="stylesheet" href="../css/home_usuario.css">
 
     <title>Início - Sailus</title>
 </head>
@@ -16,18 +18,29 @@
     ?>
 
     <div class="global-containers">
-        <div>
-            <img src="" alt="">
+        <div class="opcoes-container">
+            <img src="../imagens/paciente.png" alt="Paciente">
             <a href="">Pacientes</a>
         </div>
-        <div>
-            <img src="" alt="">
+        <div class="opcoes-container">
+            <img src="../imagens/consulta.png" alt="Consulta">
             <a href="">Consultas</a>
         </div>
-        <div>
-            <img src="" alt="">
-            <a href="">Médicos</a>
-        </div>
+        <?php if($_SESSION['tipo_usuario'] == "Funcionario"): ?>
+            <div class="opcoes-container">
+                <img src="../imagens/medico.png" alt="Médico">
+                <a href="">Médicos</a>
+            </div>
+        <?php else: ?>
+            <div class="opcoes-container">
+                <img src="../imagens/medico.png" alt="Médico">
+                <a href="">Funcionários</a>
+            </div>
+        <?php endif; ?>
     </div>
+
+    <?php
+        include "../includes/rodape.php";
+    ?>
 </body>
 </html>

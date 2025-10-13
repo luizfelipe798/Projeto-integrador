@@ -26,6 +26,8 @@
         <div class="btnsUserLogado">
             <form action="../core/usuario_repositorio.php" method="POST">
                 <input type="hidden" name="acao" value="logout">
+                <input type="hidden" name="email" value="<?=$_SESSION['email']?>">
+                <input type="hidden" name="tipo_user" value="<?=$_SESSION['tipo_usuario']?>">
                 <button type="submit" class="btnSair">Sair</button>
             </form>
 

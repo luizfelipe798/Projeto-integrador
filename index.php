@@ -1,6 +1,4 @@
-<?php
-    session_start();
-    
+<?php 
     if(isset($_SESSION['logado']))
     {
         header("Location: paginas/home_usuario.php");
