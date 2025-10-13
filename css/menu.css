@@ -64,7 +64,6 @@ body
     padding-right: 40px;
     align-items: center;
     justify-content: end;
-    border: 1px solid green;
 }
 
 .btnLogin, .btnCadastro
