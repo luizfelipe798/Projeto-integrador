@@ -1,3 +1,13 @@
+<?php
+    session_start();
+    
+    if(isset($_SESSION['logado']))
+    {
+        header("Location: paginas/home_usuario.php");
+        exit;
+    }
+?>
+
 <menu class="menuPrincipal">
         <div class="logotipoLinks">
                 <a href="index.php" class="logotipoMenu"><img class="logotipoMenu" src="imagens/logotiposalus.png" alt="Logotipo Sailus"></a>
