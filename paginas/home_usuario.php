@@ -27,13 +27,13 @@
     ?>
 
     <div class="saudacao-container">
-        <h1><?=$saudacao?></h1>
+        <h1><?=$saudacao?> O que você gostaria de fazer agora?</h1>
     </div>
 
     <div class="global-containers">
         <div class="opcoes-container">
             <img src="../imagens/paciente.png" alt="Paciente">
-            <a href="">Pacientes</a>
+            <a href="inicio_pacientes.php">Pacientes</a>
         </div>
         <div class="opcoes-container">
             <img src="../imagens/consulta.png" alt="Consulta">
