@@ -23,7 +23,7 @@
             <input type="hidden" name="acao" value="login">
             <input type="email" placeholder="E-mail" required name="email">
 
-            <input type="text" placeholder="Senha" required name="senha">
+            <input type="password" placeholder="Senha" required name="senha">
 
             <div>
                 <label for="tipoUsuario">Tipo de usuário:</label>

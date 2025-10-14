@@ -22,7 +22,7 @@
 <body>
     <!--Menu Principal-->
     <?php
-        include "includes/menu.php";
+        include "includes/menu_inicial.php";
     ?>
 
     <!--Conteúdo principal do body-->

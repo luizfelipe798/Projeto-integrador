@@ -14,7 +14,7 @@
 </head>
 <body>
     <?php
-        include "../includes/menu.php";
+        include "../includes/menu_home.php";
     ?>
 
     <div class="global-containers">
