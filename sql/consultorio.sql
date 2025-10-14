@@ -13,11 +13,6 @@ CREATE TABLE Usuario
     ativo        TINYINT(4)         NOT NULL
 );
 
-DESC Usuario;
-SELECT * FROM Usuario;
-DELETE FROM Usuario;
-DROP TABLE Usuario;
-
 CREATE TABLE Funcionario
 (
 	id                        INT                 PRIMARY KEY,
@@ -26,10 +21,6 @@ CREATE TABLE Funcionario
     
     FOREIGN KEY(id)    REFERENCES    Usuario(id)
 );
-
-DESC Funcionario;
-SELECT * FROM Funcionario;
-DELETE FROM Funcionario;
 
 CREATE TABLE Medico 
 (
@@ -41,10 +32,6 @@ CREATE TABLE Medico
     FOREIGN KEY(id)      REFERENCES       Usuario(id)
 );
 
-DESC Medico;
-SELECT * FROM Medico;
-DELETE FROM Medico;
-
 CREATE TABLE Paciente
 (
     id                 INT              AUTO_INCREMENT PRIMARY KEY,
@@ -55,10 +42,6 @@ CREATE TABLE Paciente
     cpf                CHAR(14)         NOT NULL,
     genero             VARCHAR(15)      NOT NULL
 );
-
-DESC Paciente;
-SELECT * FROM Paciente;
-DELETE FROM Paciente;
 
 /*Consulta - Relacionamento entre Medico e Paciente e que se relaciona com Funcionario*/
 CREATE TABLE Consulta
@@ -76,10 +59,6 @@ CREATE TABLE Consulta
     FOREIGN KEY(idPaciente)   REFERENCES   Paciente(id)
 );
 
-DESC Consulta;
-SELECT * FROM Consulta;
-DELETE FROM Consulta;
-
 CREATE TABLE Atestado 
 (
     id              INT             AUTO_INCREMENT PRIMARY KEY,
@@ -94,10 +73,6 @@ CREATE TABLE Atestado
     FOREIGN KEY(idMedico)    REFERENCES  Medico(id)
 );
 
-DESC Atestado;
-SELECT * FROM Atestado;
-DELETE FROM Atestado;
-
 /*Relacionamento entre Funcionario e Consulta*/
 CREATE TABLE HistFuncConsulta
 (
@@ -110,10 +85,6 @@ CREATE TABLE HistFuncConsulta
     FOREIGN KEY(idFuncionario)    REFERENCES    Funcionario(id),
     FOREIGN KEY(idConsulta)       REFERENCES    Consulta(id)
 );
-
-DESC HistFuncConsulta;
-SELECT * FROM HistFuncConsulta;
-DELETE FROM HistFuncConsulta;
 
 /*Relacionamento entre Funcionario e Paciente*/
 CREATE TABLE HistFuncPaciente
@@ -128,6 +99,38 @@ CREATE TABLE HistFuncPaciente
     FOREIGN KEY(idPaciente)       REFERENCES    Paciente(id)
 );
 
+DESC Usuario;
+DESC Funcionario;
+DESC Medico;
+DESC Paciente;
+DESC Consulta;
+DESC Atestado;
+DESC HistFuncConsulta;
 DESC HistFuncPaciente;
+
+SELECT * FROM Usuario;
+SELECT * FROM Funcionario;
+SELECT * FROM Medico;
+SELECT * FROM Paciente;
+SELECT * FROM Consulta;
+SELECT * FROM Atestado;
+SELECT * FROM HistFuncConsulta;
 SELECT * FROM HistFuncPaciente;
+
+DELETE FROM Usuario;
+DELETE FROM Funcionario;
+DELETE FROM Medico;
+DELETE FROM Paciente;
+DELETE FROM Consulta;
+DELETE FROM Atestado;
+DELETE FROM HistFuncConsulta;
 DELETE FROM HistFuncPaciente;
+
+DROP TABLE Usuario;
+DROP TABLE Funcionario;
+DROP TABLE Medico;
+DROP TABLE Paciente;
+DROP TABLE Consulta;
+DROP TABLE Atestado;
+DROP TABLE HistFuncConsulta;
+DROP TABLE HistFuncPaciente;
