@@ -18,6 +18,11 @@ body, html
     padding-top: 10px;
 }
 
+.saudacao-container
+{
+    color: #183459;
+}
+
 .global-containers
 {
     width: 100%;

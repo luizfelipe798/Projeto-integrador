@@ -15,19 +15,11 @@
 <body>
     <?php
         include "../includes/menu_home.php";
-        
-        $saudacao = "Olá ";
-
-        if($_SESSION['tipo_usuario'] === "Medico")
-        {
-            $saudacao .= "Dr. ";
-        }
-
-        $saudacao .= "{$_SESSION['nome']}!";
+        include "../core/saudacao.php";
     ?>
 
     <div class="saudacao-container">
-        <h1><?=$saudacao?> O que você gostaria de fazer agora?</h1>
+        <h1>Olá <?=saudacao()?> O que você gostaria de fazer agora?</h1>
     </div>
 
     <div class="global-containers">
