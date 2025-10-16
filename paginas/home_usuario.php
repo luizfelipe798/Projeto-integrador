@@ -14,6 +14,7 @@
 </head>
 <body>
     <?php
+        $paginaAtual = "isHome";
         include_once "../core/tempo_sessao.php";
         include_once "../includes/menu_home.php";
         include_once "../core/saudacao.php";
@@ -46,7 +47,6 @@
     </div>
 
     <?php
-        $paginaAtual = "notIndex";
         include "../includes/rodape.php";
     ?>
 </body>

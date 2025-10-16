@@ -61,11 +61,17 @@
     </div>
 
     <div class="list-container">
-        <form action="../core/buscar.php" method="POST">
-            <input type="hidden" name="tabela" value="Paciente">
-            <input type="text" name="busca" placeholder="Busque por pacientes..." required>
-            <button type="submit">Buscar</button>
-        </form>
+        <div class="buscar-e-adicionar-container">
+            <form action="../core/buscar.php" method="POST">
+                <input type="hidden" name="tabela" value="Paciente">
+                <input type="text" name="busca" placeholder="Busque por pacientes..." required>
+                <button type="submit">Buscar</button>
+            </form>
+
+            <div clas="btn-adicionar-container">
+                <a href="adicionar_paciente.php">Adicionar</a>
+            </div>
+        </div>
 
         <?php if($temBusca) :?>
             <div class="verResultado-container">
