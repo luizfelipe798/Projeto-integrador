@@ -170,7 +170,7 @@
             {
                 if($tipoUsuario != $usuario['tipo'])
                 {
-                    $_SESSION['erro_login'] = "E-mail, senha ou tipo de usuário incorretos. Tente novamente!";
+                    $_SESSION['erro_login'] = "Tipo de usuário incorreto. Tente novamente!";
 
                     header("Location: ../paginas/login.php");
                     exit;
@@ -178,9 +178,7 @@
 
                 if($usuario['ativo'] == 1)
                 {
-                    $_SESSION['erro_login'] = "Este usuário já está logado em outra sessão. Favor deslogar primeiro!";
-
-                    header("Location: ../paginas/login.php");
+                    header("Location: ../paginas/home_usuario.php");
                     exit;
                 }
             
@@ -200,7 +198,7 @@
 
                         $stmtFuncionario->close();
                         header("Location: ../paginas/login.php");
-                        exit;   
+                        exit;
                     }
                         
                     $funcionario = $resultadoFuncionario->fetch_assoc();
@@ -211,7 +209,7 @@
                     $_SESSION['tipo_usuario'] = $tipoUsuario;
                     $_SESSION['dtcontrata_funcionario'] = $funcionario['dataContratacao'];
                     $_SESSION['turno_funcionario'] = $funcionario['turno'];
-                    $_SESSION['logado'] = "Sim";
+                    $_SESSION['logado'] = true;
 
                     $stmtFuncionario->close();
                 }
@@ -241,7 +239,7 @@
                     $_SESSION['crm_medico'] = $medico['crm'];
                     $_SESSION['especialidade_medico'] = $medico['especialidade'];
                     $_SESSION['plantonista_medico'] = $medico['plantonista'];
-                    $_SESSION['logado'] = "Sim";
+                    $_SESSION['logado'] = true;
 
                     $stmtMedico->close();
                 }

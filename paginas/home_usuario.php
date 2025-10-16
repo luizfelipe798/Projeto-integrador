@@ -17,7 +17,7 @@
         include "../includes/menu_home.php";
         include "../core/saudacao.php";
     ?>
-
+    
     <div class="saudacao-container">
         <h1>Olá <?=saudacao()?> O que você gostaria de fazer agora?</h1>
     </div>
@@ -45,6 +45,7 @@
     </div>
 
     <?php
+        $paginaAtual = "homepage";
         include "../includes/rodape.php";
     ?>
 </body>

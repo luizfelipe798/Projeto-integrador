@@ -1,4 +1,6 @@
 <?php
+    include_once "core/tempo_sessao.php";
+
     session_start();
 ?>
 

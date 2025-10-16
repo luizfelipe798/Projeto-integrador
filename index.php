@@ -78,6 +78,7 @@
     </div>
 
     <?php
+        $paginaAtual = "index";
         include "includes/rodape.php";
     ?>
 </body>

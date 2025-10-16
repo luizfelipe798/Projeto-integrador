@@ -1,9 +1,9 @@
 <?php
     session_start();
-
+    
     if(isset($_SESSION['logado']))
     {
-        header("Location: paginas/home_usuario.php");
+        header("Location: home_usuario.php");
         exit;
     }
 ?>
