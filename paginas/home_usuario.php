@@ -46,7 +46,7 @@
     </div>
 
     <?php
-        $paginaAtual = "homepage";
+        $paginaAtual = "notIndex";
         include "../includes/rodape.php";
     ?>
 </body>
