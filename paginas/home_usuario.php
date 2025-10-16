@@ -14,10 +14,11 @@
 </head>
 <body>
     <?php
-        include "../includes/menu_home.php";
-        include "../core/saudacao.php";
+        include_once "../core/tempo_sessao.php";
+        include_once "../includes/menu_home.php";
+        include_once "../core/saudacao.php";
     ?>
-    
+
     <div class="saudacao-container">
         <h1>Olá <?=saudacao()?> O que você gostaria de fazer agora?</h1>
     </div>
