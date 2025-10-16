@@ -1,3 +1,41 @@
+<?php
+    include_once "../core/tempo_sessao.php";
+    session_start();
+
+    include_once "../core/conexao.php";
+
+    $lista = [];
+    $temBusca = false;
+    $termoBusca = "";
+
+    if(isset($_SESSION['resultados_busca']))
+    {
+        $lista = $_SESSION['resultados_busca'];
+        $temBusca = true;
+        $termoBusca = $_SESSION['termo_busca'];
+
+        unset($_SESSION['resultados_busca']);
+        unset($_SESSION['termo_busca']);
+    }
+    else
+    {
+        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM Paciente ORDER BY nome ASC");
+        $stmtBuscarTodos->execute();
+
+        $resultadosBuscarTodos = $stmtBuscarTodos->get_result();
+
+        if($resultadosBuscarTodos->num_rows > 0)
+        {       
+            while($resultado = $resultadosBuscarTodos->fetch_assoc())
+            {
+                $lista[] = $resultado;
+            }
+        }
+
+        $stmtBuscarTodos->close();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -14,9 +52,8 @@
 </head>
 <body>
     <?php
-        include_once "../core/tempo_sessao.php";
+        $paginaAtual = "notIndex";
         include_once "../includes/menu_home.php";
-        include_once "../core/conexao.php";
     ?>
 
     <div class="titleList">
@@ -30,19 +67,13 @@
             <button type="submit">Buscar</button>
         </form>
 
-        <?php if(isset($_SESSION['termo_busca'])) :?>
+        <?php if($temBusca) :?>
             <div class="verResultado-container">
-                <?php if($_SESSION['resultados_busca'] === []) :?>
-                    <p>Nenhum resultado encontrado para: <?=$_SESSION['termo_busca']?></p>
-                <?php else: ?>
-                    <p>Resultado da busca por: <?=$_SESSION['termo_busca']?></p>
+                <?php if(count($lista) !== 0) :?>
+                    <p>Resultado da busca por: <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
                 <?php endif; ?>
             </div>
-        <?php
-            unset($_SESSION['resultados_busca']);
-            unset($_SESSION['termo_busca']);
-            endif
-            ?>
+        <?php endif; ?>
         
         <div class="tbl-pacientes-container">
             <table>
@@ -62,30 +93,54 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Luiz Felipe Vignoto</td>
-                        <td>luizvignoto@gmail.com</td>
-                        <td>(18) 99695-2348</td>
-                        <td>29/03/2008</td>
-                        <td>Masculino</td>
-                        <td>111.111.111-11</td>
-                    
-                        <?php if($_SESSION['tipo_usuario'] === "Funcionario"): ?>
-                            <td class="acoes-td-tbl">
-                                <a href="../core/paciente_repositorio.php">👁️</a>
-                                <a href="../core/paciente_repositorio.php">📗</a>
-                                <a href="../core/paciente_repositorio.php">🗑️</a>
+                    <?php if(count($lista) > 0): ?>
+                        <?php foreach($lista as $paciente):
+                            $dataNascimento = date('d/m/Y', strtotime($paciente['dataNascimento']));
+                        ?>
+                            <tr>
+                                <td><?=htmlspecialchars($paciente['id'])?></td>
+                                <td><?=htmlspecialchars($paciente['nome'])?></td>
+                                <td><?=htmlspecialchars($paciente['email'])?></td>
+                                <td><?=htmlspecialchars($paciente['telefone'])?></td>
+                                <td><?=htmlspecialchars($dataNascimento)?></td>
+                                <td><?=htmlspecialchars($paciente['genero'])?></td>
+                                <td><?=htmlspecialchars($paciente['cpf'])?></td>
+                            
+                                <?php if($_SESSION['tipo_usuario'] === "Funcionario"): ?>
+                                    <td class="acoes-td-tbl">
+                                        <a href="">👁️</a>
+                                        <a href="editar_paciente.php?id=<?=urlencode($paciente['id'])?>
+                                            &nome=<?=urlencode($paciente['nome'])?>
+                                            &email=<?=urlencode($paciente['email'])?>
+                                            &telefone=<?=urlencode($paciente['telefone'])?>
+                                            &dataNascimento=<?=urlencode($dataNascimento)?>
+                                            &genero=<?=urlencode($paciente['genero'])?>
+                                            &cpf=<?=urlencode($paciente['cpf'])?>"
+                                        >
+                                            📗
+                                        </a>
+                                        <a href="../core/paciente_repositorio.php?id=<?=$paciente['id']?>">🗑️</a>
+                                    </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="8" class="not-resultado-linha">
+                                <?php if($temBusca): ?>
+                                    Nenhum resultado encontrado para a busca: <?=$termoBusca?>
+                                <?php else: ?>
+                                    Nenhum paciente cadastrado.
+                                <?php endif; ?>
                             </td>
-                        <?php endif; ?>
-                    </tr>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 
     <?php
-        $paginaAtual = "notIndex";
         include "../includes/rodape.php";
     ?>
 </body>

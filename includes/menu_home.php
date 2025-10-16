@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    if($paginaAtual != "notIndex")
+    {
+        session_start();
+    }
     
     if(!isset($_SESSION['logado']))
     {
