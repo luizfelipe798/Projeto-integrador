@@ -1,0 +1,26 @@
+html, body
+{
+    width: 100%;
+}
+
+.titleList
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.titleList h1
+{
+    font-size: 45px;
+    color: #183459;
+    font-weight: bold;
+}
+
+.list-container
+{
+    width: 80%;
+}

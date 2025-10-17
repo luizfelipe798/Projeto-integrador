@@ -1,3 +1,8 @@
+<?php
+    include_once "../core/tempo_sessao.php";
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -14,8 +19,7 @@
 </head>
 <body>
     <?php
-        $paginaAtual = "isHome";
-        include_once "../core/tempo_sessao.php";
+        $paginaAtual = "notIndex";
         include_once "../includes/menu_home.php";
         include_once "../core/saudacao.php";
     ?>

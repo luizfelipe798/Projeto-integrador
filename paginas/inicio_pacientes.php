@@ -73,10 +73,12 @@
             </div>
         </div>
 
-        <?php if($temBusca) :?>
+        <?php if($temBusca): ?>
             <div class="verResultado-container">
-                <?php if(count($lista) !== 0) :?>
-                    <p>Resultado da busca por: <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
+                <?php if(count($lista) !== 0): ?>
+                    <p>Resultado da busca por <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
+                <?php else: ?>
+                    <p>Nenhum resultado encontrado para <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
@@ -133,9 +135,7 @@
                     <?php else: ?>
                         <tr>
                             <td colspan="8" class="not-resultado-linha">
-                                <?php if($temBusca): ?>
-                                    Nenhum resultado encontrado para a busca: <?=$termoBusca?>
-                                <?php else: ?>
+                                <?php if(!$temBusca): ?>
                                     Nenhum paciente cadastrado.
                                 <?php endif; ?>
                             </td>
