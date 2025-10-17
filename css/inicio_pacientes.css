@@ -138,6 +138,7 @@ html, body
     align-items: center;
     justify-content: start;
     padding-left: 6px;
+    padding-bottom: 6px;
 }
 
 .verResultado-container p
@@ -153,8 +154,6 @@ html, body
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow-x: auto;
-    overflow-y: auto;
 }
 
 .tbl-pacientes-container table
@@ -166,6 +165,7 @@ html, body
     margin-bottom: 15px;
     border-collapse: collapse;
     border-radius: 3px;
+    overflow-x: scroll;
 }
 
 .tbl-pacientes-container table thead {
@@ -202,12 +202,25 @@ html, body
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+    gap: 10px;
 }
 
-.acoes-td-tbl a
+.acoes-td-tbl img
 {
-    
+    filter: sepia(100%) hue-rotate(190deg) saturate(500%);
 }
+
+.acoes-td-tbl a img
+{
+    width: 20px;
+    height: 20px;
+}
+
+.acoes-td-tbl a img:hover
+{
+    filter: sepia(100%) hue-rotate(190deg) saturate(50%);
+}
+
 
 
 

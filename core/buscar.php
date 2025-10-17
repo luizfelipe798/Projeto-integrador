@@ -17,7 +17,7 @@
                                     OR      cpf                LIKE ?
                                     OR      genero             LIKE ?");
     
-    $stmtBusca->bind_param("ssssssi", $termo, $termo, $termo, $termo, $termo, $termo, $id);
+    $stmtBusca->bind_param("issssss", $id, $termo, $termo, $termo, $termo, $termo, $termo);
     $stmtBusca->execute();
 
     $resultados = $stmtBusca->get_result();

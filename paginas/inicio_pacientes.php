@@ -116,10 +116,13 @@
                                     <td><?=htmlspecialchars($dataNascimento)?></td>
                                     <td><?=htmlspecialchars($paciente['genero'])?></td>
                                     <td><?=htmlspecialchars($paciente['cpf'])?></td>
-                                
+
                                     <?php if($_SESSION['tipo_usuario'] === "Funcionario"): ?>
                                         <td class="acoes-td-tbl">
-                                            <a href="">👁️</a>
+                                            <a href="">
+                                                <img src="../imagens/olho_visualizar.png" alt="Botão de visualizar">
+                                            </a>
+
                                             <a href="editar_paciente.php?id=<?=urlencode($paciente['id'])?>
                                                 &nome=<?=urlencode($paciente['nome'])?>
                                                 &email=<?=urlencode($paciente['email'])?>
@@ -128,9 +131,11 @@
                                                 &genero=<?=urlencode($paciente['genero'])?>
                                                 &cpf=<?=urlencode($paciente['cpf'])?>"
                                             >
-                                                📗
+                                                <img src="../imagens/caderno_editar.png" alt="Botão de editar"">
                                             </a>
-                                            <a href="../core/paciente_repositorio.php?id=<?=$paciente['id']?>">🗑️</a>
+                                            <a href="../core/paciente_repositorio.php?id=<?=$paciente['id']?>">
+                                                <img src="../imagens/lixeira_excluir.png" alt="Botão de excluir">
+                                            </a>
                                         </td>
                                     <?php endif; ?>
                                 </tr>
