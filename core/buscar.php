@@ -5,10 +5,12 @@
 
     $tabela = $_POST['tabela'];
     $busca = $_POST['busca'];
-
     $termo = "%" . $busca . "%";
 
-    $stmtBusca = $conexao->prepare("SELECT * FROM Paciente
+    switch($tabela)
+    {
+        case "Paciente":
+            $stmtBusca = $conexao->prepare("SELECT * FROM Paciente
                                     WHERE   id                 LIKE ?
                                     OR      nome               LIKE ?
                                     OR      email              LIKE ?
@@ -17,11 +19,26 @@
                                     OR      cpf                LIKE ?
                                     OR      genero             LIKE ?");
     
-    $stmtBusca->bind_param("issssss", $id, $termo, $termo, $termo, $termo, $termo, $termo);
-    $stmtBusca->execute();
+            $stmtBusca->bind_param("issssss", $id, $termo, $termo, $termo, $termo, $termo, $termo);
+            $stmtBusca->execute();
+        break;
+        
+        case "Consulta":
+            $stmtBusca = $conexao->prepare("SELECT * FROM Consulta
+                                    WHERE   id                 LIKE ?
+                                    OR      horario            LIKE ?
+                                    OR      observacao         LIKE ?
+                                    OR      stattus            LIKE ?
+                                    OR      valor              LIKE ?
+                                    OR      tipo               LIKE ?
+                                    OR      genero             LIKE ?");
+    
+            $stmtBusca->bind_param("issssss", $id, $termo, $termo, $termo, $termo, $termo, $termo);
+            $stmtBusca->execute();
+        break;
+    }
 
     $resultados = $stmtBusca->get_result();
-
     $resultadoBusca = [];
 
     if($resultados->num_rows > 0)
@@ -30,7 +47,7 @@
         {
             $resultadoBusca[] = $resultado;
         }
-        
+
         $_SESSION['resultados_busca'] = $resultadoBusca;
     }
     else
@@ -41,7 +58,6 @@
     $_SESSION['termo_busca'] = $busca;
 
     $stmtBusca->close();
-
     header("Location: ../paginas/inicio_pacientes.php");
     exit;
 ?>

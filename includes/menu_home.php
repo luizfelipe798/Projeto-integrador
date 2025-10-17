@@ -1,12 +1,3 @@
-<?php
-    if(!isset($_SESSION['logado']))
-    {
-        $_SESSION['erro_login'] = "Você não pode acessar a página sem estar logado!";
-        header("Location: login.php");
-        exit;
-    }
-?>
-
 <menu class="menuPrincipal">
         <div class="logotipoLinks">
                 <a href="home_usuario.php" class="logotipoMenu"><img class="logotipoMenu" src="../imagens/logotiposalus.png" alt="Logotipo Sailus"></a>

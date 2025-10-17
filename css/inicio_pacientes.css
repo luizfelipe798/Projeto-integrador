@@ -27,11 +27,12 @@ html, body
     align-items: center;
     justify-content: center;
     margin-top: 15px;
+    margin-bottom: 30px;
 }
 
 .list-container
 {
-    width: 85%;
+    width: 90%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -150,7 +151,7 @@ html, body
 
 .tbl-pacientes-container
 {
-    width: 100%;
+    max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -165,7 +166,6 @@ html, body
     margin-bottom: 15px;
     border-collapse: collapse;
     border-radius: 3px;
-    overflow-x: scroll;
 }
 
 .tbl-pacientes-container table thead {
@@ -190,6 +190,7 @@ html, body
     font-size: 15px;
     text-align: center;
     border-radius: 3px;
+    white-space: nowrap;
 }
 
 .tbl-pacientes-container tbody tr:hover {
@@ -205,11 +206,6 @@ html, body
     gap: 10px;
 }
 
-.acoes-td-tbl img
-{
-    filter: sepia(100%) hue-rotate(190deg) saturate(500%);
-}
-
 .acoes-td-tbl a img
 {
     width: 20px;
@@ -218,7 +214,7 @@ html, body
 
 .acoes-td-tbl a img:hover
 {
-    filter: sepia(100%) hue-rotate(190deg) saturate(50%);
+    filter: saturate(100%);
 }
 
 

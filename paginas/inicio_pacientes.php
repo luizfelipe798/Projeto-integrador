@@ -2,6 +2,9 @@
     include_once "../core/tempo_sessao.php";
     session_start();
 
+    include_once "../core/verifica_login.php";
+    verificar_login();
+
     include_once "../core/conexao.php";
 
     $lista = [];
@@ -71,7 +74,7 @@
 
                 <?php if($_SESSION['tipo_usuario'] === "Funcionario"):?>
                     <div class="btn-adicionar-container">
-                        <a href="adicionar_paciente.php">Adicionar</a>
+                        <a href="cadastrar_paciente.php">Adicionar</a>
                     </div>
                 <?php endif; ?>
             </div>
