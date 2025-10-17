@@ -16,11 +16,222 @@ html, body
 .titleList h1
 {
     font-size: 45px;
-    color: #183459;
+    color: #1f638e;
     font-weight: bold;
+}
+
+.global-list-container
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
 }
 
 .list-container
 {
-    width: 80%;
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #1f638e;
+    border-radius: 6px;
+}
+
+.buscar-e-adicionar-container
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px;
+}
+
+.buscar-e-adicionar-container form
+{
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    padding: 3px;
+}
+
+.buscar-e-adicionar-container form input
+{
+    width: 85%;
+    height: 30px;
+    background-color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding-left: 5px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.buscar-e-adicionar-container form input:focus
+{
+    outline: none;
+    box-shadow: 0 0 8px black;
+}
+
+.buscar-e-adicionar-container form button
+{
+    width: 9%;
+    height: 30px;
+    border: none;
+    background-color: #183458;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.buscar-e-adicionar-container form button:hover
+{
+    background-color: #fff;
+    color: #1f638e;
+}
+
+.btn-adicionar-container
+{
+    width: 40%;
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    justify-content: end;
+}
+
+.btn-adicionar-container a
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 16%;
+    height: 30px;
+    border: none;
+    background-color: #183458;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 3px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-adicionar-container a:hover
+{
+    background-color: #fff;
+    color: #1f638e;
+}
+
+.verResultado-container
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-left: 6px;
+}
+
+.verResultado-container p
+{
+    color: #fff;
+    font-size: 16px;
+    animation: resultado_busca 0.3s ease;
+}
+
+.tbl-pacientes-container
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.tbl-pacientes-container table
+{
+    width: 99%;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    border-collapse: collapse;
+    border-radius: 3px;
+}
+
+.tbl-pacientes-container table thead {
+    background-color: #183458;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.tbl-pacientes-container thead tr, .tbl-pacientes-container thead td {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+    border-right: 1px solid #ddd;
+    text-align: center;
+}
+
+.tbl-pacientes-container tbody td {
+    padding: 10px;
+    border-left: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+    vertical-align: middle;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.tbl-pacientes-container tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.acoes-td-tbl
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.acoes-td-tbl a
+{
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@keyframes resultado_busca
+{
+    from
+    {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
