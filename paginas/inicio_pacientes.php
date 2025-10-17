@@ -19,7 +19,7 @@
     }
     else
     {
-        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM Paciente ORDER BY nome ASC");
+        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM Paciente ORDER BY id ASC");
         $stmtBuscarTodos->execute();
 
         $resultadosBuscarTodos = $stmtBuscarTodos->get_result();
@@ -139,7 +139,7 @@
                             <tr>
                                 <td colspan="8" class="not-resultado-linha">
                                     <?php if(!$temBusca): ?>
-                                        Nenhum paciente cadastrado.
+                                        Nenhum paciente cadastrado
                                     <?php endif; ?>
                                 </td>
                             </tr>

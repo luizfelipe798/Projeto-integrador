@@ -9,14 +9,15 @@
     $termo = "%" . $busca . "%";
 
     $stmtBusca = $conexao->prepare("SELECT * FROM Paciente
-                                    WHERE  nome            LIKE ?
-                                    OR     email           LIKE ?
-                                    OR     telefone        LIKE ?
-                                    OR     dataNascimento  LIKE ?
-                                    OR     cpf             LIKE ?
-                                    OR     genero          LIKE ?");
+                                    WHERE   id                 LIKE ?
+                                    OR      nome               LIKE ?
+                                    OR      email              LIKE ?
+                                    OR      telefone           LIKE ?
+                                    OR      dataNascimento     LIKE ?
+                                    OR      cpf                LIKE ?
+                                    OR      genero             LIKE ?");
     
-    $stmtBusca->bind_param("ssssss", $termo, $termo, $termo, $termo, $termo, $termo);
+    $stmtBusca->bind_param("ssssssi", $termo, $termo, $termo, $termo, $termo, $termo, $id);
     $stmtBusca->execute();
 
     $resultados = $stmtBusca->get_result();
