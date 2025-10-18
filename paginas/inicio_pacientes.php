@@ -63,6 +63,16 @@
         <h1>Gerenciar pacientes</h1>
     </div>
 
+    <?php if(isset($_SESSION['sucesso_paciente'])): ?>
+    <div class="rsltd-acoes-container">
+        <p><?=$_SESSION['sucesso_paciente']?></p>
+    </div>
+
+    <?php
+        unset($_SESSION['sucesso_paciente']);
+        endif;
+    ?>
+
     <div class="global-list-container">
         <div class="list-container">
             <div class="buscar-e-adicionar-container">
@@ -75,6 +85,7 @@
                 <?php if($_SESSION['tipo_usuario'] === "Funcionario"):?>
                     <div class="btn-adicionar-container">
                         <a href="cadastrar_paciente.php">Adicionar</a>
+                        <a href="">Histórico</a>
                     </div>
                 <?php endif; ?>
             </div>

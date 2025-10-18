@@ -91,7 +91,7 @@ CREATE TABLE HistFuncPaciente
 (
 	id                    INT              AUTO_INCREMENT PRIMARY KEY,
     tipoAcao              VARCHAR(50)      NOT NULL,
-    dtAcao                DATE             NOT NULL,
+    dtAcao                DATE             NOT NULL DEFAULT CURRENT_TIMESTAMP,
     idFuncionario         INT              NOT NULL,
     idPaciente            INT              NOT NULL,
     
