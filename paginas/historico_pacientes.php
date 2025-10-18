@@ -6,7 +6,7 @@
     verificar_login();
 
     include_once "../core/conexao.php";
-    
+
     $lista = [];
     $temBusca = false;
     $termoBusca = "";
@@ -22,7 +22,7 @@
     }
     else
     {
-        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM Paciente ORDER BY id ASC");
+        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM HistFuncPaciente ORDER BY id ASC");
         $stmtBuscarTodos->execute();
 
         $resultadosBuscarTodos = $stmtBuscarTodos->get_result();
@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="../css/rodape.css">
     <link rel="stylesheet" href="../css/gerenciamento_geral.css">
 
-    <title>Pacientes - Sailus</title>
+    <title>Histórico de Pacientes - Sailus</title>
 </head>
 <body>
     <?php
@@ -60,7 +60,7 @@
     ?>
 
     <div class="titleList">
-        <h1>Gerenciar pacientes</h1>
+        <h1>Histórico de pacientes</h1>
     </div>
 
     <?php if(isset($_SESSION['sucesso_paciente'])): ?>
@@ -77,15 +77,14 @@
         <div class="list-container">
             <div class="buscar-e-adicionar-container">
                 <form action="../core/buscar.php" method="POST">
-                    <input type="hidden" name="tabela" value="Paciente">
-                    <input type="text" name="busca" placeholder="Busque por pacientes..." required>
+                    <input type="hidden" name="tabela" value="HistFuncPaciente">
+                    <input type="text" name="busca" placeholder="Busque pelo histórico..." required>
                     <button type="submit">Buscar</button>
                 </form>
 
                 <?php if($_SESSION['tipo_usuario'] === "Funcionario"):?>
                     <div class="btn-adicionar-container">
-                        <a href="cadastrar_paciente.php">Adicionar</a>
-                        <a href="historico_pacientes.php">Histórico</a>
+                        <a href="inicio_pacientes.php">Voltar</a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -105,31 +104,53 @@
                     <thead>
                         <tr>
                             <td>ID</td>
-                            <td>Nome</td>
-                            <td>E-mail</td>
-                            <td>Telefone</td>
-                            <td>Data de Nascimento</td>
-                            <td>Gênero</td>
-                            <td>CPF</td>
-
-                            <?php if($_SESSION['tipo_usuario'] === "Funcionario"): ?>
-                                <td>Ações</td>
-                            <?php endif; ?>
+                            <td>Tipo de ação</td>
+                            <td>Data da ação</td>
+                            <td>Funcionário relacionado</td>
+                            <td>Paciente relacionado</td>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if(count($lista) > 0): ?>
-                            <?php foreach($lista as $paciente):
-                                $dataNascimento = date('d/m/Y', strtotime($paciente['dataNascimento']));
+                            <?php foreach($lista as $historico):
+                                $dataAcao = date('d/m/Y', strtotime($historico['dtAcao']));
+
+                                $tipoUsuario = "Funcionario";
+                                $stmtFuncionario = $conexao->prepare("SELECT nome FROM Usuario
+                                                                      WHERE id = ?
+                                                                      AND tipo = ?");
+                                $stmtFuncionario->bind_param("is", $historico['idFuncionario'], $tipoUsuario);
+                                $stmtFuncionario->execute();
+                                
+                                $nomeFuncionario = $stmtFuncionario->get_result();
+                                
+                                if($nomeFuncionario->num_rows != 1)
+                                {
+                                    $erroFuncionario = "Não encontrado";
+                                }
+
+                                $stmtFuncionario->close();
+
+                                $stmtPaciente = $conexao->prepare("SELECT nome FROM Paciente
+                                                                      WHERE id = ?");
+                                $stmtPaciente->bind_param("i", $historico['idPaciente']);
+                                $stmtPaciente->execute();
+                                
+                                $nomePaciente = $stmtPaciente->get_result();
+                                
+                                if($nomePaciente->num_rows != 1)
+                                {
+                                    $erroPaciente = "Não encontrado";
+                                }
+
+                                $stmtPaciente->close();
                             ?>
                                 <tr>
-                                    <td><?=htmlspecialchars($paciente['id'])?></td>
-                                    <td><?=htmlspecialchars($paciente['nome'])?></td>
-                                    <td><?=htmlspecialchars($paciente['email'])?></td>
-                                    <td><?=htmlspecialchars($paciente['telefone'])?></td>
-                                    <td><?=htmlspecialchars($dataNascimento)?></td>
-                                    <td><?=htmlspecialchars($paciente['genero'])?></td>
-                                    <td><?=htmlspecialchars($paciente['cpf'])?></td>
+                                    <td><?=htmlspecialchars($historico['id'])?></td>
+                                    <td><?=htmlspecialchars($historico['tipoAcao'])?></td>
+                                    <td><?=htmlspecialchars($dataAcao)?></td>
+                                    <td><?=$nomeFuncionario?></td>
+                                    <td><?=$nomePaciente?></td>
 
                                     <?php if($_SESSION['tipo_usuario'] === "Funcionario"): ?>
                                         <td class="acoes-td-tbl">

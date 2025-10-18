@@ -22,6 +22,18 @@
             $stmtBusca->bind_param("issssss", $id, $termo, $termo, $termo, $termo, $termo, $termo);
             $stmtBusca->execute();
         break;
+
+        case "HistFuncPaciente":
+            $stmtBusca = $conexao->prepare("SELECT * FROM HistFuncPaciente
+                                    WHERE   id                 LIKE ?
+                                    OR      tipoAcao           LIKE ?
+                                    OR      dtAcao             LIKE ?
+                                    OR      idFuncionario      LIKE ?
+                                    OR      idPaciente         LIKE ?");
+    
+            $stmtBusca->bind_param("issii", $id, $termo, $termo, $termo, $termo, $termo, $termo);
+            $stmtBusca->execute();
+        break;
         
         case "Consulta":
             $stmtBusca = $conexao->prepare("SELECT * FROM Consulta

@@ -26,7 +26,7 @@
     
     <form action="../core/paciente_repositorio.php" method="POST">
         <div class="logoFormulario">
-            <a href="home_usuario.php"><img src="../imagens/logosomentetexto.png" alt="Logotipo Sailus"></a>
+            <a href="inicio_pacientes.php"><img src="../imagens/logosomentetexto.png" alt="Logotipo Sailus"></a>
         </div>
         <div class="inputsFormulario">
             <input type="hidden" name="acao" value="Cadastro">

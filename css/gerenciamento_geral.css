@@ -10,7 +10,7 @@ html, body
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 .titleList h1
@@ -27,14 +27,14 @@ html, body
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin-top: 15px;
+    margin-bottom: 8px;
 }
 
 .rsltd-acoes-container p
 {
     font-size: 17px;
     color: #183458;
-    margin-top: 15px;
-    margin-bottom: 8px;
 }
 
 .global-list-container
@@ -43,8 +43,8 @@ html, body
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 15px;
-    margin-bottom: 30px;
+    margin-top: 25px;
+    margin-bottom: 179px;
 }
 
 .list-container
