@@ -29,9 +29,9 @@ html, body
 
 .titulo-form-container h1
 {
-    font-size: 40px;
+    font-size: 25px;
     font-weight: bold;
-    color: #1f638e;
+    color: #fff;
 }
 
 form

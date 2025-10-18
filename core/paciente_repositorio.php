@@ -30,7 +30,6 @@
             {
                 $_SESSION['erro_cadastro_paciente'] = "Este E-mail ou este cpf já está cadastrado. Tente novamente!";
 
-
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
             }
@@ -92,11 +91,11 @@
         break;
 
         case "editar":
-
+            
         break;
 
         case "deletar":
-
+            $id = $_GET['id'];
         break;
     }
 ?>

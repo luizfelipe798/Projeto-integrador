@@ -1,6 +1,12 @@
 <menu class="menuPrincipal">
         <div class="logotipoLinks">
-                <a href="home_usuario.php" class="logotipoMenu"><img class="logotipoMenu" src="../imagens/logotiposalus.png" alt="Logotipo Sailus"></a>
+            <?php if($paginaAtual == "HomeUsuario"):?>
+                <a href="../index.php" class="logotipoMenu">
+            <?php else: ?>
+                <a href="home_usuario.php" class="logotipoMenu">
+            <?php endif; ?>
+                        <img class="logotipoMenu" src="../imagens/logotiposalus.png" alt="Logotipo Sailus">
+                </a>
         </div>
 
         <div class="btnsUserLogado">

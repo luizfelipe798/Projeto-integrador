@@ -22,7 +22,7 @@
 </head>
 <body>
     <?php
-        $paginaAtual = "notIndex";
+        $paginaAtual = "HomeUsuario";
         include_once "../includes/menu_home.php";
         include_once "../core/saudacao.php";
     ?>
