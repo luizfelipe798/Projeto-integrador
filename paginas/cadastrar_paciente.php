@@ -14,6 +14,8 @@
 
     <link rel="shortcut icon" href="../imagens/logotiposalus.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="../css/cadastro_login.css">
+
     <title>Cadastrar paciente - Sailus</title>
 </head>
 <body>

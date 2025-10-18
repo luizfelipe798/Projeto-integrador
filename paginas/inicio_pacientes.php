@@ -82,9 +82,9 @@
             <?php if($temBusca): ?>
                 <div class="verResultado-container">
                     <?php if(count($lista) !== 0): ?>
-                        <p>Resultado da busca por <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
+                        <p><?=count($lista)?> paciente(s) encontrado(s) da busca por <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
                     <?php else: ?>
-                        <p>Nenhum resultado encontrado para <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
+                        <p>Nenhum paciente encontrado da busca por <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
