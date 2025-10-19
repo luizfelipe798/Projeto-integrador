@@ -5,7 +5,6 @@ body {
     background-color: #20638e;
 }
 
-/*Parte Principal*/
 .textoImagemExplicativos 
 {
     display: flex;
@@ -66,7 +65,6 @@ body {
     align-items: center;
 }
 
-/* Sobre nós */
 .sobrenosBody 
 {
     padding: 50px;
@@ -102,7 +100,6 @@ body {
     color: white;
 }
 
-/* Desenvolvedores */
 .imagensDesenvolvedoresBody {
     display: flex;
     justify-content: center;
@@ -128,7 +125,6 @@ body {
     color: white;
 }
 
-/* Rodapé */
 .footer {
     background-color: #183459;
     color: white;

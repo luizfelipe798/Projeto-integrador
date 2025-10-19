@@ -68,8 +68,7 @@ body
 
 .btnLogin, .btnCadastro, .btnSair
 {
-    /* ... propriedades de estilo dos botões ... */
-    width: 100px; /* Ajustei a largura para um valor fixo, pois 25% com justify-content: end pode ser problemático. */
+    width: 100px;
     height: 40px;
     border: 1px solid #fff;
     color: #183459;
