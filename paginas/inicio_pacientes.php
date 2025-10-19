@@ -63,13 +63,13 @@
         <h1>Gerenciar pacientes</h1>
     </div>
 
-    <?php if(isset($_SESSION['sucesso_paciente'])): ?>
+    <?php if(isset($_SESSION['retorno_paciente'])): ?>
     <div class="rsltd-acoes-container">
-        <p><?=$_SESSION['sucesso_paciente']?></p>
+        <p><?=$_SESSION['retorno_paciente']?></p>
     </div>
 
     <?php
-        unset($_SESSION['sucesso_paciente']);
+        unset($_SESSION['retorno_paciente']);
         endif;
     ?>
 
@@ -147,9 +147,16 @@
                                             >
                                                 <img src="../imagens/caderno_editar.png" alt="Botão de editar"">
                                             </a>
-                                            <a href="../core/paciente_repositorio.php?id=<?=$paciente['id']?>">
-                                                <img src="../imagens/lixeira_excluir.png" alt="Botão de excluir">
-                                            </a>
+                                            
+                                            <form action="../core/paciente_repositorio.php" method="POST">
+                                                <input type="hidden" name="acao" value="deletar">
+                                                <input type="hidden" name="id" value="<?=$paciente['id']?>">
+                                                <input type="hidden" name="nome" value="<?=$paciente['nome']?>">
+
+                                                <button type="submit">
+                                                    <img src="../imagens/lixeira_excluir.png" alt="Botão de excluir">
+                                                </button>
+                                            </form>
                                         </td>
                                     <?php endif; ?>
                                 </tr>

@@ -224,30 +224,24 @@ html, body
     gap: 10px;
 }
 
-.acoes-td-tbl a img
+.acoes-td-tbl a img, .acoes-td-tbl form button img
 {
     width: 20px;
     height: 20px;
+    transition: 0.1s;
+    cursor: pointer;
 }
 
-.acoes-td-tbl a img:hover
+.acoes-td-tbl form button
 {
-    filter: saturate(100%);
+    border: none;
+    background-color: transparent;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.acoes-td-tbl a img:hover, .acoes-td-tbl form button img:hover
+{
+    opacity: 0.65;
+}
 
 @keyframes resultado_busca
 {

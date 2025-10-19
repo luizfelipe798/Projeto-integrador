@@ -28,7 +28,7 @@
 
             if($resultado->num_rows > 0)
             {
-                $_SESSION['erro_cadastro_paciente'] = "Este E-mail ou este cpf já está cadastrado. Tente novamente!";
+                $_SESSION['retorno_paciente'] = "Este E-mail ou este cpf já está cadastrado. Tente novamente!";
 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
@@ -42,7 +42,7 @@
 
             if($stmtInsert->affected_rows != 1)
             {
-                $_SESSION['erro_cadastro_paciente'] = "Erro ao cadastrar paciente. Tente novamente!";
+                $_SESSION['retorno_paciente'] = "Erro ao cadastrar paciente. Tente novamente!";
 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
@@ -71,7 +71,7 @@
 
             if($resultado->num_rows != 1)
             {
-                $_SESSION['erro_cadastro_paciente'] = "Erro ao armazenar histórico do cadastro. Tente novamente!";
+                $_SESSION['retorno_paciente'] = "Erro ao armazenar histórico do cadastro. Tente novamente!";
 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
@@ -90,13 +90,13 @@
 
             if($stmtHistorico->affected_rows != 1)
             {
-                $_SESSION['erro_cadastro_paciente'] = "Erro ao armazenar histórico do cadastro. Tente novamente!";
+                $_SESSION['retorno_paciente'] = "Erro ao armazenar histórico do cadastro. Tente novamente!";
 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
             }
 
-            $_SESSION['sucesso_paciente'] = $nome . " cadastrado(a) com sucesso!";
+            $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso!";
 
             $stmtHistorico->close();
             header("Location: ../paginas/inicio_pacientes.php");
@@ -108,7 +108,28 @@
         break;
 
         case "deletar":
-            $id = $_GET['id'];
+            $id = $_POST['id'];
+            $nome = $_POST['nome'];
+
+            $stmtExcluirHistorico = $conexao->prepare("DELETE FROM HistFuncPaciente");
+            
+            $stmtExcluir = $conexao->prepare("DELETE FROM Paciente
+                                              WHERE id = ? AND nome = ?");
+            
+            $stmtExcluir->bind_param("is", $id, $nome);
+            $stmtExcluir->execute();
+
+            if($stmtExcluir->affected_rows != 1)
+            {
+                $_SESSION['retorno_paciente'] = "Erro na exclusão de " . $nome . ". Tente novamente!";
+            }
+            else
+            {
+                $_SESSION['retorno_paciente'] = $nome . " excluído com sucesso!";
+            }
+
+            header("Location: ../paginas/inicio_pacientes.php");
+            exit;
         break;
     }
 ?>
