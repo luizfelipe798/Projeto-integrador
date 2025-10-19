@@ -63,16 +63,6 @@
         <h1>Histórico de pacientes</h1>
     </div>
 
-    <?php if(isset($_SESSION['sucesso_paciente'])): ?>
-    <div class="rsltd-acoes-container">
-        <p><?=$_SESSION['sucesso_paciente']?></p>
-    </div>
-
-    <?php
-        unset($_SESSION['sucesso_paciente']);
-        endif;
-    ?>
-
     <div class="global-list-container">
         <div class="list-container">
             <div class="buscar-e-adicionar-container">
@@ -91,10 +81,10 @@
 
             <?php if($temBusca): ?>
                 <div class="verResultado-container">
-                    <?php if(count($lista) !== 0): ?>
-                        <p><?=count($lista)?> paciente(s) encontrado(s) na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
+                    <?php if(count($lista) > 0): ?>
+                        <p><?=count($lista)?> histórico encontrado na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></p>
                     <?php else: ?>
-                        <p>Nenhum paciente encontrado na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
+                        <p>Nenhum histórico encontrado na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></p>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -122,11 +112,13 @@
                                 $stmtFuncionario->bind_param("is", $historico['idFuncionario'], $tipoUsuario);
                                 $stmtFuncionario->execute();
                                 
-                                $nomeFuncionario = $stmtFuncionario->get_result();
-                                
-                                if($nomeFuncionario->num_rows != 1)
+                                $resultadoFuncionario = $stmtFuncionario->get_result();
+                                $nomeFuncionario = "Não encontrado";
+
+                                if($resultadoFuncionario->num_rows == 1)
                                 {
-                                    $erroFuncionario = "Não encontrado";
+                                    $funcionario = $resultadoFuncionario->fetch_assoc();
+                                    $nomeFuncionario = htmlspecialchars($funcionario['nome']);
                                 }
 
                                 $stmtFuncionario->close();
@@ -136,11 +128,13 @@
                                 $stmtPaciente->bind_param("i", $historico['idPaciente']);
                                 $stmtPaciente->execute();
                                 
-                                $nomePaciente = $stmtPaciente->get_result();
-                                
-                                if($nomePaciente->num_rows != 1)
+                                $resultadoPaciente = $stmtPaciente->get_result();
+                                $nomePaciente = "Não encontrado";
+
+                                if($resultadoPaciente->num_rows == 1)
                                 {
-                                    $erroPaciente = "Não encontrado";
+                                    $paciente = $resultadoPaciente->fetch_assoc();
+                                    $nomePaciente = htmlspecialchars($paciente['nome']);
                                 }
 
                                 $stmtPaciente->close();
@@ -151,35 +145,13 @@
                                     <td><?=htmlspecialchars($dataAcao)?></td>
                                     <td><?=$nomeFuncionario?></td>
                                     <td><?=$nomePaciente?></td>
-
-                                    <?php if($_SESSION['tipo_usuario'] === "Funcionario"): ?>
-                                        <td class="acoes-td-tbl">
-                                            <a href="">
-                                                <img src="../imagens/olho_visualizar.png" alt="Botão de visualizar">
-                                            </a>
-
-                                            <a href="editar_paciente.php?id=<?=urlencode($paciente['id'])?>
-                                                &nome=<?=urlencode($paciente['nome'])?>
-                                                &email=<?=urlencode($paciente['email'])?>
-                                                &telefone=<?=urlencode($paciente['telefone'])?>
-                                                &dataNascimento=<?=urlencode($dataNascimento)?>
-                                                &genero=<?=urlencode($paciente['genero'])?>
-                                                &cpf=<?=urlencode($paciente['cpf'])?>"
-                                            >
-                                                <img src="../imagens/caderno_editar.png" alt="Botão de editar"">
-                                            </a>
-                                            <a href="../core/paciente_repositorio.php?id=<?=$paciente['id']?>">
-                                                <img src="../imagens/lixeira_excluir.png" alt="Botão de excluir">
-                                            </a>
-                                        </td>
-                                    <?php endif; ?>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
                                 <td colspan="8" class="not-resultado-linha">
                                     <?php if(!$temBusca): ?>
-                                        Nenhum paciente cadastrado
+                                        Nenhum histórico registrado
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -189,6 +161,7 @@
             </div>
         </div>
     </div>
+
     <?php
         include "../includes/rodape.php";
     ?>

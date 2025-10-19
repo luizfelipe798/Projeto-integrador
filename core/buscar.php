@@ -31,7 +31,7 @@
                                     OR      idFuncionario      LIKE ?
                                     OR      idPaciente         LIKE ?");
     
-            $stmtBusca->bind_param("issii", $id, $termo, $termo, $termo, $termo, $termo, $termo);
+            $stmtBusca->bind_param("issii", $id, $termo, $termo, $termo, $termo);
             $stmtBusca->execute();
         break;
         
@@ -70,6 +70,17 @@
     $_SESSION['termo_busca'] = $busca;
 
     $stmtBusca->close();
-    header("Location: ../paginas/inicio_pacientes.php");
-    exit;
+
+    switch($tabela)
+    {
+        case "Paciente":
+            header("Location: ../paginas/inicio_pacientes.php");
+            exit;
+        break;
+
+        case "HistFuncPaciente":
+            header("Location: ../paginas/historico_pacientes.php");
+            exit;
+        break;
+    }
 ?>
