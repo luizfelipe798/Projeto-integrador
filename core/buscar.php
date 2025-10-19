@@ -7,6 +7,19 @@
     $busca = $_POST['busca'];
     $termo = "%" . $busca . "%";
 
+    $termoData = $termo;
+
+    if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $busca)) 
+    {
+        $dataObjeto = DateTime::createFromFormat('d/m/Y', $busca);
+
+        if ($dataObjeto !== false)
+        {
+            $dataConvertida = $dataObjeto->format('Y-m-d');
+            $termoData = $dataConvertida . "%";
+        }
+    }
+
     switch($tabela)
     {
         case "Paciente":
@@ -17,21 +30,59 @@
                                     OR      telefone           LIKE ?
                                     OR      dataNascimento     LIKE ?
                                     OR      cpf                LIKE ?
-                                    OR      genero             LIKE ?");
+                                    OR      genero             LIKE ?
+                                    OR      DATE_FORMAT(dataNascimento, '%d/%m/%Y') LIKE ?");
     
-            $stmtBusca->bind_param("issssss", $id, $termo, $termo, $termo, $termo, $termo, $termo);
+            $stmtBusca->bind_param("ssssssss", $termo, $termo, $termo, $termo, $termoData, $termo, $termo, $termo);
             $stmtBusca->execute();
         break;
 
         case "HistFuncPaciente":
+            $idsPacientes = [0];
+            $idsFuncionarios = [0];
+
+            $stmtBuscaFuncionario = $conexao->prepare("SELECT id FROM Usuario 
+                                                       WHERE nome LIKE ? AND tipo = 'Funcionario'");
+
+            $stmtBuscaFuncionario->bind_param("s", $termo);
+            $stmtBuscaFuncionario->execute();
+            
+            $resultados = $stmtBuscaFuncionario->get_result();
+
+            while($resultado = $resultados->fetch_assoc())
+            {
+                $idsFuncionarios[] = $resultado['id'];
+            }
+
+            $stmtBuscaFuncionario->close();
+
+            $stmtBuscaPaciente = $conexao->prepare("SELECT id FROM Paciente
+                                                    WHERE nome LIKE ?");
+
+            $stmtBuscaPaciente->bind_param("s", $termo);
+            $stmtBuscaPaciente->execute();
+            
+            $resultados = $stmtBuscaPaciente->get_result();
+
+            while($resultado = $resultados->fetch_assoc())
+            {
+                $idsPacientes[] = $resultado['id'];
+            }
+
+            $idsFuncionariosEncontrados = implode(',', $idsFuncionarios);
+            $idsPacientesEncontrados = implode(',', $idsPacientes);
+
+            $stmtBuscaPaciente->close();
+
             $stmtBusca = $conexao->prepare("SELECT * FROM HistFuncPaciente
                                     WHERE   id                 LIKE ?
                                     OR      tipoAcao           LIKE ?
                                     OR      dtAcao             LIKE ?
-                                    OR      idFuncionario      LIKE ?
-                                    OR      idPaciente         LIKE ?");
+                                    OR      idFuncionario      IN ($idsFuncionariosEncontrados)
+                                    OR      idPaciente         IN ($idsPacientesEncontrados)
+                                    OR      DATE_FORMAT(dtAcao, '%d/%m/%Y') LIKE ?");
     
-            $stmtBusca->bind_param("issii", $id, $termo, $termo, $termo, $termo);
+            $stmtBusca->bind_param("ssss", $termo, $termo, $termoData, $termo);
             $stmtBusca->execute();
         break;
         
@@ -75,12 +126,12 @@
     {
         case "Paciente":
             header("Location: ../paginas/inicio_pacientes.php");
-            exit;
         break;
 
         case "HistFuncPaciente":
             header("Location: ../paginas/historico_pacientes.php");
-            exit;
         break;
     }
+
+    exit;
 ?>

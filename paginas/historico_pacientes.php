@@ -22,7 +22,7 @@
     }
     else
     {
-        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM HistFuncPaciente ORDER BY id ASC");
+        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM HistFuncPaciente ORDER BY dtAcao DESC");
         $stmtBuscarTodos->execute();
 
         $resultadosBuscarTodos = $stmtBuscarTodos->get_result();
@@ -72,19 +72,17 @@
                     <button type="submit">Buscar</button>
                 </form>
 
-                <?php if($_SESSION['tipo_usuario'] === "Funcionario"):?>
-                    <div class="btn-adicionar-container">
-                        <a href="inicio_pacientes.php">Voltar</a>
-                    </div>
-                <?php endif; ?>
+                <div class="btn-adicionar-container">
+                    <a href="inicio_pacientes.php">Voltar</a>
+                </div>
             </div>
 
             <?php if($temBusca): ?>
                 <div class="verResultado-container">
                     <?php if(count($lista) > 0): ?>
-                        <p><?=count($lista)?> histórico encontrado na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></p>
+                        <p><?=count($lista)?> histórico(s) encontrado(s) na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></p>
                     <?php else: ?>
-                        <p>Nenhum histórico encontrado na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></p>
+                        <p>Nenhum histórico(s) encontrado(s) na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></p>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -93,9 +91,9 @@
                 <table>
                     <thead>
                         <tr>
+                            <td>Data da ação</td>
                             <td>ID</td>
                             <td>Tipo de ação</td>
-                            <td>Data da ação</td>
                             <td>Funcionário relacionado</td>
                             <td>Paciente relacionado</td>
                         </tr>
@@ -103,7 +101,7 @@
                     <tbody>
                         <?php if(count($lista) > 0): ?>
                             <?php foreach($lista as $historico):
-                                $dataAcao = date('d/m/Y', strtotime($historico['dtAcao']));
+                                $dataAcao = date('d/m/Y à\s H:i:s', strtotime($historico['dtAcao']));
 
                                 $tipoUsuario = "Funcionario";
                                 $stmtFuncionario = $conexao->prepare("SELECT nome FROM Usuario
@@ -140,9 +138,9 @@
                                 $stmtPaciente->close();
                             ?>
                                 <tr>
+                                    <td><?=htmlspecialchars($dataAcao)?></td>
                                     <td><?=htmlspecialchars($historico['id'])?></td>
                                     <td><?=htmlspecialchars($historico['tipoAcao'])?></td>
-                                    <td><?=htmlspecialchars($dataAcao)?></td>
                                     <td><?=$nomeFuncionario?></td>
                                     <td><?=$nomePaciente?></td>
                                 </tr>

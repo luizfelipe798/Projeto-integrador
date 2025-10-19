@@ -51,7 +51,19 @@
             $idPaciente = $conexao->insert_id;
             $stmtInsert->close();
 
-            $stmtIdFuncionario = $conexao->prepare("SELECT id FROM Usuario WHERE email = ? AND tipo = ?");
+            $stmtIdFuncionario = $conexao->prepare("SELECT
+                                                        F.id
+                                                    FROM
+                                                        Funcionario F
+                                                    INNER JOIN 
+                                                        Usuario U
+                                                    ON
+                                                        U.id = F.id
+                                                    WHERE
+                                                        U.email = ?
+                                                    AND
+                                                        U.tipo = ?");
+                                
             $stmtIdFuncionario->bind_param("ss", $emailFuncionario, $tipoUsuario);
             $stmtIdFuncionario->execute();
 
@@ -65,7 +77,8 @@
                 exit;
             }
 
-            $idFuncionario = $resultado;
+            $funcionarioID = $resultado->fetch_assoc();
+            $idFuncionario = $funcionarioID['id'];
 
             $stmtIdFuncionario->close();
 
