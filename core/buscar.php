@@ -24,14 +24,18 @@
     {
         case "Paciente":
             $stmtBusca = $conexao->prepare("SELECT * FROM Paciente
-                                    WHERE   id                 LIKE ?
-                                    OR      nome               LIKE ?
-                                    OR      email              LIKE ?
-                                    OR      telefone           LIKE ?
-                                    OR      dataNascimento     LIKE ?
-                                    OR      cpf                LIKE ?
-                                    OR      genero             LIKE ?
-                                    OR      DATE_FORMAT(dataNascimento, '%d/%m/%Y') LIKE ?");
+                                    WHERE   
+                                    (           id                 LIKE ?
+                                        OR      nome               LIKE ?
+                                        OR      email              LIKE ?
+                                        OR      telefone           LIKE ?
+                                        OR      dataNascimento     LIKE ?
+                                        OR      cpf                LIKE ?
+                                        OR      genero             LIKE ?
+                                        OR      DATE_FORMAT(dataNascimento, '%d/%m/%Y') LIKE ?
+                                    )
+                                    AND excluido = FALSE
+                                    ORDER BY id ASC");
     
             $stmtBusca->bind_param("ssssssss", $termo, $termo, $termo, $termo, $termoData, $termo, $termo, $termo);
             $stmtBusca->execute();
@@ -80,7 +84,8 @@
                                     OR      dtAcao             LIKE ?
                                     OR      idFuncionario      IN ($idsFuncionariosEncontrados)
                                     OR      idPaciente         IN ($idsPacientesEncontrados)
-                                    OR      DATE_FORMAT(dtAcao, '%d/%m/%Y') LIKE ?");
+                                    OR      DATE_FORMAT(dtAcao, '%d/%m/%Y') LIKE ?
+                                    ORDER BY dtAcao DESC");
     
             $stmtBusca->bind_param("ssss", $termo, $termo, $termoData, $termo);
             $stmtBusca->execute();

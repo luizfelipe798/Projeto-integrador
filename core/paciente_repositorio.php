@@ -16,9 +16,8 @@
             $cpf = $_POST['cpf'];
             $genero = $_POST['genero'];
             $emailFuncionario = $_SESSION['email'];
-            $tipoUsuario = "Funcionario";
 
-            $stmtVerifica = $conexao->prepare("SELECT cpf, email FROM Paciente WHERE email = ? OR cpf = ?");
+            $stmtVerifica = $conexao->prepare("SELECT id, excluido FROM Paciente WHERE email = ? OR cpf = ?");
             $stmtVerifica->bind_param("ss", $email, $cpf);
             $stmtVerifica->execute();
 
@@ -27,53 +26,78 @@
             $stmtVerifica->close();
 
             if($resultado->num_rows > 0)
-            {
-                $_SESSION['retorno_paciente'] = "Este E-mail ou este cpf já está cadastrado. Tente novamente!";
+            {   
+                $pacienteEncontrado = $resultado->fetch_assoc();
+                
+                if($pacienteEncontrado['excluido'] == FALSE)
+                {
+                    $_SESSION['retorno_paciente'] = "Este E-mail ou este cpf já está cadastrado em um paciente ativo. Tente novamente!";
 
-                header("Location: ../paginas/cadastrar_paciente.php");
-                exit;
+                    header("Location: ../paginas/cadastrar_paciente.php");
+                    exit;
+                }
+                else
+                {
+                    $idPaciente = $pacienteEncontrado['id'];
+
+                    $stmtReativar = $conexao->prepare("UPDATE Paciente
+                                                       SET nome = ?, email = ?, telefone = ?,
+                                                          dataNascimento = ?, cpf = ?, genero = ?,
+                                                          excluido = FALSE
+                                                      WHERE id = ?");
+                    
+                    $stmtReativar->bind_param("ssssssi", $nome, $email, $telefone, $dataNascimento, $cpf, $genero, $idPaciente);
+                    $stmtReativar->execute();
+
+                    if($stmtReativar->affected_rows < 0)
+                    {
+                        $_SESSION['retorno_paciente'] = "Erro ao reativar " . $nome . ". Tente novamente!";
+
+                        $stmtReativar->close();
+                        header("Location: ../paginas/cadastrar_paciente.php");
+                        exit;
+                    }
+
+                    $stmtReativar->close();
+
+                    $tipoAcao = "Reativação";
+                }
             }
-            
-            $stmtInsert = $conexao->prepare("INSERT INTO Paciente(nome, email, telefone, dataNascimento, cpf, genero)
+            else
+            {
+                $stmtInsert = $conexao->prepare("INSERT INTO Paciente(nome, email, telefone, dataNascimento, cpf, genero)
                                        VALUES (?, ?, ?, ?, ?, ?)");
 
-            $stmtInsert->bind_param("ssssss", $nome, $email, $telefone, $dataNascimento, $cpf, $genero);
-            $stmtInsert->execute();
+                $stmtInsert->bind_param("ssssss", $nome, $email, $telefone, $dataNascimento, $cpf, $genero);
+                $stmtInsert->execute();
 
-            if($stmtInsert->affected_rows != 1)
-            {
-                $_SESSION['retorno_paciente'] = "Erro ao cadastrar paciente. Tente novamente!";
+                if($stmtInsert->affected_rows != 1)
+                {
+                    $_SESSION['retorno_paciente'] = "Erro ao cadastrar paciente. Tente novamente!";
 
-                header("Location: ../paginas/cadastrar_paciente.php");
-                exit;
+                    header("Location: ../paginas/cadastrar_paciente.php");
+                    exit;
+                }
+
+                $idPaciente = $conexao->insert_id;
+                $tipoAcao = "Cadastro";
+
+                $stmtInsert->close();
             }
 
-            $idPaciente = $conexao->insert_id;
-            $stmtInsert->close();
-
-            $stmtIdFuncionario = $conexao->prepare("SELECT
-                                                        F.id
-                                                    FROM
-                                                        Funcionario F
-                                                    INNER JOIN 
-                                                        Usuario U
-                                                    ON
-                                                        U.id = F.id
-                                                    WHERE
-                                                        U.email = ?
-                                                    AND
-                                                        U.tipo = ?");
-                                
-            $stmtIdFuncionario->bind_param("ss", $emailFuncionario, $tipoUsuario);
+            $stmtIdFuncionario = $conexao->prepare("SELECT id FROM Usuario
+                                                        WHERE email = ? AND tipo = 'Funcionario'");
+                                    
+            $stmtIdFuncionario->bind_param("s", $emailFuncionario);
             $stmtIdFuncionario->execute();
 
             $resultado = $stmtIdFuncionario->get_result();
 
             if($resultado->num_rows != 1)
             {
-                $_SESSION['retorno_paciente'] = "Erro ao armazenar histórico do cadastro. Tente novamente!";
+                $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso, porém não foi possível registrar a ação no histórico.";
 
-                header("Location: ../paginas/cadastrar_paciente.php");
+                header("Location: ../paginas/inicio_pacientes.php");
                 exit;
             }
 
@@ -85,18 +109,25 @@
             $stmtHistorico = $conexao->prepare("INSERT INTO HistFuncPaciente(tipoAcao, idFuncionario, idPaciente)
                                                 VALUES (?, ?, ?)");
 
-            $stmtHistorico->bind_param("sii", $acao, $idFuncionario, $idPaciente);
+            $stmtHistorico->bind_param("sii", $tipoAcao, $idFuncionario, $idPaciente);
             $stmtHistorico->execute();
 
             if($stmtHistorico->affected_rows != 1)
             {
-                $_SESSION['retorno_paciente'] = "Erro ao armazenar histórico do cadastro. Tente novamente!";
+                $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso, porém não foi possível registrar a ação no histórico.";
 
-                header("Location: ../paginas/cadastrar_paciente.php");
+                header("Location: ../paginas/inicio_pacientes.php");
                 exit;
             }
 
-            $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso!";
+            if($tipoAcao == "Reativação")
+            {
+                $_SESSION['retorno_paciente'] = $nome . " reativado(a) com sucesso!";
+            }
+            else
+            {
+                $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso!";
+            }
 
             $stmtHistorico->close();
             header("Location: ../paginas/inicio_pacientes.php");
@@ -107,16 +138,54 @@
             
         break;
 
-        case "deletar":
-            $id = $_POST['id'];
+        case "Exclusão":
+            $idPaciente = $_POST['id'];
             $nome = $_POST['nome'];
+            $emailFuncionario = $_SESSION['email'];
 
-            $stmtExcluirHistorico = $conexao->prepare("DELETE FROM HistFuncPaciente");
+            $stmtObterFuncionario = $conexao->prepare("SELECT id FROM Usuario
+                                                       WHERE email = ? AND tipo = 'Funcionario'");
             
-            $stmtExcluir = $conexao->prepare("DELETE FROM Paciente
-                                              WHERE id = ? AND nome = ?");
-            
-            $stmtExcluir->bind_param("is", $id, $nome);
+            $stmtObterFuncionario->bind_param("s", $emailFuncionario);
+            $stmtObterFuncionario->execute();
+
+            $resultado = $stmtObterFuncionario->get_result();
+
+            $stmtObterFuncionario->close();
+
+            if($resultado->num_rows != 1)
+            {
+                $_SESSION['retorno_paciente'] = "Erro na identificação do funcionário na exclusão de " . $nome . ". Tente novamente!";
+
+                header("Location: ../paginas/inicio_pacientes.php");
+                exit;
+            }
+
+            $funcionario = $resultado->fetch_assoc();
+            $idFuncionario = $funcionario['id'];
+
+            $stmtHistorico = $conexao->prepare("INSERT INTO HistFuncPaciente(tipoAcao, idFuncionario, idPaciente)
+                                                VALUES(?, ?, ?)");
+
+            $stmtHistorico->bind_param("sii", $acao, $idFuncionario, $idPaciente);
+            $stmtHistorico->execute();
+
+            if($stmtHistorico->affected_rows != 1)
+            {
+                $_SESSION['retorno_paciente'] = "Erro no registro da exclusão de " . $nome . ". Tente novamente!";
+
+                $stmtHistorico->close();
+                header("Location: ../paginas/inicio_pacientes.php");
+                exit;
+            }
+
+            $stmtHistorico->close();
+
+            $stmtExcluir = $conexao->prepare("UPDATE Paciente
+                                              SET excluido = TRUE
+                                              WHERE id = ?");
+
+            $stmtExcluir->bind_param("i", $idPaciente);
             $stmtExcluir->execute();
 
             if($stmtExcluir->affected_rows != 1)
@@ -127,6 +196,8 @@
             {
                 $_SESSION['retorno_paciente'] = $nome . " excluído com sucesso!";
             }
+
+            $stmtExcluir->close();
 
             header("Location: ../paginas/inicio_pacientes.php");
             exit;

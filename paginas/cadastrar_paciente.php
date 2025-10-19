@@ -55,12 +55,12 @@
         </div>
     </form>
 
-    <?php if(isset($_SESSION['erro_cadastro_paciente'])) : ?>
+    <?php if(isset($_SESSION['retorno_paciente'])) : ?>
         <div class="errocadastrologin-container">
-            <p><?=$_SESSION['erro_cadastro_paciente'];?></p>
+            <p><?=$_SESSION['retorno_paciente'];?></p>
         </div>
     <?php 
-        unset($_SESSION['erro_cadastro_paciente']);
+        unset($_SESSION['retorno_paciente']);
         endif;
     ?>
 </body>

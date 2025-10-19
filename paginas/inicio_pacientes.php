@@ -22,7 +22,9 @@
     }
     else
     {
-        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM Paciente ORDER BY id ASC");
+        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM Paciente
+                                              WHERE excluido = FALSE
+                                              ORDER BY id ASC");
         $stmtBuscarTodos->execute();
 
         $resultadosBuscarTodos = $stmtBuscarTodos->get_result();
@@ -149,7 +151,7 @@
                                             </a>
                                             
                                             <form action="../core/paciente_repositorio.php" method="POST">
-                                                <input type="hidden" name="acao" value="deletar">
+                                                <input type="hidden" name="acao" value="Exclusão">
                                                 <input type="hidden" name="id" value="<?=$paciente['id']?>">
                                                 <input type="hidden" name="nome" value="<?=$paciente['nome']?>">
 
