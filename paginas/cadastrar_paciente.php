@@ -25,15 +25,17 @@
 
         $dadosGeral = $_SESSION['dados_formulario'];
         unset($_SESSION['dados_formulario']);
-        $acao = "Edição";
-        $txtBotao = "Editar";
+
         $titulo = "Editar Paciente";
+        $txtBotao = "Editar";
+        $acao = "Edição";
     }
     else if(isset($_GET['id']))
     {
         $modoEdicao = true;
 
         $dadosGeral = $_GET;
+
         $titulo = "Editar Paciente";
         $txtBotao = "Editar";
         $acao = "Edição";
@@ -87,14 +89,12 @@
         <div class="inputsFormulario">
             <input type="hidden" name="acao" value="<?=$acao?>">
             
-            <?php if(isset($_GET['id']) || $dadosGeral != []): ?>
-                <input type="hidden" name="emailGet" value="<?=$email?>">
-                <input type="hidden" name="cpfGet" value="<?=$cpf?>">
+            <?php if($modoEdicao == true): ?>
+                <input type="hidden" name="emailAntigo" value="<?=$email?>">
+                <input type="hidden" name="cpfAntigo" value="<?=$cpf?>">
             <?php endif; ?>
             
-            <?php if($modoEdicao): ?>
-                <input type="hidden" name="idPaciente" value="<?=$idPaciente?>">
-            <?php endif; ?>
+            <input type="hidden" name="idPaciente" value="<?=$idPaciente?>">
 
             <input type="text" placeholder="Nome..." name="nome" value="<?=$nome?>" required>
 
