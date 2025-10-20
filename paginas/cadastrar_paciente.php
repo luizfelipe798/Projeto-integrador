@@ -87,7 +87,7 @@
         <div class="inputsFormulario">
             <input type="hidden" name="acao" value="<?=$acao?>">
             
-            <?php if(isset($_GET['id']) || isset($_SESSION['dados_formulario'])): ?>
+            <?php if(isset($_GET['id']) || $dadosGeral != []): ?>
                 <input type="hidden" name="emailGet" value="<?=$email?>">
                 <input type="hidden" name="cpfGet" value="<?=$cpf?>">
             <?php endif; ?>
