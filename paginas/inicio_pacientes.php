@@ -86,7 +86,7 @@
 
                 <div class="btn-adicionar-container">
                     <?php if($_SESSION['tipo_usuario'] === "Funcionario"):?>
-                        <a href="">Reativar</a>
+                        <a href="reativar_paciente.php">Reativar</a>
                         <a href="cadastrar_paciente.php">Adicionar</a>
                     <?php endif; ?>
                         <a href="historico_pacientes.php">Histórico</a>

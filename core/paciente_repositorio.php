@@ -259,5 +259,95 @@
             header("Location: ../paginas/inicio_pacientes.php");
             exit;
         break;
+
+        case "Reativação":
+            $email = $_POST['email'];
+            $cpf = $_POST['cpf'];
+            $emailFuncionario = $_SESSION['email'];
+
+            $stmtVerificar = $conexao->prepare("SELECT id, nome FROM Paciente
+                                                WHERE
+                                                email = ? AND cpf = ?
+                                                AND excluido = TRUE");
+            
+            $stmtVerificar->bind_param("ss", $email, $cpf);
+            $stmtVerificar->execute();
+
+            $resultado = $stmtVerificar->get_result();
+            $stmtVerificar->close();
+
+            if($resultado->num_rows <= 0)
+            {
+                $_SESSION['retorno_paciente'] = "E-mail ou CPF incorretos. Tente novamente!";
+
+                header("Location: ../paginas/reativar_paciente.php");
+                exit;
+            }
+
+            $paciente = $resultado->fetch_assoc();
+            $idPaciente = $paciente['id'];
+            $nomePaciente = $paciente['nome'];
+
+            $stmtReativar = $conexao->prepare("UPDATE Paciente
+                                               SET excluido = FALSE
+                                               WHERE id = ?");
+
+            $stmtReativar->bind_param("i", $idPaciente);
+            $stmtReativar->execute();
+
+            $linhasAfetadas = $stmtReativar->affected_rows;
+            $stmtReativar->close();
+
+            if($linhasAfetadas != 1)
+            {
+                $_SESSION['retorno_paciente'] = "Erro na reativação de paciente excluído. Tente novamente!";
+
+                header("Location: ../paginas/reativar_paciente.php");
+                exit;
+            }
+            
+            $_SESSION['retorno_paciente'] = $nomePaciente . " reativado com sucesso";
+
+            $stmtFuncionario = $conexao->prepare("SELECT id FROM Usuario
+                                                  WHERE email = ? AND tipo = 'Funcionario'");
+            
+            $stmtFuncionario->bind_param("s", $emailFuncionario);
+            $stmtFuncionario->execute();
+
+            $resultado = $stmtFuncionario->get_result();
+            
+            if($resultado->num_rows != 1)
+            {
+                $_SESSION['retorno_paciente'] .= ", porém não foi possível registrar no histórico.";
+
+                header("Location: ../paginas/inicio_pacientes.php");
+                exit;
+            }
+
+            $funcionario = $resultado->fetch_assoc();
+            $idFuncionario = $funcionario['id'];
+            
+            $stmtHistorico = $conexao->prepare("INSERT INTO HistFuncPaciente(tipoAcao, idFuncionario, idPaciente)
+                                                VALUES(?, ?, ?)");
+
+            $stmtHistorico->bind_param("sii", $acao, $idFuncionario, $idPaciente);
+            $stmtHistorico->execute();
+
+            $linhasAfetadas = $stmtHistorico->affected_rows;
+            $stmtHistorico->close();
+
+            if($linhasAfetadas != 1)
+            {
+                $_SESSION['retorno_paciente'] .= ", porém não foi possível registrar no histórico.";
+
+                header("Location: ../paginas/inicio_pacientes.php");
+                exit;
+            }
+
+            $_SESSION['retorno_paciente'] .= "!";
+
+            header("Location: ../paginas/inicio_pacientes.php");
+            exit;
+        break;
     }
 ?>

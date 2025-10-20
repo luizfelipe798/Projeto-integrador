@@ -77,7 +77,6 @@
     <title><?=$titulo?> - Sailus</title>
 </head>
 <body>
-
     <div class="titulo-form-container">
         <h1><?=$titulo?></h1>
     </div>
