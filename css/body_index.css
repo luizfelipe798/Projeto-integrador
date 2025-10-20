@@ -1,4 +1,5 @@
-body {
+body 
+{
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -33,7 +34,8 @@ body {
     color: white;
 }
 
-.btnsExplicativo a {
+.btnsExplicativo a 
+{
     display: inline-block;
     margin-right: 15px;
     padding: 10px 20px;
@@ -43,7 +45,8 @@ body {
     transition: background-color 0.3s;
 }
 
-.btnEntrarAgora, .btnConhecaNos {
+.btnEntrarAgora, .btnConhecaNos 
+{
     background-color: white;
     color: #20638e;
     transition: 0.2s;
@@ -85,7 +88,8 @@ body {
 }
 
 .tituloSobreNosBody h1,
-.tituloDesenvolvedoresBody h1 {
+.tituloDesenvolvedoresBody h1 
+{
     color: white;
     font-size: 55px;
     margin-bottom: 50px;
@@ -93,14 +97,16 @@ body {
     margin: 1px solid black;
 }
 
-.textoSobrenosBody p {
+.textoSobrenosBody p 
+{
     font-size: 1.1em;
     line-height: 1.6;
     margin-bottom: 30px;
     color: white;
 }
 
-.imagensDesenvolvedoresBody {
+.imagensDesenvolvedoresBody 
+{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -108,24 +114,34 @@ body {
     flex-wrap: wrap;
 }
 
-.desenvolvedor {
+.desenvolvedor 
+{
     text-align: center;
     width: 200px;
 }
 
-.desenvolvedor img {
+.desenvolvedor img 
+{
     width: 150px;
     height: 200px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.1s;
 }
 
-.desenvolvedor p {
+.desenvolvedor img:hover
+{
+    scale: 1.05;
+}
+
+.desenvolvedor p 
+{
     margin-top: 10px;
     color: white;
 }
 
-.footer {
+.footer 
+{
     background-color: #183459;
     color: white;
     padding: 30px 40px;
@@ -135,13 +151,15 @@ body {
     flex-wrap: wrap;
 }
 
-.logoFooter {
+.logoFooter 
+{
     height: 75px;
     width: 200px;
     margin-right: 15px;
 }
 
-.footer p {
+.footer p 
+{
     margin-top: 10px;
     font-size: 0.9em;
 }
