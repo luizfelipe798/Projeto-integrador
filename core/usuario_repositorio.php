@@ -420,5 +420,37 @@
                 exit;
             }
         break;
+
+        case "Reativação":
+
+            $idPaciente = $_POST['id'];
+
+            $nome = $_POST['nome'];
+            $email = $_POST['email'];
+            $telefone = $_POST['telefone'];
+            $stmtVerifica = $conexao->prepare("SELECT nome FROM Paciente
+                                               WHERE 
+                                                (
+                                                    email = ? AND email != ?
+                                                )
+                                                OR
+                                                (
+                                                    cpf = ? AND cpf != ?
+                                                )
+                                                AND excluido = TRUE");
+            $stmtVerifica->bind_param("ssss", $email, $emailAntigo, $cpf, $cpfAntigo);
+            $stmtVerifica->execute();
+
+            $resultado = $stmtVerifica->get_result();
+            $stmtVerifica->close();
+
+            if($resultado->num_rows > 0)
+            {
+                $_SESSION['retorno_paciente'] = "Este paciente nunca foi cadastrado no nosso sistema. Tente novamente!";
+
+                header("Location: ../paginas/reativar_paciente.php");
+                exit;
+            }
+        break;
     }
 ?>
