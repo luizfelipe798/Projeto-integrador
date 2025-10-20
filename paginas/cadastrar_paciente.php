@@ -21,14 +21,19 @@
 
     if(isset($_SESSION['dados_formulario']))
     {
+        $modoEdicao = true;
+
         $dadosGeral = $_SESSION['dados_formulario'];
         unset($_SESSION['dados_formulario']);
+        $acao = "Edição";
+        $txtBotao = "Editar";
+        $titulo = "Editar Paciente";
     }
     else if(isset($_GET['id']))
     {
-        $dadosGeral = $_GET;
-
         $modoEdicao = true;
+
+        $dadosGeral = $_GET;
         $titulo = "Editar Paciente";
         $txtBotao = "Editar";
         $acao = "Edição";
@@ -82,7 +87,7 @@
         <div class="inputsFormulario">
             <input type="hidden" name="acao" value="<?=$acao?>">
             
-            <?php if(isset($_GET['id'])): ?>
+            <?php if(isset($_GET['id']) || isset($_SESSION['dados_formulario'])): ?>
                 <input type="hidden" name="emailGet" value="<?=$email?>">
                 <input type="hidden" name="cpfGet" value="<?=$cpf?>">
             <?php endif; ?>

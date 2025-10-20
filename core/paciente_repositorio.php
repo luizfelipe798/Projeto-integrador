@@ -129,6 +129,11 @@
                 $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso!";
             }
 
+            if(isset($_SESSION['dados_formulario']))
+            {
+                unset($_SESSION['dados_formulario']);
+            }
+
             $stmtHistorico->close();
             header("Location: ../paginas/inicio_pacientes.php");
             exit;
