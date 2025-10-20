@@ -87,7 +87,7 @@
 
             $stmtIdFuncionario = $conexao->prepare("SELECT id FROM Usuario
                                                         WHERE email = ? AND tipo = 'Funcionario'");
-                                    
+
             $stmtIdFuncionario->bind_param("s", $emailFuncionario);
             $stmtIdFuncionario->execute();
 
@@ -134,8 +134,116 @@
             exit;
         break;
 
-        case "editar":
+        case "Edição":
+            $nome = $_POST['nome'];
+            $email = $_POST['email'];
+            $telefone = $_POST['telefone'];
+            $dataNascimento = $_POST['dataNascimento'];
+            $cpf = $_POST['cpf'];
+            $genero = $_POST['genero'];
+            $idPaciente = $_POST['idPaciente'];
+            $emailFuncionario = $_SESSION['email'];
+            $emailAnterior = $_POST['emailGet'];
+            $cpfAnterior = $_POST['cpfGet'];
+
+            $stmtVerifica = $conexao->prepare("SELECT id FROM Paciente
+                                               WHERE
+                                               (
+                                                    (
+                                                        email = ? AND email != ?
+                                                    )
+                                                    OR
+                                                    (
+                                                        cpf = ? AND cpf != ?
+                                                    )
+                                               )
+                                               AND id != ?");
+
+            $stmtVerifica->bind_param("ssssi", $email, $emailAnterior, $cpf, $cpfAnterior, $idPaciente);
+            $stmtVerifica->execute();
+
+            $resultado = $stmtVerifica->get_result();
+
+            $stmtVerifica->close();
+
+            if($resultado->num_rows > 0)
+            {
+                $_SESSION['retorno_paciente'] = "Este e-mail ou este CPF já está em uso. Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
+
+                header("Location: ../paginas/cadastrar_paciente.php");
+                exit;
+            }
+
+            $stmtObterFuncionario = $conexao->prepare("SELECT id FROM Usuario
+                                                       WHERE email = ? AND tipo = 'Funcionario'");
             
+            $stmtObterFuncionario->bind_param("s", $emailFuncionario);
+            $stmtObterFuncionario->execute();
+
+            $resultado = $stmtObterFuncionario->get_result();
+
+            $stmtObterFuncionario->close();
+
+            if($resultado->num_rows != 1)
+            {
+                $_SESSION['retorno_paciente'] = "Erro na identificação do funcionário na edição de " . $nome . ". Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
+
+                header("Location: ../paginas/cadastrar_paciente.php");
+                exit;
+            }
+
+            $funcionario = $resultado->fetch_assoc();
+            $idFuncionario = $funcionario['id'];
+
+            $stmtEditar = $conexao->prepare("UPDATE Paciente
+                                             SET nome = ?, email = ?, telefone = ?,
+                                                 dataNascimento = ?, cpf = ?, genero = ?
+                                             WHERE id = ?");
+            
+            $stmtEditar->bind_param("ssssssi", $nome, $email, $telefone, $dataNascimento, $cpf, $genero, $idPaciente);
+            $stmtEditar->execute();
+
+            $linhasAfetadas = $stmtEditar->affected_rows;
+            $stmtEditar->close();
+
+            if($linhasAfetadas < 0)
+            {
+                $_SESSION['retorno_paciente'] = "Erro na edição de " . $nome . ". Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
+
+                header("Location: ../paginas/cadastrar_paciente.php");
+                exit;
+            }
+
+            $_SESSION['retorno_paciente'] = "Dados de " . $nome . " alterados com sucesso";
+
+            $stmtHistorico = $conexao->prepare("INSERT INTO HistFuncPaciente(tipoAcao, idFuncionario, idPaciente)
+                                                VALUES (?, ?, ?)");
+
+            $stmtHistorico->bind_param("sii", $acao, $idFuncionario, $idPaciente);
+            $stmtHistorico->execute();
+
+            $linhasAfetadas = $stmtHistorico->affected_rows;
+            $stmtHistorico->close();
+
+            if($linhasAfetadas != 1)
+            {
+                $_SESSION['retorno_paciente'] .= ", porém não foi possível registrar no histórico.";
+            }
+            else
+            {
+                $_SESSION['retorno_paciente'] .= "!";
+            }
+
+            if(isset($_SESSION['dados_formulario']))
+            {
+                unset($_SESSION['dados_formulario']);
+            }
+
+            header("Location: ../paginas/inicio_pacientes.php");
+            exit;
         break;
 
         case "Exclusão":

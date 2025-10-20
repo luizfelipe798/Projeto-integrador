@@ -139,13 +139,7 @@
                                                 <img src="../imagens/olho_visualizar.png" alt="Botão de visualizar">
                                             </a>
 
-                                            <a href="editar_paciente.php?id=<?=urlencode($paciente['id'])?>
-                                                &nome=<?=urlencode($paciente['nome'])?>
-                                                &email=<?=urlencode($paciente['email'])?>
-                                                &telefone=<?=urlencode($paciente['telefone'])?>
-                                                &dataNascimento=<?=urlencode($dataNascimento)?>
-                                                &genero=<?=urlencode($paciente['genero'])?>
-                                                &cpf=<?=urlencode($paciente['cpf'])?>"
+                                            <a href="cadastrar_paciente.php?id=<?=urlencode($paciente['id'])?>&nome=<?=urlencode($paciente['nome'])?>&email=<?=urlencode($paciente['email'])?>&telefone=<?=urlencode($paciente['telefone'])?>&dataNascimento=<?=urlencode($dataNascimento)?>&genero=<?=urlencode($paciente['genero'])?>&cpf=<?=urlencode($paciente['cpf'])?>"
                                             >
                                                 <img src="../imagens/caderno_editar.png" alt="Botão de editar"">
                                             </a>

@@ -57,6 +57,12 @@ form
 {
     width: 100%;
     height: 90px;
+    transition: 0.1s;
+}
+
+.logoFormulario img:hover
+{
+    scale: 1.05;
 }
 
 .inputsFormulario

@@ -37,6 +37,12 @@ body
     width: 80px;
     height: 50px;
     margin-left: 10px;
+    transition: 0.1s;
+}
+
+.logotipoMenu:hover
+{
+    scale: 1.05;
 }
 
 .logotipoLinks a
@@ -47,7 +53,7 @@ body
     text-decoration: none;
     margin-right: 50px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .logotipoLinks a:hover

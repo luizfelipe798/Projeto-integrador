@@ -34,6 +34,12 @@
     width: 230px;
     height: 95px;
     cursor: pointer;
+    transition: 0.1s;
+}
+
+.instituto-container img:hover
+{
+    scale: 1.02;
 }
 
 .copyright-container
