@@ -4,6 +4,14 @@
     
     include_once "../core/verifica_login.php";
     verificar_login();
+
+    if(isset($_SESSION['dados_reativar']))
+    {
+        $dadosGeral = $_SESSION['dados_reativar'];
+    }
+
+    $email = $dadosGeral['email'] ?? '';
+    $cpf = $dadosGeral['cpf'] ?? '';
 ?>
 
 <!DOCTYPE html>
