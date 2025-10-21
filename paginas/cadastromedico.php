@@ -1,5 +1,29 @@
 <?php
     session_start();
+
+    $medico = [];
+
+    $nome = '';
+    $email = '';
+    $telefone = '';
+    $senha = '';
+    $crm = '';
+    $especialidade = '';
+    $plantonista = '';
+
+    if(isset($_SESSION['dados_formulario']))
+    {
+        $medico = $_SESSION['dados_formulario'];
+        unset($_SESSION['dados_formulario']);
+
+        $nome = htmlspecialchars($medico['nome']);
+        $email = htmlspecialchars($medico['email']);
+        $telefone = htmlspecialchars($medico['telefone']);
+        $senha = htmlspecialchars($medico['senha']);
+        $crm = htmlspecialchars($medico['crm']);
+        $especialidade = htmlspecialchars($medico['especialidade']);
+        $plantonista = htmlspecialchars($medico['plantonista']);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -23,25 +47,25 @@
             <input type="hidden" name="tipo_user" value="Medico">
             <input type="hidden" name="acao" value="cadastro">
 
-            <input type="text" placeholder="Nome" name="nome" required>
+            <input type="text" placeholder="Nome" name="nome" value="<?=$nome?>" required>
 
-            <input type="email" placeholder="E-mail" name="email" required>
+            <input type="email" placeholder="E-mail" name="email" value="<?=$email?>" required>
 
-            <input type="tel" placeholder="Telefone: (XX) XXXXX-XXXX" name="telefone" pattern="\([0-9]{2}\)\s[0-9]{4,5}-[0-9]{4}" required>
+            <input type="tel" placeholder="Telefone: (XX) XXXXX-XXXX" name="telefone" value="<?=$telefone?>" pattern="\([0-9]{2}\)\s[0-9]{4,5}-[0-9]{4}" required>
 
-            <input type="password" placeholder="Senha" name="senha" required>
+            <input type="password" placeholder="Senha" name="senha" value="<?=$senha?>" required>
 
-            <input type="text" placeholder="CRM: XXXXXX/UF" name="crm" pattern="^\d{4,6}\/[A-Z]{2}$" required>
+            <input type="text" placeholder="CRM: XXXXXX/UF" name="crm" value="<?=$crm?>" pattern="^\d{4,6}\/[A-Z]{2}$" required>
 
-            <input type="text" placeholder="Especialidade" name="especialidade" required>
+            <input type="text" placeholder="Especialidade" name="especialidade" value="<?=$especialidade?>" required>
 
             <div>
                 <label for="plantonista">Plantonista?</label>
             </div>
 
             <select name="plantonista" id="plantonista">
-                <option value="Sim">Sim</option>
-                <option value="Não">Não</option>
+                <option value="Sim" <?= $plantonista == 'Sim' ? 'selected' : '' ?>>Sim</option>
+                <option value="Não" <?= $plantonista == 'Não' ? 'selected' : '' ?>>Não</option>
             </select>
         </div>
         <div class="btnFormulario">

@@ -112,6 +112,30 @@
                 $especialidade = $_POST['especialidade'];
                 $plantonista = $_POST['plantonista'];
 
+                $stmtVerificar = $conexao->prepare("SELECT crm FROM Medico
+                                                    WHERE crm = ?");
+                
+                $stmtVerificar->bind_param("s", $crm);
+                $stmtVerificar->execute();
+
+                $resultado = $stmtVerificar->get_result();
+                $stmtVerificar->close();
+
+                if($resultado->num_rows != 0)
+                {
+                    $stmtDeleta = $conexao->prepare("DELETE FROM Usuario WHERE id = ?");
+                    $stmtDeleta->bind_param("i", $id);
+                    $stmtDeleta->execute();
+
+                    $_SESSION['erro_cadastro'] = "Este CRM já está em uso. Tente novamente!";
+                    $_SESSION['dados_formulario'] = $_POST;
+
+                    $stmtDeleta->close();
+
+                    header("Location: ../paginas/cadastromedico.php");
+                    exit;
+                }
+
                 $stmtMedico = $conexao->prepare("INSERT INTO Medico(id, crm, especialidade, plantonista) VALUES(?, ?, ?, ?)");
                 $stmtMedico->bind_param("isss", $id, $crm, $especialidade, $plantonista);
                 $stmtMedico->execute();

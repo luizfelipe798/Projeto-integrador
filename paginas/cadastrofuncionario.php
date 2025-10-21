@@ -14,12 +14,12 @@
         $funcionario = $_SESSION['dados_formulario'];
         unset($_SESSION['dados_formulario']);
 
-        $nome = htmlspecialchars($funcionario['nome'] ?? '');
-        $email = htmlspecialchars($funcionario['email'] ?? '');
-        $telefone = htmlspecialchars($funcionario['telefone'] ?? '');
-        $senha = htmlspecialchars($funcionario['senha'] ?? '');
-        $dataContratacao = htmlspecialchars($funcionario['dataContratacao'] ?? '');
-        $turno = htmlspecialchars($funcionario['turno'] ?? '');
+        $nome = htmlspecialchars($funcionario['nome']);
+        $email = htmlspecialchars($funcionario['email']);
+        $telefone = htmlspecialchars($funcionario['telefone']);
+        $senha = htmlspecialchars($funcionario['senha']);
+        $dataContratacao = htmlspecialchars($funcionario['dataContratacao']);
+        $turno = htmlspecialchars($funcionario['turno']);
     }
 ?>
 
