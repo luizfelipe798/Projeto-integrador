@@ -1,0 +1,128 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+html, body
+{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #183459;
+}
+
+.img-container
+{
+    width: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-container img
+{
+    width: 400px;
+    height: 150px;
+    transition: 0.1s;
+}
+
+.img-container img:hover
+{
+    scale: 1.04;
+}
+
+.notFound-container
+{
+    width: 40%;
+    background-color: #1f638e;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.textos-container
+{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.titulo-container
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+}
+
+.titulo-container h1
+{
+    color: #fff;
+    font-size: 70px;
+    font-weight: bold;
+}
+
+.textoExplicativo-container
+{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.textoExplicativo-container h2
+{
+    color: #fff;
+    font-size: 35px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.textoExplicativo-container p
+{
+    color: #fff;
+    font-size: 17px;
+    margin-bottom: 7px;
+}
+
+.btn-container
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-container a
+{
+    width: 120px;
+    height: 35px;
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1f638e;
+    transition: 0.3s;
+}
+
+.btn-container a:hover
+{
+    background-color: #183459;
+    color: #fff;
+}
