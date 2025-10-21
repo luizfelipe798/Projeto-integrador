@@ -24,6 +24,7 @@
             if($resultado->num_rows > 0)
             {
                 $_SESSION['erro_cadastro'] = "Este e-mail já está em uso. Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
                 $stmt->close();
 
                 if($tipoUsuario === "Funcionario")
@@ -43,11 +44,14 @@
             $stmt = $conexao->prepare("INSERT INTO Usuario(nome, email, tipo, telefone, senha, ativo) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("sssssi", $nome, $email, $tipoUsuario, $telefone, $senhaProtegida, $ativo);
             $stmt->execute();
+            
+            $linhasAfetadas = $stmt->affected_rows;
+            $stmt->close();
 
-            if($stmt->affected_rows != 1)
+            if($linhasAfetadas != 1)
             {
                 $_SESSION['erro_cadastro'] = "Algo deu errado. Tente novamente!";
-                $stmt->close();
+                $_SESSION['dados_formulario'] = $_POST;
 
                 if($tipoUsuario === "Funcionario")
                 {
@@ -62,24 +66,27 @@
             }
             
             $id = $conexao->insert_id;
-            $stmt->close();
 
             if($tipoUsuario === "Funcionario")
             {
-                $dtContratacao = $_POST['dtContratacao'];
+                $dtContratacao = $_POST['dataContratacao'];
                 $turno = $_POST['turno'];
 
                 $stmtFuncionario = $conexao->prepare("INSERT INTO Funcionario(id, dataContratacao, turno) VALUES(?, ?, ?)");
                 $stmtFuncionario->bind_param("iss", $id, $dtContratacao, $turno);
                 $stmtFuncionario->execute();
 
-                if($stmtFuncionario->affected_rows != 1)
+                $linhasAfetadas = $stmtFuncionario->affected_rows;
+                $stmtFuncionario->close();
+
+                if($linhasAfetadas != 1)
                 {
                     $stmtDeleta = $conexao->prepare("DELETE FROM Usuario WHERE id = ?");
                     $stmtDeleta->bind_param("i", $id);
                     $stmtDeleta->execute();
 
                     $_SESSION['erro_cadastro'] = "Algo deu errado. Tente novamente!";
+                    $_SESSION['dados_formulario'] = $_POST;
 
                     $stmtDeleta->close();
 
@@ -96,8 +103,6 @@
                 $_SESSION['turno_funcionario'] = $turno;
                 $_SESSION['logado'] = "Sim";
 
-                $stmtFuncionario->close();
-
                 header("Location: ../paginas/home_usuario.php");
                 exit;
             }
@@ -111,13 +116,17 @@
                 $stmtMedico->bind_param("isss", $id, $crm, $especialidade, $plantonista);
                 $stmtMedico->execute();
 
-                if($stmtMedico->affected_rows != 1)
+                $linhasAfetadas = $stmtMedico->affected_rows;
+                $stmtMedico->close();
+
+                if($linhasAfetadas != 1)
                 {
                     $stmtDeleta = $conexao->prepare("DELETE FROM Usuario WHERE id = ?");
                     $stmtDeleta->bind_param("i", $id);
                     $stmtDeleta->execute();
 
                     $_SESSION['erro_cadastro'] = "Algo deu errado. Tente novamente!";
+                    $_SESSION['dados_formulario'] = $_POST;
 
                     $stmtDeleta->close();
 
@@ -134,8 +143,6 @@
                 $_SESSION['especialidade_medico'] = $especialidade;
                 $_SESSION['plantonista_medico'] = $plantonista;
                 $_SESSION['logado'] = "Sim";
-
-                $stmtMedico->close();
 
                 header("Location: ../paginas/home_usuario.php");
                 exit;
