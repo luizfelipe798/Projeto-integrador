@@ -153,24 +153,25 @@
             $stmt->execute();
 
             $resultado = $stmt->get_result();
+            $stmt->close();
 
             if($resultado->num_rows != 1)
             {
                 $_SESSION['erro_login'] = "E-mail incorreto. Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
 
-                $stmt->close();
                 header("Location: ../paginas/login.php");
                 exit;
             }
 
             $usuario = $resultado->fetch_assoc();
-            $stmt->close();
 
             if(password_verify($senhaDigitada, $usuario['senha']))
             {
                 if($tipoUsuario != $usuario['tipo'])
                 {
                     $_SESSION['erro_login'] = "Tipo de usuário incorreto. Tente novamente!";
+                    $_SESSION['dados_formulario'] = $_POST;
 
                     header("Location: ../paginas/login.php");
                     exit;
@@ -195,6 +196,7 @@
                     if($resultadoFuncionario->num_rows != 1)
                     {
                         $_SESSION['erro_login'] = "Tipo de usuário incorreto. Tente novamente!";
+                        $_SESSION['dados_formulario'] = $_POST;
 
                         $stmtFuncionario->close();
                         header("Location: ../paginas/login.php");
@@ -220,12 +222,13 @@
                     $stmtMedico->execute();
 
                     $resultadoMedico = $stmtMedico->get_result();
+                    $stmtMedico->close();
 
                     if($resultadoMedico->num_rows != 1)
                     {
                         $_SESSION['erro_login'] = "Tipo de usuário incorreto. Tente novamente!";
+                        $_SESSION['dados_formulario'] = $_POST;
 
-                        $stmtMedico->close();
                         header("Location: ../paginas/login.php");
                         exit; 
                     }
@@ -240,8 +243,6 @@
                     $_SESSION['especialidade_medico'] = $medico['especialidade'];
                     $_SESSION['plantonista_medico'] = $medico['plantonista'];
                     $_SESSION['logado'] = true;
-
-                    $stmtMedico->close();
                 }
 
                 $ativo = 1;
@@ -249,23 +250,27 @@
                 $stmt = $conexao->prepare("UPDATE Usuario SET ativo = ? WHERE id = ?");
                 $stmt->bind_param("ii", $ativo, $id);
                 $stmt->execute();
+                
+                $linhasAfetadas = $stmt->affected_rows;
+                $stmt->close();
 
-                if($stmt->affected_rows != 1)
+                if($linhasAfetadas != 1)
                 {
                     $_SESSION['erro_login'] = "Erro ao ativar login. Tente novamente!";
+                    $_SESSION['dados_formulario'] = $_POST;
 
                     $stmt->close();
                     header("Location: ../paginas/login.php");
                     exit;   
                 }
 
-                $stmt->close();
                 header("Location: ../paginas/home_usuario.php");
                 exit;
             }
             else
             {
                 $_SESSION['erro_login'] = "Senha incorreta. Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
 
                 header("Location: ../paginas/login.php");
                 exit;

@@ -7,6 +7,22 @@
         header("Location: home_usuario.php");
         exit;
     }
+
+    $usuario = [];
+
+    $email = '';
+    $senha = '';
+    $tipoUsuario = '';
+
+    if(isset($_SESSION['dados_formulario']))
+    {
+        $usuario = $_SESSION['dados_formulario'];
+        unset($_SESSION['dados_formulario']);
+
+        $email = htmlspecialchars($usuario['email'] ?? '');
+        $senha = htmlspecialchars($usuario['senha'] ?? '');
+        $tipoUsuario = htmlspecialchars($usuario['tipo_user'] ?? '');
+    }
 ?>
 
 <!DOCTYPE html>
@@ -28,17 +44,18 @@
         </div>
         <div class="inputsFormulario">
             <input type="hidden" name="acao" value="login">
-            <input type="email" placeholder="E-mail" required name="email">
 
-            <input type="password" placeholder="Senha" required name="senha">
+            <input type="email" placeholder="E-mail" name="email" value="<?=$email?>" required>
+
+            <input type="password" placeholder="Senha" value="<?=$senha?>" required name="senha">
 
             <div>
                 <label for="tipoUsuario">Tipo de usuário:</label>
             </div>
 
             <select name="tipo_user" id="tipoUsuario">
-                <option value="Funcionario">Funcionário</option>
-                <option value="Medico">Médico</option>
+                <option value="Funcionario" <?= $tipoUsuario == 'Funcionario' ? 'selected' : ''?>>Funcionário</option>
+                <option value="Medico" <?= $tipoUsuario == 'Medico' ? 'selected' : ''?>>Médico</option>
             </select>
         </div>
         <div class="btnFormulario">
