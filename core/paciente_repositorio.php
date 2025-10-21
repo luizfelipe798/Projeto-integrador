@@ -27,6 +27,7 @@
             if($resultado->num_rows > 0)
             {
                 $_SESSION['retorno_paciente'] = "Este e-mail ou este cpf já está em uso. Tente novamente!";
+                $_SESSION['dados_formulario_cadastro'] = $_POST;
                 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
@@ -41,6 +42,7 @@
             if($stmtInsert->affected_rows != 1)
             {
                 $_SESSION['retorno_paciente'] = "Erro ao cadastrar paciente. Tente novamente!";
+                $_SESSION['dados_formulario_cadastro'] = $_POST;
 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
@@ -63,6 +65,7 @@
             if($resultado->num_rows != 1)
             {
                 $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso, porém não foi possível registrar a ação no histórico.";
+                $_SESSION['dados_formulario_cadastro'] = $_POST;
 
                 header("Location: ../paginas/inicio_pacientes.php");
                 exit;
@@ -80,6 +83,7 @@
             if($stmtHistorico->affected_rows != 1)
             {
                 $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso, porém não foi possível registrar a ação no histórico.";
+                $_SESSION['dados_formulario_cadastro'] = $_POST;
 
                 header("Location: ../paginas/inicio_pacientes.php");
                 exit;
@@ -88,6 +92,11 @@
             $_SESSION['retorno_paciente'] = $nome . " cadastrado(a) com sucesso!";
 
             $stmtHistorico->close();
+
+            if(isset($_SESSION['dados_formulario_cadastro']))
+            {
+                unset($_SESSION['dados_formulario_cadastro']);
+            }
 
             header("Location: ../paginas/inicio_pacientes.php");
             exit;
@@ -102,8 +111,6 @@
             $genero = $_POST['genero'];
             $idPaciente = $_POST['idPaciente'];
             $emailFuncionario = $_SESSION['email'];
-            $emailAnterior = $_POST['emailGet'];
-            $cpfAnterior = $_POST['cpfGet'];
 
             $stmtVerifica = $conexao->prepare("SELECT id FROM Paciente
                                                WHERE
@@ -119,7 +126,7 @@
             if($resultado->num_rows > 0)
             {
                 $_SESSION['retorno_paciente'] = "Este e-mail ou este CPF já está em uso. Tente novamente!";
-                $_SESSION['dados_formulario'] = $_POST;
+                $_SESSION['dados_formulario_edicao'] = $_POST;
 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
@@ -137,7 +144,7 @@
             if($resultado->num_rows != 1)
             {
                 $_SESSION['retorno_paciente'] = "Erro na identificação do funcionário na edição de " . $nome . ". Tente novamente!";
-                $_SESSION['dados_formulario'] = $_POST;
+                $_SESSION['dados_formulario_edicao'] = $_POST;
 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
@@ -160,7 +167,7 @@
             if($linhasAfetadas < 0 || $linhasAfetadas > 1)
             {
                 $_SESSION['retorno_paciente'] = "Erro na edição de " . $nome . ". Tente novamente!";
-                $_SESSION['dados_formulario'] = $_POST;
+                $_SESSION['dados_formulario_edicao'] = $_POST;
 
                 header("Location: ../paginas/cadastrar_paciente.php");
                 exit;
@@ -186,10 +193,13 @@
                 $_SESSION['retorno_paciente'] .= "!";
             }
 
-            if(isset($_SESSION['dados_formulario']))
+            if(isset($_SESSION['dados_formulario_edicao']))
             {
-                unset($_SESSION['dados_formulario']);
+                unset($_SESSION['dados_formulario_edicao']);
             }
+
+            unset($_SESSION['email_antigo']);
+            unset($_SESSION['cpf_antigo']);
 
             header("Location: ../paginas/inicio_pacientes.php");
             exit;
@@ -279,6 +289,7 @@
             if($resultado->num_rows <= 0)
             {
                 $_SESSION['retorno_paciente'] = "E-mail ou CPF incorretos. Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
 
                 header("Location: ../paginas/reativar_paciente.php");
                 exit;
@@ -301,6 +312,7 @@
             if($linhasAfetadas != 1)
             {
                 $_SESSION['retorno_paciente'] = "Erro na reativação de paciente excluído. Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
 
                 header("Location: ../paginas/reativar_paciente.php");
                 exit;
@@ -319,6 +331,7 @@
             if($resultado->num_rows != 1)
             {
                 $_SESSION['retorno_paciente'] .= ", porém não foi possível registrar no histórico.";
+                $_SESSION['dados_formulario'] = $_POST;
 
                 header("Location: ../paginas/inicio_pacientes.php");
                 exit;

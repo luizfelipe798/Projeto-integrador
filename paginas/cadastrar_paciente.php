@@ -13,55 +13,55 @@
     $dataNascimento = '';
     $genero = '';
     $cpf = '';
+    $dadosGeral = [];
 
     $titulo = "Cadastrar Paciente";
     $txtBotao = "Cadastrar";
     $acao = "Cadastro";
-    $dadosGeral = [];
 
-    if(isset($_SESSION['dados_formulario']))
+    if(isset($_SESSION['dados_formulario_cadastro']))
     {
+        $dadosGeral = $_SESSION['dados_formulario_cadastro'];
+        unset($_SESSION['dados_formulario_cadastro']);
+    }
+    else if(isset($_SESSION['dados_formulario_edicao']))
+    {
+        $dadosGeral = $_SESSION['dados_formulario_edicao'];
+        unset($_SESSION['dados_formulario_edicao']);
+
         $modoEdicao = true;
-
-        $dadosGeral = $_SESSION['dados_formulario'];
-        unset($_SESSION['dados_formulario']);
-
-        $titulo = "Editar Paciente";
-        $txtBotao = "Editar";
-        $acao = "Edição";
     }
     else if(isset($_GET['id']))
     {
-        $modoEdicao = true;
-
         $dadosGeral = $_GET;
+        $modoEdicao = true;
+    }
 
+    if($modoEdicao == true)
+    {
         $titulo = "Editar Paciente";
         $txtBotao = "Editar";
         $acao = "Edição";
     }
 
-    if(!empty($dadosGeral))
+    $idPaciente = htmlspecialchars($dadosGeral['id'] ?? $idPaciente);
+    $nome = htmlspecialchars($dadosGeral['nome'] ?? '');
+    $email = htmlspecialchars($dadosGeral['email'] ?? '');
+    $telefone = htmlspecialchars($dadosGeral['telefone'] ?? '');
+    $dataNascimento = htmlspecialchars($dadosGeral['dataNascimento'] ?? '');
+
+    if($modoEdicao == true)
     {
-        $idPaciente = htmlspecialchars($dadosGeral['id'] ?? $idPaciente);
-        $nome = htmlspecialchars($dadosGeral['nome'] ?? '');
-        $email = htmlspecialchars($dadosGeral['email'] ?? '');
-        $telefone = htmlspecialchars($dadosGeral['telefone'] ?? '');
-        $dataNascimento = htmlspecialchars($dadosGeral['dataNascimento'] ?? '');
-
-        if($modoEdicao == true)
+        $dataFormatada = DateTime::createFromFormat('d/m/Y', $dataNascimento);
+        
+        if($dataFormatada !== false) 
         {
-            $dataFormatada = DateTime::createFromFormat('d/m/Y', $dataNascimento);
-            
-            if($dataFormatada !== false) 
-            {
-                $dataNascimento = $dataFormatada->format('Y-m-d');
-            }
+            $dataNascimento = $dataFormatada->format('Y-m-d');
         }
-
-        $genero = htmlspecialchars($dadosGeral['genero'] ?? '');
-        $cpf = htmlspecialchars($dadosGeral['cpf'] ?? '');
     }
+
+    $genero = htmlspecialchars($dadosGeral['genero'] ?? '');
+    $cpf = htmlspecialchars($dadosGeral['cpf'] ?? '');
 ?>
 
 <!DOCTYPE html>
@@ -87,12 +87,7 @@
         </div>
         <div class="inputsFormulario">
             <input type="hidden" name="acao" value="<?=$acao?>">
-            
-            <?php if($modoEdicao == true): ?>
-                <input type="hidden" name="emailAntigo" value="<?=$email?>">
-                <input type="hidden" name="cpfAntigo" value="<?=$cpf?>">
-            <?php endif; ?>
-            
+
             <input type="hidden" name="idPaciente" value="<?=$idPaciente?>">
 
             <input type="text" placeholder="Nome..." name="nome" value="<?=$nome?>" required>

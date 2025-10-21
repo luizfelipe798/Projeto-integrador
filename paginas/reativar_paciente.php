@@ -5,13 +5,18 @@
     include_once "../core/verifica_login.php";
     verificar_login();
 
-    if(isset($_SESSION['dados_reativar']))
-    {
-        $dadosGeral = $_SESSION['dados_reativar'];
-    }
+    $dadosGeral = [];
+    $email = '';
+    $cpf = '';
 
-    $email = $dadosGeral['email'] ?? '';
-    $cpf = $dadosGeral['cpf'] ?? '';
+    if(isset($_SESSION['dados_formulario']))
+    {
+        $dadosGeral = $_SESSION['dados_formulario'];
+        unset($_SESSION['dados_formulario']);
+
+        $email = $dadosGeral['email'] ?? '';
+        $cpf = $dadosGeral['cpf'] ?? '';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -38,9 +43,9 @@
         <div class="inputsFormulario">
             <input type="hidden" name="acao" value="Reativação">
 
-            <input type="email" placeholder="E-mail" name="email" required>
+            <input type="email" placeholder="E-mail" name="email" value="<?=$email?>" required>
 
-            <input type="text" placeholder="CPF: XXX.XXX.XXX-XX" name="cpf" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
+            <input type="text" placeholder="CPF: XXX.XXX.XXX-XX" name="cpf" value="<?=$cpf?>" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
         </div>
         <div class="btnFormulario">
             <button type="submit">Reativar</button>

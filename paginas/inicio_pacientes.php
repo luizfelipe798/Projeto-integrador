@@ -136,7 +136,7 @@
 
                                     <?php if($_SESSION['tipo_usuario'] === "Funcionario"): ?>
                                         <td class="acoes-td-tbl">
-                                            <a href="">
+                                            <a href="visualizar_paciente.php?id=<?=urlencode($paciente['id'])?>">
                                                 <img src="../imagens/olho_visualizar.png" alt="Botão de visualizar">
                                             </a>
 
