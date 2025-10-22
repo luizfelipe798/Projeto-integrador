@@ -78,7 +78,7 @@
         <div class="errocadastrologin-container">
             <p><?=$_SESSION['erro_cadastro'];?></p>
         </div>
-    <?php 
+    <?php
         unset($_SESSION['erro_cadastro']);
         endif;
     ?>
