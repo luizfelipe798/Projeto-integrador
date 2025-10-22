@@ -28,7 +28,7 @@ html, body
 .img-container img
 {
     width: 400px;
-    height: 150px;
+    height: 130px;
     transition: 0.1s;
 }
 
@@ -45,7 +45,7 @@ html, body
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
 }
 
 .textos-container
