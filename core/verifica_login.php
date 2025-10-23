@@ -1,5 +1,5 @@
 <?php
-    function verificar_login()
+    function verificar_login() : void
     {
         if(!isset($_SESSION['logado']))
         {

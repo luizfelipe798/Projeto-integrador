@@ -1,18 +1,17 @@
  <?php
-    // Esse aquivo é responsável por realizar operações no banco de dados MySQL
-    // como inserir, atualizar, deletar e buscar registros
-    
-    function insere(string $entidade, array $dados) : bool
+    function insere(string $entidade, array $dados) : int
     {
-        $retorno = false;
-    
+        $retorno = 0;
+        $coringa = [];
+        $tipo = [];
+
         foreach($dados as $campo => $dado)
         {
             $coringa[$campo] = '?';
-            $tipo[] = gettype($dado) [0];
+            $tipo[] = gettype($dado)[0];
             $$campo = $dado;
         }
-    
+
         $instrucao = insert($entidade, $coringa);
         $conexao = conecta();
 
@@ -21,14 +20,14 @@
         eval('mysqli_stmt_bind_param($stmt, \'' . implode('', $tipo) . '\',$' . implode(', $', array_keys($dados)) . ');');
         mysqli_stmt_execute($stmt);
 
-        $retorno = (boolean)mysqli_stmt_affected_rows($stmt);
+        $retorno = mysqli_insert_id($conexao);
 
-        $_SESSION['errors'] = mysqli_stmt_error_list($stmt);
+        $_SESSION['erros'] = mysqli_stmt_error_list($stmt);
 
         mysqli_stmt_close($stmt);
-        
+
         desconecta($conexao);
-        
+
         return $retorno;
     }
 
@@ -84,7 +83,7 @@
 
         $retorno = (boolean) mysqli_stmt_affected_rows($stmt);
 
-        $_SESSION['errors'] = mysqli_stmt_error_list($stmt);
+        $_SESSION['erros'] = mysqli_stmt_error_list($stmt);
 
         mysqli_stmt_close($stmt);
 
@@ -130,12 +129,12 @@
 
         $retorno = (boolean) mysqli_stmt_affected_rows($stmt);
 
-        $_SESSION['errors'] = mysqli_stmt_error_list($stmt);
+        $_SESSION['erros'] = mysqli_stmt_error_list($stmt);
 
         mysqli_stmt_close($stmt);
 
         desconecta($conexao);
-        
+
         return $retorno;
     }
 
@@ -188,7 +187,7 @@
             mysqli_free_result($result);
         }
 
-        $_SESSION['errors'] = mysqli_stmt_error_list($stmt);
+        $_SESSION['erros'] = mysqli_stmt_error_list($stmt);
 
         mysqli_stmt_close($stmt);
 
