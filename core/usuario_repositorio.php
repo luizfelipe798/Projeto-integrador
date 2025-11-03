@@ -2,8 +2,8 @@
     session_start();
 
     require_once 'conexao.php';
-    require_once 'instrucoes_sql.php';
-    require_once 'consultas_sql.php';
+    require_once 'sql.php';
+    require_once 'mysql.php';
 
     foreach($_POST as $indice => $dado)
     {
@@ -17,13 +17,14 @@
 
     switch($acao)
     {
-        case 'Cadastro':
+        case 'Cadastro':        
             $dados_comuns = [
                 'nome' => $nome,
                 'email' => $email,
                 'telefone' => $telefone,
                 'senha' => password_hash($senha, PASSWORD_DEFAULT, ['cost' => 12]),
-                'tipo' => $tipo,
+                'tipoUsuario' => $tipo_user,
+                'ativo' => 0,
             ];
 
             $criterio_usuario = [
@@ -32,34 +33,43 @@
 
             $linhas_usuario = buscar('Usuario', ['email'], $criterio_usuario);
 
-            if($tipo == "Medico")
+            if($tipo_user == "Medico")
             {
                 $criterio_medico = [['crm', '=', $crm]];
             
                 $linhas_medico = buscar('Medico', ['crm'], $criterio_medico);
+
+                if(!empty($linhas_medico))
+                {
+                    $_SESSION['erro_cadastro'] = "Erro ao cadastrar. CRM já cadastrado!";
+                    $_SESSION['dados_formulario'] = $_POST;
+
+                    header("Location: " . $redirecionamento);
+                    exit;
+                }
             }
 
-            if(!empty($linhas_usuario) || !empty($linhas_medico))
+            if(!empty($linhas_usuario))
             {
-                $_SESSION['erro_cadastro'] = "Erro ao cadastrar. Tente novamente!";
+                $_SESSION['erro_cadastro'] = "Erro ao cadastrar, e-mail já cadastrado. Tente novamente!";
                 $_SESSION['dados_formulario'] = $_POST;
 
                 header("Location: " . $redirecionamento);
                 exit;
             }
-
+            print_r($dados_comuns);
             $id_usuario = insere('Usuario', $dados_comuns);
 
             if($id_usuario == 0)
             {
-                $_SESSION['erro_cadastro'] = "Erro ao cadastrar. Tente novamente!";
+                $_SESSION['erro_cadastro'] = "Erro ao cadastrar usuario. Tente novamente!";
                 $_SESSION['dados_formulario'] = $_POST;
 
                 header("Location: " . $redirecionamento);
                 exit;
             }
 
-            if($tipo == "Funcionario")
+            if($tipo_user == "Funcionario")
             {
                 $dados_especificos = [
                     'id' => $id_usuario,
@@ -80,12 +90,13 @@
 
                 $redirecionamento = "../paginas/cadastromedico.php";
             }
-
-            $id_especifico = insere("{$tipo}", $dados_especificos);
+          
+            print_r($dados_especificos);
+            $id_especifico = insere("{$tipo_user}", $dados_especificos);
 
             if($id_especifico == 0)
             {
-                $_SESSION['erro_cadastro'] = "Erro ao cadastrar. Tente novamente!";
+                $_SESSION['erro_cadastro'] = "Erro ao cadastrar funcionário. Tente novamente!";
                 $_SESSION['dados_formulario'] = $_POST;
 
                 header("Location: " . $redirecionamento);
@@ -95,12 +106,12 @@
             {
                 $_SESSION['nome'] = $nome;
                 $_SESSION['email'] = $email;
-                $_SESSION['tipo'] = $tipo;
+                $_SESSION['tipoUsuario'] = $tipo_user;
                 $_SESSION['telefone'] = $telefone;
                 $_SESSION['senha'] = $senha;
                 $_SESSION['logado'] = true;
 
-                if($tipo == "Funcionario")
+                if($tipo_user  == "Funcionario")
                 {
                     $_SESSION['dataContratacao'] = $dataContratacao;
                     $_SESSION['turno'] = $turno;
