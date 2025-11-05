@@ -40,7 +40,7 @@
             <img src="../imagens/consulta.png" alt="Consulta">
             <a href="">Consultas</a>
         </div>
-        <?php if($_SESSION['tipo_usuario'] == "Funcionario"): ?>
+        <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"): ?>
             <div class="opcoes-container">
                 <img src="../imagens/medico.png" alt="Médico">
                 <a href="">Médicos</a>

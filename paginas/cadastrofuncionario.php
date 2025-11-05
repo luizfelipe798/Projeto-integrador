@@ -1,7 +1,6 @@
 <?php
     session_start();
 
-    $funcionario = [];
     $nome = '';
     $email = '';
     $telefone = '';
@@ -74,12 +73,12 @@
         <a href="login.php">logar-se</a>
     </div>
 
-    <?php if(isset($_SESSION['erro_cadastro'])) : ?>
+    <?php if(isset($_SESSION['mensagem_cadastro'])) : ?>
         <div class="errocadastrologin-container">
-            <p><?=$_SESSION['erro_cadastro'];?></p>
+            <p><?=$_SESSION['mensagem_cadastro'];?></p>
         </div>
     <?php
-        unset($_SESSION['erro_cadastro']);
+        unset($_SESSION['mensagem_cadastro']);
         endif;
     ?>
 </body>

@@ -17,56 +17,56 @@
 
     switch($acao)
     {
-        case 'Cadastro':        
+        case 'Cadastro':
             $dados_comuns = [
                 'nome' => $nome,
                 'email' => $email,
                 'telefone' => $telefone,
                 'senha' => password_hash($senha, PASSWORD_DEFAULT, ['cost' => 12]),
                 'tipoUsuario' => $tipo_user,
-                'ativo' => 0,
             ];
 
-            $criterio_usuario = [
-                ['email', '=', $email],
-            ];
+            $criterio_usuario = [['email', '=', $email]];
 
             $linhas_usuario = buscar('Usuario', ['email'], $criterio_usuario);
 
             if($tipo_user == "Medico")
             {
+                $redirecionamento = "../paginas/cadastromedico.php";
+
                 $criterio_medico = [['crm', '=', $crm]];
-            
                 $linhas_medico = buscar('Medico', ['crm'], $criterio_medico);
 
                 if(!empty($linhas_medico))
                 {
-                    $_SESSION['erro_cadastro'] = "Erro ao cadastrar. CRM já cadastrado!";
+                    $_SESSION['mensagem_cadastro'] = "Este CRM já está cadastrado. Tente novamente!";
                     $_SESSION['dados_formulario'] = $_POST;
 
                     header("Location: " . $redirecionamento);
                     exit;
                 }
             }
+            else
+            {
+                $redirecionamento = "../paginas/cadastrofuncionario.php";
+            }
 
             if(!empty($linhas_usuario))
             {
-                $_SESSION['erro_cadastro'] = "Erro ao cadastrar, e-mail já cadastrado. Tente novamente!";
+                $_SESSION['mensagem_cadastro'] = "Este e-mail já está cadastrado. Tente novamente!";
                 $_SESSION['dados_formulario'] = $_POST;
 
                 header("Location: " . $redirecionamento);
                 exit;
             }
-            print_r($dados_comuns);
-            $id_usuario = insere('Usuario', $dados_comuns);
 
-            if($id_usuario == 0)
+            $insercao_usuario = insere('Usuario', $dados_comuns);
+
+            if($insercao_usuario == true)
             {
-                $_SESSION['erro_cadastro'] = "Erro ao cadastrar usuario. Tente novamente!";
-                $_SESSION['dados_formulario'] = $_POST;
-
-                header("Location: " . $redirecionamento);
-                exit;
+                $criterio_usuario = [['email', '=', $email]];
+                $linhas_usuario = buscar('Usuario', ['id'], $criterio_usuario);
+                $id_usuario = $linhas_usuario[0]['id'];
             }
 
             if($tipo_user == "Funcionario")
@@ -76,8 +76,6 @@
                     'dataContratacao' => $dataContratacao,
                     'turno' => $turno,
                 ];
-
-                $redirecionamento = "../paginas/cadastrofuncionario.php";
             }
             else
             {
@@ -87,44 +85,88 @@
                     'especialidade' => $especialidade,
                     'plantonista' => $plantonista,
                 ];
-
-                $redirecionamento = "../paginas/cadastromedico.php";
             }
-          
-            print_r($dados_especificos);
-            $id_especifico = insere("{$tipo_user}", $dados_especificos);
 
-            if($id_especifico == 0)
+            $insercao_especifica = insere("{$tipo_user}", $dados_especificos);
+
+            if($insercao_especifica == true)
             {
-                $_SESSION['erro_cadastro'] = "Erro ao cadastrar funcionário. Tente novamente!";
+                $_SESSION['mensagem_cadastro'] = "Cadastro realizado com sucesso! Faça login para continuar.";
+                header("Location: " . $redirecionamento);
+            }
+        break;
+
+        case 'Login':
+            $criterio_login = [
+                ['email', '=', $email],
+                ['ativo', '=', 1],
+            ];
+
+            $linhas_login = buscar('Usuario', ['id', 'nome', 'email', 'tipoUsuario', 'telefone', 'senha'], $criterio_login);
+
+            if(empty($linhas_login))
+            {
+                $_SESSION['mensagem_login'] = "E-mail inválido ou usuário inativo. Tente novamente!";
                 $_SESSION['dados_formulario'] = $_POST;
 
-                header("Location: " . $redirecionamento);
+                header("Location: ../paginas/login.php");
+                exit;
+            }
+            else if(password_verify($senha, $linhas_login[0]['senha']))
+            {
+                $criterio_tipo = [['id', '=', $linhas_login[0]['id']]];
+
+                if($linhas_login[0]['tipoUsuario'] == "Medico")
+                {
+                    $tabela_tipo = "Medico";
+                    $campos_tipo = ['crm', 'especialidade', 'plantonista'];
+                }
+                else
+                {
+                    $tabela_tipo = "Funcionario";
+                    $campos_tipo = ['dataContratacao', 'turno'];
+                }
+
+                if($linhas_login[0]['tipoUsuario'] != $tipo_user)
+                {
+                    $_SESSION['mensagem_login'] = "Tipo de usuário inválido. Tente novamente!";
+                    $_SESSION['dados_formulario'] = $_POST;
+
+                    header("Location: ../paginas/login.php");
+                    exit;
+                }
+                
+                $linhas_tipo = buscar($tabela_tipo, $campos_tipo, $criterio_tipo);
+
+                $_SESSION['usuario'] = [
+                    'id' => $linhas_login[0]['id'],
+                    'nome' => $linhas_login[0]['nome'],
+                    'email' => $linhas_login[0]['email'],
+                    'tipoUsuario' => $linhas_login[0]['tipo'],
+                    'telefone' => $linhas_login[0]['telefone'],
+                    'senha' => $linhas_login[0]['senha'],
+                    'logado' => true,
+                ];
+
+                $_SESSION['usuario'] = array_merge($_SESSION['usuario'], $linhas_tipo[0]);
+
+                header("Location: ../paginas/home_usuario.php");
                 exit;
             }
             else
             {
-                $_SESSION['nome'] = $nome;
-                $_SESSION['email'] = $email;
-                $_SESSION['tipoUsuario'] = $tipo_user;
-                $_SESSION['telefone'] = $telefone;
-                $_SESSION['senha'] = $senha;
-                $_SESSION['logado'] = true;
-
-                if($tipo_user  == "Funcionario")
-                {
-                    $_SESSION['dataContratacao'] = $dataContratacao;
-                    $_SESSION['turno'] = $turno;
-                }
-                else
-                {
-                    $_SESSION['crm'] = $crm;
-                    $_SESSION['especialidade'] = $especialidade;
-                    $_SESSION['plantonista'] = $plantonista;
-                }
+                $_SESSION['mensagem_login'] = "Senha inválida. Tente novamente!";
+                $_SESSION['dados_formulario'] = $_POST;
+                
+                header("Location: ../paginas/login.php");
+                exit;
             }
+        break;
 
-            header("Location: ../index.php");
+        case 'Logout':
+            session_unset();
+            session_destroy();
+            header("Location: ../paginas/login.php");
             exit;
         break;
     }

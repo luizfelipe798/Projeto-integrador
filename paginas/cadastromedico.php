@@ -1,8 +1,6 @@
 <?php
     session_start();
 
-    $medico = [];
-
     $nome = '';
     $email = '';
     $telefone = '';
@@ -45,7 +43,7 @@
         </div>
         <div class="inputsFormulario">
             <input type="hidden" name="tipo_user" value="Medico">
-            <input type="hidden" name="acao" value="cadastro">
+            <input type="hidden" name="acao" value="Cadastro">
 
             <input type="text" placeholder="Nome" name="nome" value="<?=$nome?>" required>
 
@@ -78,12 +76,12 @@
         <a href="login.php">logar-se</a>
     </div>
 
-    <?php if(isset($_SESSION['erro_cadastro'])) : ?>
+    <?php if(isset($_SESSION['mensagem_cadastro'])) : ?>
         <div class="errocadastrologin-container">
-            <p><?=$_SESSION['erro_cadastro'];?></p>
+            <p><?=$_SESSION['mensagem_cadastro']?></p>
         </div>
     <?php
-        unset($_SESSION['erro_cadastro']);
+        unset($_SESSION['mensagem_cadastro']);
         endif;
     ?>
 </body>

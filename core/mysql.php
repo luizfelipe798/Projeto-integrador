@@ -1,7 +1,7 @@
  <?php
-    function insere(string $entidade, array $dados) : int
+    function insere(string $entidade, array $dados) : bool
     {
-        $retorno = 0;
+        $retorno = false;
         $coringa = [];
         $tipo = [];
 
@@ -21,7 +21,7 @@
         eval('mysqli_stmt_bind_param($stmt, \'' . implode('', $tipo) . '\',$' . implode(', $', array_keys($dados)) . ');');
         mysqli_stmt_execute($stmt);
 
-        $retorno = mysqli_insert_id($conexao);
+        $retorno = true;
 
         echo $retorno . ' retorno<br';
 

@@ -2,13 +2,11 @@
     include_once "../core/tempo_sessao.php";
     session_start();
     
-    if(isset($_SESSION['logado']))
+    if(isset($_SESSION['usuario']['logado']))
     {
         header("Location: home_usuario.php");
         exit;
     }
-
-    $usuario = [];
 
     $email = '';
     $senha = '';
@@ -19,9 +17,9 @@
         $usuario = $_SESSION['dados_formulario'];
         unset($_SESSION['dados_formulario']);
 
-        $email = htmlspecialchars($usuario['email'] ?? '');
-        $senha = htmlspecialchars($usuario['senha'] ?? '');
-        $tipoUsuario = htmlspecialchars($usuario['tipo_user'] ?? '');
+        $email = htmlspecialchars($usuario['email']);
+        $senha = htmlspecialchars($usuario['senha']);
+        $tipoUsuario = htmlspecialchars($usuario['tipo_user']);
     }
 ?>
 
@@ -43,7 +41,7 @@
             <a href="../index.php"><img src="../imagens/logosomentetexto.png" alt="Logotipo Sailus"></a>
         </div>
         <div class="inputsFormulario">
-            <input type="hidden" name="acao" value="login">
+            <input type="hidden" name="acao" value="Login">
 
             <input type="email" placeholder="E-mail" name="email" value="<?=$email?>" required>
 
@@ -67,12 +65,12 @@
         <a href="escolha.html">Cadastrar-se</a>
     </div>
 
-    <?php if(isset($_SESSION['erro_login'])) : ?>
+    <?php if(isset($_SESSION['mensagem_login'])) : ?>
         <div class="errocadastrologin-container">
-            <p><?=$_SESSION['erro_login'];?></p>
+            <p><?=$_SESSION['mensagem_login'];?></p>
         </div>
     <?php
-        unset($_SESSION['erro_login']);
+        unset($_SESSION['mensagem_login']);
         endif;
     ?>
 </body>
