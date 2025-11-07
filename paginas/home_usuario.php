@@ -4,6 +4,8 @@
 
     include_once "../core/verifica_login.php";
     verificar_login();
+
+    include_once "../core/saudacao.php";
 ?>
 
 <!DOCTYPE html>
@@ -24,11 +26,11 @@
     <?php
         $paginaAtual = "HomeUsuario";
         include_once "../includes/menu_home.php";
-        include_once "../core/saudacao.php";
     ?>
 
     <div class="saudacao-container">
-        <h1>Olá <?=saudacao()?> O que você gostaria de fazer agora?</h1>
+        <h1><?=saudacao()?></h1>
+        <?=$_SESSION['usuario']['tipoUsuario']?>
     </div>
 
     <div class="global-containers">

@@ -142,13 +142,23 @@
                     'id' => $linhas_login[0]['id'],
                     'nome' => $linhas_login[0]['nome'],
                     'email' => $linhas_login[0]['email'],
-                    'tipoUsuario' => $linhas_login[0]['tipo'],
+                    'tipoUsuario' => $linhas_login[0]['tipoUsuario'],
                     'telefone' => $linhas_login[0]['telefone'],
                     'senha' => $linhas_login[0]['senha'],
                     'logado' => true,
                 ];
 
-                $_SESSION['usuario'] = array_merge($_SESSION['usuario'], $linhas_tipo[0]);
+                if($linhas_login[0]['tipoUsuario'] == "Medico")
+                {
+                    $_SESSION['usuario']['crm'] = $linhas_tipo[0]['crm'];
+                    $_SESSION['usuario']['especialidade'] = $linhas_tipo[0]['especialidade'];
+                    $_SESSION['usuario']['plantonista'] = $linhas_tipo[0]['plantonista'];
+                }
+                else
+                {
+                    $_SESSION['usuario']['dataContratacao'] = $linhas_tipo[0]['dataContratacao'];
+                    $_SESSION['usuario']['turno'] = $linhas_tipo[0]['turno'];
+                }
 
                 header("Location: ../paginas/home_usuario.php");
                 exit;

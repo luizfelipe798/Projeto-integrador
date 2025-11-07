@@ -30,7 +30,7 @@
         $resultadosBuscarTodos = $stmtBuscarTodos->get_result();
 
         if($resultadosBuscarTodos->num_rows > 0)
-        {       
+        {
             while($resultado = $resultadosBuscarTodos->fetch_assoc())
             {
                 $lista[] = $resultado;

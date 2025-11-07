@@ -1,13 +1,14 @@
 <?php
     function saudacao() : string
     {
-        $saudacao = "";
-        if($_SESSION['usuario']['tipoUsuario'] === "Medico")
+        $saudacao = "Olá";
+
+        if($_SESSION['usuario']['tipoUsuario'] == 'Medico')
         {
-            $saudacao .= "Dr. ";
+            $saudacao .= " Dr.";
         }
 
-        $saudacao .= "{$_SESSION['usuario']['nome']}!";
+        $saudacao .= " " . $_SESSION['usuario']['nome'] . "! O que você gostaria de fazer agora?";
         
         return $saudacao;
     }
