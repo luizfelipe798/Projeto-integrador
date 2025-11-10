@@ -30,7 +30,6 @@
 
     <div class="saudacao-container">
         <h1><?=saudacao()?></h1>
-        <?=$_SESSION['usuario']['tipoUsuario']?>
     </div>
 
     <div class="global-containers">

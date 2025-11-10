@@ -6,39 +6,6 @@
     verificar_login();
 
     include_once "../core/conexao.php";
-    
-    $lista = [];
-    $temBusca = false;
-    $termoBusca = "";
-
-    if(isset($_SESSION['resultados_busca']))
-    {
-        $lista = $_SESSION['resultados_busca'];
-        $temBusca = true;
-        $termoBusca = $_SESSION['termo_busca'];
-
-        unset($_SESSION['resultados_busca']);
-        unset($_SESSION['termo_busca']);
-    }
-    else
-    {
-        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM Paciente
-                                              WHERE excluido = FALSE
-                                              ORDER BY id ASC");
-        $stmtBuscarTodos->execute();
-
-        $resultadosBuscarTodos = $stmtBuscarTodos->get_result();
-
-        if($resultadosBuscarTodos->num_rows > 0)
-        {
-            while($resultado = $resultadosBuscarTodos->fetch_assoc())
-            {
-                $lista[] = $resultado;
-            }
-        }
-
-        $stmtBuscarTodos->close();
-    }
 ?>
 
 <!DOCTYPE html>
@@ -58,50 +25,28 @@
 <body>
     <?php
         $paginaAtual = "notIndex";
-        include_once "../includes/menu_home.php";
+        include "../includes/menu_home.php";
     ?>
 
     <div class="titleList">
         <h1>Gerenciar pacientes</h1>
     </div>
 
-    <?php if(isset($_SESSION['retorno_paciente'])): ?>
-    <div class="rsltd-acoes-container">
-        <p><?=$_SESSION['retorno_paciente']?></p>
-    </div>
-
-    <?php
-        unset($_SESSION['retorno_paciente']);
-        endif;
-    ?>
-
     <div class="global-list-container">
         <div class="list-container">
             <div class="buscar-e-adicionar-container">
-                <form action="../core/buscar.php" method="POST">
-                    <input type="hidden" name="tabela" value="Paciente">
-                    <input type="text" name="busca" placeholder="Busque por pacientes..." required>
-                    <button type="submit">Buscar</button>
-                </form>
+                <?php
+                    include '../includes/busca.php';
+                ?>
 
                 <div class="btn-adicionar-container">
-                    <?php if($_SESSION['tipo_usuario'] === "Funcionario"):?>
+                    <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
                         <a href="reativar_paciente.php">Reativar</a>
                         <a href="cadastrar_paciente.php">Adicionar</a>
                     <?php endif; ?>
                         <a href="historico_pacientes.php">Histórico</a>
                 </div>
             </div>
-
-            <?php if($temBusca): ?>
-                <div class="verResultado-container">
-                    <?php if(count($lista) !== 0): ?>
-                        <p><?=count($lista)?> paciente(s) encontrado(s) na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
-                    <?php else: ?>
-                        <p>Nenhum paciente encontrado na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></strong></p>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
             
             <div class="tbl-pacientes-container">
                 <table>
