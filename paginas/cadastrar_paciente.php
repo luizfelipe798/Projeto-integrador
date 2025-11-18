@@ -1,9 +1,13 @@
 <?php
-    include_once "../core/tempo_sessao.php";
+    require_once "../core/tempo_sessao.php";
     session_start();
 
-    include_once "../core/verifica_login.php";
+    require_once "../core/verifica_login.php";
     verificar_login();
+
+    require_once "../core/conexao.php";
+    require_once "../core/sql.php";
+    require_once "../core/mysql.php";
 
     $modoEdicao = false;
     $idPaciente = '';
@@ -21,12 +25,12 @@
 
     if(isset($_SESSION['dados_formulario_cadastro']))
     {
-        $dadosGeral = $_SESSION['dados_formulario_cadastro'];
+        $dadosPaciente = $_SESSION['dados_formulario_cadastro'];
         unset($_SESSION['dados_formulario_cadastro']);
     }
     else if(isset($_SESSION['dados_formulario_edicao']))
     {
-        $dadosGeral = $_SESSION['dados_formulario_edicao'];
+        $dadosPaciente = $_SESSION['dados_formulario_edicao'];
         unset($_SESSION['dados_formulario_edicao']);
 
         $modoEdicao = true;
@@ -35,6 +39,24 @@
     {
         $dadosGeral = $_GET;
         $modoEdicao = true;
+
+        $condicao_busca_paciente = [
+            ['id', '=', $_GET['id']]
+        ];
+
+        $dadosPaciente = buscar(
+            'Paciente',
+            [
+                'id',
+                'nome',
+                'email',
+                'telefone',
+                'dataNascimento',
+                'cpf',
+                'genero'
+            ],
+            $condicao_busca_paciente
+        );
     }
 
     if($modoEdicao == true)
@@ -45,23 +67,19 @@
     }
 
     $idPaciente = htmlspecialchars($dadosGeral['id'] ?? $idPaciente);
-    $nome = htmlspecialchars($dadosGeral['nome'] ?? '');
-    $email = htmlspecialchars($dadosGeral['email'] ?? '');
-    $telefone = htmlspecialchars($dadosGeral['telefone'] ?? '');
-    $dataNascimento = htmlspecialchars($dadosGeral['dataNascimento'] ?? '');
+    $nome = htmlspecialchars($dadosPaciente[0]['nome'] ?? '');
+    $email = htmlspecialchars($dadosPaciente[0]['email'] ?? '');
+    $telefone = htmlspecialchars($dadosPaciente[0]['telefone'] ?? '');
+    $dataNascimento = htmlspecialchars($dadosPaciente[0]['dataNascimento'] ?? '');
 
     if($modoEdicao == true)
     {
-        $dataFormatada = DateTime::createFromFormat('d/m/Y', $dataNascimento);
-        
-        if($dataFormatada !== false) 
-        {
-            $dataNascimento = $dataFormatada->format('Y-m-d');
-        }
+        $dataNascimento = date_create($dataNascimento);
+        $dataNascimento = date_format($dataNascimento, 'Y-m-d');
     }
 
-    $genero = htmlspecialchars($dadosGeral['genero'] ?? '');
-    $cpf = htmlspecialchars($dadosGeral['cpf'] ?? '');
+    $genero = htmlspecialchars($dadosPaciente[0]['genero'] ?? '');
+    $cpf = htmlspecialchars($dadosPaciente[0]['cpf'] ?? '');
 ?>
 
 <!DOCTYPE html>
@@ -114,12 +132,12 @@
         </div>
     </form>
 
-    <?php if(isset($_SESSION['retorno_paciente'])) : ?>
+    <?php if(isset($_SESSION['mensagem_gerenciamento'])) : ?>
         <div class="errocadastrologin-container">
-            <p><?=$_SESSION['retorno_paciente'];?></p>
+            <p><?=$_SESSION['mensagem_gerenciamento'];?></p>
         </div>
     <?php 
-        unset($_SESSION['retorno_paciente']);
+        unset($_SESSION['mensagem_gerenciamento']);
         endif;
     ?>
 </body>

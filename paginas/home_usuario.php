@@ -1,11 +1,11 @@
 <?php
-    include_once "../core/tempo_sessao.php";
+    require_once "../core/tempo_sessao.php";
     session_start();
 
-    include_once "../core/verifica_login.php";
+    require_once "../core/verifica_login.php";
     verificar_login();
 
-    include_once "../core/saudacao.php";
+    require_once "../core/saudacao.php";
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +25,7 @@
 <body>
     <?php
         $paginaAtual = "HomeUsuario";
-        include_once "../includes/menu_home.php";
+        include "../includes/menu_home.php";
     ?>
 
     <div class="saudacao-container">

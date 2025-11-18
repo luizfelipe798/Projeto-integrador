@@ -23,8 +23,6 @@
 
         $retorno = true;
 
-        echo $retorno . ' retorno<br';
-
         $_SESSION['erros'] = mysqli_stmt_error_list($stmt);
 
         mysqli_stmt_close($stmt);
@@ -166,7 +164,7 @@
             $$nome_campo = $dado;
         }
 
-        $instrucao = select($entidade, $campos, $coringa_criterio, $ordem);
+        $instrucao = select($entidade, $campos, $coringa_criterio, $ordem); 
         $conexao = conecta();
 
         $stmt = mysqli_prepare($conexao, $instrucao);
