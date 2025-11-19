@@ -6,6 +6,8 @@
     verificar_login();
 
     require_once "../core/conexao.php";
+    require_once '../core/sql.php';
+    require_once '../core/mysql.php';
 ?>
 
 <!DOCTYPE html>
@@ -49,11 +51,6 @@
                 ?>
 
                 <?php
-                    require_once '../core/sql.php';
-                    require_once '../core/mysql.php';
-
-                    //$busca = '';
-
                     foreach($_GET as $indice => $dado)
                     {
                         $$indice = htmlspecialchars($dado);

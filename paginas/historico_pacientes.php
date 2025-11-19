@@ -57,10 +57,28 @@
 
                 if(!empty($busca))
                 {
-                    $criterio = [
-                        ['dtAcao', 'LIKE', "%$busca%"],
-                        ['OR', 'tipoAcao', 'LIKE', "%$busca%"],
-                    ];
+                    if(DateTime::createFromFormat('d/m/Y', $busca) !== false) 
+                    {
+                        $data_string_antiga =  $busca;
+                        $timestamp = strtotime(str_replace('/', '-', $data_string_antiga));
+                        $data_brasileira = date("Y-m-d", $timestamp);
+                       
+                        $criterio = [
+                            ['dtAcao', 'LIKE', "%$data_brasileira%"]
+                        ];
+                    }
+                    else if(DateTime::createFromFormat('H:i:s', $busca) !== false) 
+                    {
+                      $criterio = [
+                            ['dtAcao', 'LIKE', "%$busca%"]
+                      ];
+                    }
+                    else
+                    {
+                        $criterio = [
+                            ['tipoAcao', 'LIKE', "%$busca%"],
+                        ];
+                    }
 
                     $temBusca = true;
                 }

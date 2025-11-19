@@ -1,9 +1,13 @@
 <?php
-    include_once "../core/tempo_sessao.php";
+    require_once "../core/tempo_sessao.php";
     session_start();
 
-    include_once "../core/verifica_login.php";
+    require_once "../core/verifica_login.php";
     verificar_login();
+
+    require_once "../core/conexao.php";
+    require_once "../core/sql.php";
+    require_once "../core/mysql.php";
 ?>
 
 <!DOCTYPE html>
@@ -81,14 +85,18 @@
         <?php endif; ?>
     </div>
 
+    <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"): ?>
+        <div class="dados-acoes-container">
+            <div class="titulo-dados-acoes-container">
+                <h1>Ações no sistema</h1>
+            </div>
 
-    <div class="dados-acoes-container">
-        <div class="titulo-dados-acoes-container">
-            <h1>Últimas ações no sistema</h1>
+            <div class="opcoes-acoes-container">
+                <a href="">Pacientes</a>
+                <a href="">Consultas</a>
+            </div>
         </div>
-
-        <div class="acoes-container"></div>
-    </div>
+    <?php endif; ?>
     
     <?php
      include "../includes/rodape.php";
