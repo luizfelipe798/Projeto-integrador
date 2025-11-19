@@ -99,7 +99,7 @@
         case 'Login':
             $criterio_login = [
                 ['email', '=', $email],
-                ['ativo', '=', 1],
+                ['AND', 'ativo', '=', 1]
             ];
 
             $linhas_login = buscar('Usuario', ['id', 'nome', 'email', 'tipoUsuario', 'telefone', 'senha'], $criterio_login);
@@ -114,7 +114,9 @@
             }
             else if(password_verify($senha, $linhas_login[0]['senha']))
             {
-                $criterio_tipo = [['id', '=', $linhas_login[0]['id']]];
+                $criterio_tipo = [
+                    ['id', '=', $linhas_login[0]['id']]
+                ];
 
                 if($linhas_login[0]['tipoUsuario'] == "Medico")
                 {

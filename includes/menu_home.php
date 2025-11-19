@@ -17,6 +17,6 @@
                 <button type="submit" class="btnSair">Sair</button>
             </form>
 
-            <a href=""><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
+            <a href="perfil_usuario.php"><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
         </div>
 </menu>

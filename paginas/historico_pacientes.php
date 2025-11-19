@@ -1,42 +1,13 @@
 <?php
-    include_once "../core/tempo_sessao.php";
+    require_once "../core/tempo_sessao.php";
     session_start();
 
-    include_once "../core/verifica_login.php";
+    require_once "../core/verifica_login.php";
     verificar_login();
 
-    include_once "../core/conexao.php";
-
-    $lista = [];
-    $temBusca = false;
-    $termoBusca = "";
-
-    if(isset($_SESSION['resultados_busca']))
-    {
-        $lista = $_SESSION['resultados_busca'];
-        $temBusca = true;
-        $termoBusca = $_SESSION['termo_busca'];
-
-        unset($_SESSION['resultados_busca']);
-        unset($_SESSION['termo_busca']);
-    }
-    else
-    {
-        $stmtBuscarTodos = $conexao->prepare("SELECT * FROM HistFuncPaciente ORDER BY dtAcao DESC");
-        $stmtBuscarTodos->execute();
-
-        $resultadosBuscarTodos = $stmtBuscarTodos->get_result();
-
-        if($resultadosBuscarTodos->num_rows > 0)
-        {       
-            while($resultado = $resultadosBuscarTodos->fetch_assoc())
-            {
-                $lista[] = $resultado;
-            }
-        }
-
-        $stmtBuscarTodos->close();
-    }
+    require_once "../core/conexao.php";
+    require_once "../core/sql.php";
+    require_once "../core/mysql.php";
 ?>
 
 <!DOCTYPE html>
@@ -66,90 +37,82 @@
     <div class="global-list-container">
         <div class="list-container">
             <div class="buscar-e-adicionar-container">
-                <form action="../core/buscar.php" method="POST">
-                    <input type="hidden" name="tabela" value="HistFuncPaciente">
-                    <input type="text" name="busca" placeholder="Busque pelo histórico..." required>
-                    <button type="submit">Buscar</button>
-                </form>
+                <?php
+                    include_once '../includes/busca.php';
+                ?>
 
                 <div class="btn-adicionar-container">
                     <a href="inicio_pacientes.php">Voltar</a>
                 </div>
             </div>
 
-            <?php if($temBusca): ?>
-                <div class="verResultado-container">
-                    <?php if(count($lista) > 0): ?>
-                        <p><?=count($lista)?> histórico(s) encontrado(s) na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></p>
-                    <?php else: ?>
-                        <p>Nenhum histórico(s) encontrado(s) na busca por <strong><?=htmlspecialchars($termoBusca)?></strong></p>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
+            <?php
+                foreach($_GET as $indice => $dado)
+                {
+                    $$indice = htmlspecialchars($dado);
+                }
+
+                $temBusca = false;
+                $criterio = [];
+
+                if(!empty($busca))
+                {
+                    $criterio = [
+                        ['dtAcao', 'LIKE', "%$busca%"],
+                        ['OR', 'tipoAcao', 'LIKE', "%$busca%"],
+                    ];
+
+                    $temBusca = true;
+                }
+
+                $campos_historico = ['tipoAcao', 'dtAcao', 'idFuncionario', 'idPaciente'];
+
+                $historico = buscar('HistFuncPaciente', $campos_historico, $criterio, 'dtAcao DESC');
+            ?>
             
             <div class="tbl-pacientes-container">
                 <table>
                     <thead>
                         <tr>
                             <td>Data da ação</td>
-                            <td>ID</td>
-                            <td>Tipo de ação</td>
                             <td>Funcionário relacionado</td>
                             <td>Paciente relacionado</td>
+                            <td>Tipo da ação</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(count($lista) > 0): ?>
-                            <?php foreach($lista as $historico):
-                                $dataAcao = date('d/m/Y à\s H:i:s', strtotime($historico['dtAcao']));
+                        <?php if(!empty($historico)): ?>
+                            <?php foreach($historico as $historico): ?>
+                                <?php
+                                    $dtAcao = date_create($historico['dtAcao']);
+                                    $dtAcao = date_format($dtAcao, 'd/m/Y H:i:s');
 
-                                $tipoUsuario = "Funcionario";
-                                $stmtFuncionario = $conexao->prepare("SELECT nome FROM Usuario
-                                                                      WHERE id = ?
-                                                                      AND tipo = ?");
-                                $stmtFuncionario->bind_param("is", $historico['idFuncionario'], $tipoUsuario);
-                                $stmtFuncionario->execute();
-                                
-                                $resultadoFuncionario = $stmtFuncionario->get_result();
-                                $nomeFuncionario = "Não encontrado";
+                                    $criterio_buscar_funcionario = [
+                                        ['id', '=', $historico['idFuncionario']]
+                                    ];
 
-                                if($resultadoFuncionario->num_rows == 1)
-                                {
-                                    $funcionario = $resultadoFuncionario->fetch_assoc();
-                                    $nomeFuncionario = htmlspecialchars($funcionario['nome']);
-                                }
+                                    $criterio_buscar_paciente = [
+                                        ['id', '=', $historico['idPaciente']]
+                                    ];
 
-                                $stmtFuncionario->close();
+                                    $funcionario = buscar('Usuario', ['nome'], $criterio_buscar_funcionario);
+                                    $paciente = buscar('Paciente', ['nome'], $criterio_buscar_paciente);
+                                ?>
 
-                                $stmtPaciente = $conexao->prepare("SELECT nome FROM Paciente
-                                                                      WHERE id = ?");
-                                $stmtPaciente->bind_param("i", $historico['idPaciente']);
-                                $stmtPaciente->execute();
-                                
-                                $resultadoPaciente = $stmtPaciente->get_result();
-                                $nomePaciente = "Não encontrado";
-
-                                if($resultadoPaciente->num_rows == 1)
-                                {
-                                    $paciente = $resultadoPaciente->fetch_assoc();
-                                    $nomePaciente = htmlspecialchars($paciente['nome']);
-                                }
-
-                                $stmtPaciente->close();
-                            ?>
                                 <tr>
-                                    <td><?=htmlspecialchars($dataAcao)?></td>
-                                    <td><?=htmlspecialchars($historico['id'])?></td>
+                                    <td><?=htmlspecialchars($dtAcao)?></td>
+                                    <td><?=htmlspecialchars($funcionario[0]['nome'])?></td>
+                                    <td><?=htmlspecialchars($paciente[0]['nome'])?></td>
                                     <td><?=htmlspecialchars($historico['tipoAcao'])?></td>
-                                    <td><?=$nomeFuncionario?></td>
-                                    <td><?=$nomePaciente?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
                                 <td colspan="8" class="not-resultado-linha">
-                                    <?php if(!$temBusca): ?>
-                                        Nenhum histórico registrado
+                                    <?php if($temBusca == false): ?>
+                                        Nenhum histórico registrado.
+                                    <?php else: ?>
+                                        Nenhum histórico encontrado.
                                     <?php endif; ?>
                                 </td>
                             </tr>

@@ -29,7 +29,7 @@
     ?>
 
     <div class="titleList">
-        <h1>Gerenciar pacientes</h1>
+        <h1>Gerenciamento de pacientes</h1>
     </div>
 
     <?php if(isset($_SESSION['mensagem_gerenciamento'])): ?>
@@ -59,6 +59,8 @@
                         $$indice = htmlspecialchars($dado);
                     }
 
+                    $temBusca = false;
+
                     $criterio = [
                         ['excluido', '=', 0],
                     ];
@@ -66,6 +68,7 @@
                     if(!empty($busca))
                     {
                         $criterio[] = ['AND', 'nome', 'like', "%$busca%"];
+                        $temBusca = true;
                     }
 
                     $pacientes = buscar(
@@ -115,43 +118,55 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($pacientes as $paciente):?>
-                            <?php
-                                $dataNascimento = date_create($paciente['dataNascimento']);
-                                $dataNascimento = date_format($dataNascimento, 'd/m/Y');
-                            ?>
+                        <?php if(!empty($pacientes)): ?>
+                            <?php foreach($pacientes as $paciente): ?>
+                                <?php
+                                    $dataNascimento = date_create($paciente['dataNascimento']);
+                                    $dataNascimento = date_format($dataNascimento, 'd/m/Y');
+                                ?>
 
+                                <tr>
+                                    <td><?=htmlspecialchars($paciente['id'])?></td>
+                                    <td><?=htmlspecialchars($paciente['nome'])?></td>
+                                    <td><?=htmlspecialchars($paciente['email'])?></td>
+                                    <td><?=htmlspecialchars($paciente['telefone'])?></td>
+                                    <td><?=htmlspecialchars($dataNascimento)?></td>
+                                    <td><?=htmlspecialchars($paciente['genero'])?></td>
+                                    <td><?=htmlspecialchars($paciente['cpf'])?></td>
+
+                                    <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
+                                        <td class="acoes-td-tbl">
+                                            <a href="visualizar_paciente.php?id=<?=urlencode($paciente['id'])?>">
+                                                <img src="../imagens/olho_visualizar.png">
+                                            </a>
+
+                                            <a href="cadastrar_paciente.php?id=<?=urlencode($paciente['id'])?>">
+                                                <img src="../imagens/caderno_editar.png">
+                                            </a>
+
+                                            <form action="../core/paciente_repositorio.php" method="POST">
+                                                <input type="hidden" name="acao" value="Exclusão">
+                                                <input type="hidden" name="id" value="<?=$paciente['id']?>">
+
+                                                <button type="submit">
+                                                    <img src="../imagens/lixeira_excluir.png">
+                                                </button>
+                                            </form>
+                                        </td>
+                                    <?php endif; ?>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
                             <tr>
-                                <td><?=$paciente['id']?></td>
-                                <td><?=$paciente['nome']?></td>
-                                <td><?=$paciente['email']?></td>
-                                <td><?=$paciente['telefone']?></td>
-                                <td><?=$dataNascimento?></td>
-                                <td><?=$paciente['genero']?></td>
-                                <td><?=$paciente['cpf']?></td>
-
-                                <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
-                                    <td class="acoes-td-tbl">
-                                        <a href="visualizar_paciente.php?id=<?=urlencode($paciente['id'])?>">
-                                            <img src="../imagens/olho_visualizar.png">
-                                        </a>
-
-                                        <a href="cadastrar_paciente.php?id=<?=urlencode($paciente['id'])?>">
-                                            <img src="../imagens/caderno_editar.png">
-                                        </a>
-
-                                        <form action="../core/paciente_repositorio.php" method="POST">
-                                            <input type="hidden" name="acao" value="Exclusão">
-                                            <input type="hidden" name="id" value="<?=$paciente['id']?>">
-
-                                            <button type="submit">
-                                                <img src="../imagens/lixeira_excluir.png">
-                                            </button>
-                                        </form>
-                                    </td>
-                                <?php endif; ?>
+                                <td colspan="8" class="not-resultado-linha">
+                                    <?php if($temBusca == false): ?>
+                                        Nenhum paciente cadastrado.
+                                    <?php else: ?>
+                                        Nenhum paciente encontrado.
+                                    <?php endif; ?>
+                                </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

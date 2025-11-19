@@ -30,7 +30,7 @@
 
             $condicoes_buscar_paciente = [
                 ['email', '=', $email],
-                ['cpf', '=', $cpf]
+                ['AND', 'cpf', '=', $cpf]
             ];
 
             $verificar_paciente = buscar('Paciente', ['nome'], $condicoes_buscar_paciente);
@@ -104,7 +104,7 @@
             
             $criterio_funcionario = [
                 ['email', '=', $_SESSION['usuario']['email']],
-                ['tipoUsuario', '=', $_SESSION['usuario']['tipoUsuario']]
+                ['AND', 'tipoUsuario', '=', $_SESSION['usuario']['tipoUsuario']]
             ];
 
             $id_funcionario = buscar('Usuario', ['id'], $criterio_funcionario);
@@ -136,20 +136,27 @@
 
             $criterio_funcionario = [
                 ['email', '=', $_SESSION['usuario']['email']],
-                ['tipo', '=', 'Funcionario']
+                ['AND', 'tipoUsuario', '=', $_SESSION['usuario']['tipoUsuario']]
             ];
 
             $id_funcionario = buscar('Usuario', ['id'], $criterio_funcionario);
 
             $dados_historico = [
                 'tipoAcao' => $acao,
-                'idFuncionario' => $id,
-                'idPaciente' => $id_funcionario
+                'idFuncionario' => $id_funcionario[0]['id'],
+                'idPaciente' => $id
             ];
 
             insere('HistFuncPaciente', $dados_historico);
 
-            $_SESSION['mensagem_gerenciamento'] = "Histórico registrado com sucesso!";
+            $criterio_paciente = [
+                ['id', '=', $id],
+                ['AND', 'excluido', '=', 1]
+            ];
+
+            $nome_paciente = buscar('Paciente', ['nome'], $criterio_paciente);
+
+            $_SESSION['mensagem_gerenciamento'] = "{$nome_paciente[0]['nome']} excluído(a) com sucesso!";
 
             header("Location: ../paginas/inicio_pacientes.php");
             exit;
