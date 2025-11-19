@@ -65,7 +65,7 @@
 
                     if(!empty($busca))
                     {
-                        $criterio[] = ['nome', 'like', "%$busca%"];
+                        $criterio[] = ['AND', 'nome', 'like', "%$busca%"];
                     }
 
                     $pacientes = buscar(
@@ -80,7 +80,7 @@
                                 'genero'
                             ],
                             $criterio,
-                            'id ASC'
+                            'id'
                         );
                 ?>
 
@@ -135,7 +135,7 @@
                                         <a href="visualizar_paciente.php?id=<?=urlencode($paciente['id'])?>">
                                             <img src="../imagens/olho_visualizar.png">
                                         </a>
-                                    
+
                                         <a href="cadastrar_paciente.php?id=<?=urlencode($paciente['id'])?>">
                                             <img src="../imagens/caderno_editar.png">
                                         </a>

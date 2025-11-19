@@ -72,8 +72,8 @@
         case "Edição":
             $criterio_buscar_paciente = [
                 ['email', '=', $email],
-                ['cpf', '=', $cpf],
-                ['id', '!=', $idPaciente]
+                ['OR', 'cpf', '=', $cpf],
+                ['AND', 'id', '!=', $idPaciente]
             ];
 
             $verificar_paciente = buscar('Paciente', ['nome'], $criterio_buscar_paciente);

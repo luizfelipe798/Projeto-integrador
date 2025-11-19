@@ -16,7 +16,6 @@
     {
         $instrucao = "UPDATE {$entidade}";
 
-        $set = [];
         foreach($dados as $campo => $dado)
         {
             $set[] = "{$campo} = {$dado}";
@@ -24,20 +23,17 @@
 
         $instrucao .= ' SET ' . implode(', ', $set);
 
-        if(!empty($criterio))
+        if(!empty($instrucao))
         {
             $instrucao .= ' WHERE ';
-            $condicoes = [];
 
             foreach($criterio as $expressao)
             {
-                $condicoes[] = implode(' ', $expressao);
+                $instrucao .= ' ' . implode(' ', $expressao);
             }
 
-            $instrucao .= implode(' AND ', $condicoes);
+            return $instrucao;
         }
-
-        return $instrucao;
     }
 
     function delete(string $entidade, array $criterio = []) : string
@@ -47,14 +43,11 @@
         if(!empty($criterio))
         {
             $instrucao .= ' WHERE ';
-            $condicoes = [];
 
             foreach($criterio as $expressao)
             {
-                $condicoes[] = implode(' ', $expressao);
+                $instrucao .= implode(' ', $expressao);
             }
-
-            $instrucao .= implode(' AND ', $condicoes);
         }
 
         return $instrucao;
@@ -68,14 +61,11 @@
         if(!empty($criterio))
         {
             $instrucao .= ' WHERE ';
-            $condicoes = [];
 
             foreach($criterio as $expressao)
             {
-                $condicoes[] = implode(' ', $expressao);
+                $instrucao .= ' ' . implode(' ', $expressao);
             }
-            
-            $instrucao .= implode(' AND ', $condicoes);
         }
 
         if(!empty($ordem))

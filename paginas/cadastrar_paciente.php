@@ -34,6 +34,18 @@
         unset($_SESSION['dados_formulario_edicao']);
 
         $modoEdicao = true;
+
+        $idPaciente = htmlspecialchars($dadosPaciente['idPaciente']);
+        $nome = htmlspecialchars($dadosPaciente['nome']);
+        $email = htmlspecialchars($dadosPaciente['email']);
+        $telefone = htmlspecialchars($dadosPaciente['telefone']);
+        $dataNascimento = htmlspecialchars($dadosPaciente['dataNascimento']);
+
+        $dataNascimento = date_create($dataNascimento);
+        $dataNascimento = date_format($dataNascimento, 'Y-m-d');
+
+        $genero = htmlspecialchars($dadosPaciente['genero']);
+        $cpf = htmlspecialchars($dadosPaciente['cpf']);
     }
     else if(isset($_GET['id']))
     {
@@ -57,6 +69,18 @@
             ],
             $condicao_busca_paciente
         );
+
+        $idPaciente = htmlspecialchars($dadosGeral['id']);
+        $nome = htmlspecialchars($dadosPaciente[0]['nome']);
+        $email = htmlspecialchars($dadosPaciente[0]['email']);
+        $telefone = htmlspecialchars($dadosPaciente[0]['telefone']);
+        $dataNascimento = htmlspecialchars($dadosPaciente[0]['dataNascimento']);
+
+        $dataNascimento = date_create($dataNascimento);
+        $dataNascimento = date_format($dataNascimento, 'Y-m-d');
+
+        $genero = htmlspecialchars($dadosPaciente[0]['genero']);
+        $cpf = htmlspecialchars($dadosPaciente[0]['cpf']);
     }
 
     if($modoEdicao == true)
@@ -65,21 +89,6 @@
         $txtBotao = "Editar";
         $acao = "Edição";
     }
-
-    $idPaciente = htmlspecialchars($dadosGeral['id'] ?? $idPaciente);
-    $nome = htmlspecialchars($dadosPaciente[0]['nome'] ?? '');
-    $email = htmlspecialchars($dadosPaciente[0]['email'] ?? '');
-    $telefone = htmlspecialchars($dadosPaciente[0]['telefone'] ?? '');
-    $dataNascimento = htmlspecialchars($dadosPaciente[0]['dataNascimento'] ?? '');
-
-    if($modoEdicao == true)
-    {
-        $dataNascimento = date_create($dataNascimento);
-        $dataNascimento = date_format($dataNascimento, 'Y-m-d');
-    }
-
-    $genero = htmlspecialchars($dadosPaciente[0]['genero'] ?? '');
-    $cpf = htmlspecialchars($dadosPaciente[0]['cpf'] ?? '');
 ?>
 
 <!DOCTYPE html>
