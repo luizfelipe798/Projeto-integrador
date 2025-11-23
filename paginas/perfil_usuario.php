@@ -85,18 +85,20 @@
         <?php endif; ?>
     </div>
 
-    <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"): ?>
-        <div class="dados-acoes-container">
-            <div class="titulo-dados-acoes-container">
+    <div class="dados-acoes-container">
+        <div class="titulo-dados-acoes-container">
+            <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"): ?>
                 <h1>Ações no sistema</h1>
-            </div>
-
-            <div class="opcoes-acoes-container">
-                <a href="">Pacientes</a>
-                <a href="">Consultas</a>
-            </div>
+            <?php else: ?>
+                <h1>Consultas agendadas</h1>
+            <?php endif; ?>
         </div>
-    <?php endif; ?>
+
+        <div class="opcoes-acoes-container">
+            <a href="pacientes_funcionario.php">Pacientes</a>
+            <a href="consultas_funcionario.php">Consultas</a>
+        </div>
+    </div>
     
     <?php
      include "../includes/rodape.php";
