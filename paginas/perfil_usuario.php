@@ -20,12 +20,15 @@
 
     <link rel="stylesheet" href="../css/menu.css">
     <link rel="stylesheet" href="../css/rodape.css">
+    <link rel="stylesheet" href="../css/perfil_usuario.css">
 
     <title>Perfil de <?=$_SESSION['usuario']['nome']?> - Sailus</title>
 </head>
 <body>
     <?php
         $paginaAtual = "notIndex";
+        $acesso_perfil = true;
+
         include_once "../includes/menu_home.php";
     ?>
 
@@ -36,53 +39,60 @@
             <div class="nome-container">
                 <h1><?=$_SESSION['usuario']['nome']?></h1>
                 <h4><?=$_SESSION['usuario']['tipoUsuario']?></h4>
-                <a href="#">Alterar dados</a>
+
+                <div class="alterar-container">
+                    <a href="#">Editar dados</a>
+                </div>
             </div>
         </div>
 
         <div class="dados-usuario-container">
-            <div class="label-e-input-dados-container">
-                <label for="">E-mail</label>
-                <input type="email" value="<?=$_SESSION['usuario']['email']?>" disabled>
+            <div class="titulo-dados-usuario">
+                <h1>Dados do usuário</h1>
             </div>
 
             <div class="label-e-input-dados-container">
-                <label for="">Telefone</label>
-                <input type="text" value="<?=$_SESSION['usuario']['telefone']?>" disabled>
+                <label for="email">E-mail</label>
+                <input type="email" name="email" value="<?=$_SESSION['usuario']['email']?>" disabled>
             </div>
 
             <div class="label-e-input-dados-container">
-                <label for="">Senha</label>
-                <input type="password" value="<?=$_SESSION['usuario']['senha']?>" disabled>
+                <label for="telefone">Telefone</label>
+                <input type="text" name="telefone" value="<?=$_SESSION['usuario']['telefone']?>" disabled>
             </div>
+
+            <div class="label-e-input-dados-container">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" value="<?=$_SESSION['usuario']['senha']?>" disabled>
+            </div>
+
+            <?php if($_SESSION['usuario']['tipoUsuario'] == "Medico"): ?>
+                <div class="label-e-input-dados-container">
+                    <label for="crm">CRM</label>
+                    <input type="text" name="crm" value="<?=$_SESSION['usuario']['crm']?>" disabled>
+                </div>
+
+                <div class="label-e-input-dados-container">
+                    <label for="especialidade">Especialidade</label>
+                    <input type="text" name="especialidade" value="<?=$_SESSION['usuario']['especialidade']?>" disabled>
+                </div>
+
+                <div class="label-e-input-dados-container">
+                    <label for="plantonista">Plantonista</label>
+                    <input type="text" name="plantonista" value="<?=$_SESSION['usuario']['plantonista'] ? 'Sim' : 'Não'?>" disabled>
+                </div>
+            <?php else: ?>
+                <div class="label-e-input-dados-container">
+                    <label for="dtContratacao">Data de contratação</label>
+                    <input type="date" name="dtContratacao" value="<?=$_SESSION['usuario']['dataContratacao']?>" disabled>
+                </div>
+
+                <div class="label-e-input-dados-container">
+                    <label for="turno">Turno</label>
+                    <input type="text" name="turno" value="<?=$_SESSION['usuario']['turno']?>" disabled>
+                </div>
+            <?php endif; ?>
         </div>
-
-        <?php if($_SESSION['usuario']['tipoUsuario'] == "Medico"): ?>
-            <div class="label-e-input-dados-container">
-                <label for="">CRM</label>
-                <input type="text" value="<?=$_SESSION['usuario']['crm']?>" disabled>
-            </div>
-
-            <div class="label-e-input-dados-container">
-                <label for="">Especialidade</label>
-                <input type="text" value="<?=$_SESSION['usuario']['especialidade']?>" disabled>
-            </div>
-
-            <div class="label-e-input-dados-container">
-                <label for="">Plantonista</label>
-                <input type="text" value="<?=$_SESSION['usuario']['plantonista'] ? 'Sim' : 'Não'?>" disabled>
-            </div>
-        <?php else: ?>
-            <div class="label-e-input-dados-container">
-                <label for="">Data de contratação</label>
-                <input type="date" value="<?=$_SESSION['usuario']['dataContratacao']?>" disabled>
-            </div>
-
-            <div class="label-e-input-dados-container">
-                <label for="">Turno</label>
-                <input type="text" value="<?=$_SESSION['usuario']['turno']?>" disabled>
-            </div>
-        <?php endif; ?>
     </div>
 
     <div class="dados-acoes-container">
@@ -95,13 +105,15 @@
         </div>
 
         <div class="opcoes-acoes-container">
-            <a href="pacientes_funcionario.php">Pacientes</a>
-            <a href="consultas_funcionario.php">Consultas</a>
+            <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario" || $_SESSION['usuario']['tipoUsuario'] == "Adm"): ?>
+                <a href="pacientes_funcionario.php">Pacientes</a>
+            <?php endif; ?>
+                <a href="consultas.php">Acessar</a>
         </div>
     </div>
     
     <?php
-     include "../includes/rodape.php";
+        include "../includes/rodape.php";
     ?>
 </body>
 </html>

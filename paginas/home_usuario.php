@@ -25,6 +25,8 @@
 <body>
     <?php
         $paginaAtual = "HomeUsuario";
+        $acesso_perfil = false;
+        
         include "../includes/menu_home.php";
     ?>
 

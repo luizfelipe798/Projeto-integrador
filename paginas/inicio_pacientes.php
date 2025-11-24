@@ -27,6 +27,8 @@
 <body>
     <?php
         $paginaAtual = "notIndex";
+        $acesso_perfil = false;
+
         include "../includes/menu_home.php";
     ?>
 

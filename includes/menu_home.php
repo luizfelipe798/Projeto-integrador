@@ -17,6 +17,10 @@
                 <button type="submit" class="btnSair">Sair</button>
             </form>
 
-            <a href="perfil_usuario.php"><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
+            <?php if($acesso_perfil == false): ?>
+                <a href="perfil_usuario.php"><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
+            <?php else: ?>
+                <a href="home_usuario.php"><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
+            <?php endif; ?>
         </div>
 </menu>
