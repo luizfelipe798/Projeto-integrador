@@ -67,6 +67,18 @@
     height: 25px;
 }
 
+.btn-cancelar-edicao
+{
+    background-color: #e71f1f;
+    border: 1px solid #e71f1f;
+}
+
+.btn-cancelar-edicao:hover
+{
+    background-color: #fff;
+    color: #e71f1f;
+}
+
 .dados-usuario-container
 {
     width: 50%;
@@ -107,7 +119,7 @@
     color: #fff;
 }
 
-.label-e-input-dados-container input
+.label-e-input-dados-container input, .label-e-input-dados-container select
 {
     width: 99.5%;
     border-radius: 4px;
@@ -123,6 +135,41 @@
 .label-e-input-dados-container input:hover
 {
     box-shadow: 0 0 8px #000;
+}
+
+.form-btn-container
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-btn-container button
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    width: 130px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background-color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f638e;
+    border-radius: 3px;
+    transition: 0.2s;
+}
+
+.form-btn-container button:hover
+{
+    background-color: #183458;
+    color: #fff;
 }
 
 .dados-acoes-container
@@ -162,15 +209,13 @@
     height: 30px;
 }
 
-.opcoes-acoes-container a, .alterar-container a
+.opcoes-acoes-container a, .alterar-container a, .btn-habilitar-edicao
 {
     width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #183458;
     text-decoration: none;
-    background-color: #183458;
     font-size: 15px;
     font-weight: bold;
     color: #fff;
@@ -178,7 +223,13 @@
     transition: 0.2s;
 }
 
-.opcoes-acoes-container a:hover, .alterar-container a:hover
+.opcoes-acoes-container a, .btn-habilitar-edicao
+{
+    background-color: #183458;
+    border: 1px solid #183458;
+}
+
+.opcoes-acoes-container a:hover, .btn-habilitar-edicao:hover
 {
     background-color: #fff;
     color: #183458;

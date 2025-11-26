@@ -8,14 +8,6 @@
     require_once "../core/conexao.php";
     require_once "../core/sql.php";
     require_once "../core/mysql.php";
-
-    function verificarEdicao() : void
-    {
-        if(!isset($_GET['editar']))
-        {
-            echo "disabled";
-        }
-    }
 ?>
 
 <!DOCTYPE html>
@@ -49,11 +41,7 @@
                 <h4><?=$_SESSION['usuario']['tipoUsuario']?></h4>
 
                 <div class="alterar-container">
-                    <?php if(isset($_GET['editar'])): ?>
-                        <a class="btn-cancelar-edicao" href="perfil_usuario.php">Cancelar</a>
-                    <?php else: ?>
-                        <a class="btn-habilitar-edicao" href="perfil_usuario.php?editar">Editar dados</a>
-                    <?php endif; ?>
+                    <a href="perfil_usuario.php">Cancelar</a>
                 </div>
             </div>
         </div>
@@ -62,78 +50,55 @@
             <input type="hidden" name="tipoUsuario" value="<?=$_SESSION['usuario']['tipoUsuario']?>">
             <input type="hidden" name="acao" value="Edição">
 
-            <input type="hidden" name="emailBefore" value="<?=$_SESSION['usuario']['email']?>">
-
             <div class="titulo-dados-usuario">
                 <h1>Dados do usuário</h1>
             </div>
 
             <div class="label-e-input-dados-container">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" value="<?=$_SESSION['usuario']['email']?>" <?php verificarEdicao(); ?>>
+                <input type="email" name="email" value="<?=$_SESSION['usuario']['email']?>" disabled>
             </div>
 
             <div class="label-e-input-dados-container">
                 <label for="telefone">Telefone</label>
-                <input type="text" name="telefone" value="<?=$_SESSION['usuario']['telefone']?>" <?php verificarEdicao(); ?>>
+                <input type="text" name="telefone" value="<?=$_SESSION['usuario']['telefone']?>" disabled>
             </div>
 
             <div class="label-e-input-dados-container">
                 <label for="senha">Senha</label>
-                <input type="password" name="senha" value="<?=$_SESSION['usuario']['senha']?>" <?php verificarEdicao(); ?>>
+                <input type="password" name="senha" value="<?=$_SESSION['usuario']['senha']?>" disabled>
             </div>
 
             <?php if($_SESSION['usuario']['tipoUsuario'] == "Medico"): ?>
-                <input type="hidden" name="crmBefore" value="<?=$_SESSION['usuario']['crm']?>">
-                
                 <div class="label-e-input-dados-container">
                     <label for="crm">CRM</label>
-                    <input type="text" name="crm" value="<?=$_SESSION['usuario']['crm']?>" <?php verificarEdicao(); ?>>
+                    <input type="text" name="crm" value="<?=$_SESSION['usuario']['crm']?>" disabled>
                 </div>
 
                 <div class="label-e-input-dados-container">
                     <label for="especialidade">Especialidade</label>
-                    <input type="text" name="especialidade" value="<?=$_SESSION['usuario']['especialidade']?>" <?php verificarEdicao(); ?>>
+                    <input type="text" name="especialidade" value="<?=$_SESSION['usuario']['especialidade']?>" disabled>
                 </div>
 
                 <div class="label-e-input-dados-container">
                     <label for="plantonista">Plantonista</label>
-
-                    <?php if(isset($_GET['editar'])): ?>
-                        <select name="plantonista" id="plantonista">
-                            <option value="Sim" <?= $_SESSION['usuario']['plantonista'] == 'Sim' ? 'selected' : '' ?>>Sim</option>
-                            <option value="Não" <?= $_SESSION['usuario']['plantonista'] == 'Não' ? 'selected' : '' ?>>Não</option>
-                        </select>
-                    <?php else: ?>
-                        <input type="text" name="plantonista" value="<?=$_SESSION['usuario']['plantonista']?>" disabled>
-                    <?php endif; ?>
+                    <input type="text" name="plantonista" value="<?=$_SESSION['usuario']['plantonista'] ? 'Sim' : 'Não'?>" disabled>
                 </div>
             <?php else: ?>
                 <div class="label-e-input-dados-container">
-                    <label for="dataContratacao">Data de contratação</label>
-                    <input type="date" name="dataContratacao" value="<?=$_SESSION['usuario']['dataContratacao']?>" <?php verificarEdicao(); ?>>
+                    <label for="dtContratacao">Data de contratação</label>
+                    <input type="date" name="dtContratacao" value="<?=$_SESSION['usuario']['dataContratacao']?>" disabled>
                 </div>
 
                 <div class="label-e-input-dados-container">
                     <label for="turno">Turno</label>
-                    
-                    <?php if(isset($_GET['editar'])): ?>
-                        <select name="turno" id="turno">
-                            <option value="Manhã" <?= $_SESSION['usuario']['turno'] == 'Manhã' ? 'selected' : '' ?>>Manhã</option>
-                            <option value="Tarde" <?= $_SESSION['usuario']['turno'] == 'Tarde' ? 'selected' : '' ?>>Tarde</option>
-                            <option value="Noite" <?= $_SESSION['usuario']['turno'] == 'Noite' ? 'selected' : '' ?>>Noite</option>
-                        </select>
-                    <?php else: ?>
-                        <input type="text" name="turno" id="turno" value="<?=$_SESSION['usuario']['turno']?>" disabled>
-                    <?php endif; ?>
+                    <input type="text" name="turno" value="<?=$_SESSION['usuario']['turno']?>" disabled>
                 </div>
             <?php endif; ?>
 
-            <?php if(isset($_GET['editar'])): ?>
-                <div class="form-btn-container">
-                    <button type="submit">Editar</button>
-                </div>
-            <?php endif; ?>
+            <div class="form-btn-container">
+                <button type="submit">Alterar</button>
+            </div>
         </form>
     </div>
 

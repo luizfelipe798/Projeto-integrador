@@ -146,8 +146,9 @@
                     'email' => $linhas_login[0]['email'],
                     'tipoUsuario' => $linhas_login[0]['tipoUsuario'],
                     'telefone' => $linhas_login[0]['telefone'],
-                    'senha' => $linhas_login[0]['senha'],
+                    'senha' => $senha,
                     'logado' => true,
+                    'adm' => true,
                 ];
 
                 if($linhas_login[0]['tipoUsuario'] == "Medico")
@@ -180,6 +181,64 @@
             session_destroy();
             header("Location: ../paginas/login.php");
             exit;
+        break;
+
+        case 'Edição':
+            $criterio_editar_usuario = [
+                ['id', '=', $_SESSION['usuario']['id']],
+                ['tipoUsuario', '=', $_SESSION['usuario']['tipoUsuario']]
+            ];
+
+            $criterio_editar_especifico = ['id', '=', $_SESSION['usuario']['id']];
+
+            $criterio_buscar_dados_semelhantes = [
+                ['email', '=', $email],
+                ['AND', 'email', '!=', $emailBefore]
+            ];
+
+            if($tipoUsuario == 'Medico')
+            {
+                $criterio_buscar_dados_semelhantes[] = [
+                    ['AND', 'crm', '=', $crm]
+                ];
+            }
+
+            $usuarioSemelhante = buscar('Usuario', $criterio_buscar_dados_semelhantes, )
+
+            $campos_usuario = [
+                'nome' => $nome,
+                'email' => $email,
+                'tipoUsuario' => $tipoUsuario,
+                'telefone' => $telefone,
+                'senha' => $senha
+            ];
+
+            if($tipoUsuario == 'Funcionario')
+            {
+                $campos_especifico = [
+                    'dataContratacao' => $dataContratacao,
+                    'turno' => $turno
+                ];
+            }
+            else
+            {
+                $campos_especifico = [
+                    'crm' => $crm,
+                    'especialidade' => $especialidade,
+                    'plantonista' => $plantonista,
+                ];
+            }
+
+            if(atualiza('Usuario', $campos_usuario, $criterio_editar_usuario) &&
+               atualiza($tipoUsuario, $campos_especifico, $criterio_editar_especifico) == true
+              )
+            {
+                $_SESSION['mensagem_perfil'] = "Dados editados com sucesso!";
+            }
+            else
+            {
+                $_SESSION['mensagem_perfil'] = "Erro na edição de dados. Tente novamente!";
+            }
         break;
     }
 ?>
