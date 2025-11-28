@@ -184,34 +184,54 @@
         break;
 
         case 'Edição':
-            $criterio_editar_usuario = [
-                ['id', '=', $_SESSION['usuario']['id']],
-                ['tipoUsuario', '=', $_SESSION['usuario']['tipoUsuario']]
+            $criterio_buscar_semelhante = [
+                ['id', '!=', $id],
+                ['AND', 'email', '=', $email]
             ];
 
-            $criterio_editar_especifico = ['id', '=', $_SESSION['usuario']['id']];
-
-            $criterio_buscar_dados_semelhantes = [
-                ['email', '=', $email],
-                ['AND', 'email', '!=', $emailBefore]
+            $criterio_editar = [
+                ['id', '=', $id]
             ];
 
             if($tipoUsuario == 'Medico')
             {
-                $criterio_buscar_dados_semelhantes[] = [
+                $criterio_buscar_medico_semelhante = [
+                    ['id', '!=', $id],
                     ['AND', 'crm', '=', $crm]
-                ];
+                ]; 
+
+                $usuarioSemelhante = buscar('Medico', ['id'], $criterio_buscar_medico_semelhante);
+
+                if(!empty($usuarioSemelhante))
+                {
+                    $_SESSION['mensagem_perfil'] = "Estes dados já pertencem a outro usuário. Tente novamente!";
+
+                    header("Location: ../paginas/perfil_usuario.php");
+                    exit;
+                }
             }
 
-            $usuarioSemelhante = buscar('Usuario', $criterio_buscar_dados_semelhantes, )
+            $usuarioSemelhante = buscar('Usuario', ['nome'], $criterio_buscar_semelhante);
+
+            if(!empty($usuarioSemelhante))
+            {
+                $_SESSION['mensagem_perfil'] = "Este e-mail já pertence a " . $usuarioSemelhante[0]['nome'] . ". Tente novamente!";
+
+                header("Location: ../paginas/perfil_usuario.php");
+                exit;
+            }
 
             $campos_usuario = [
                 'nome' => $nome,
                 'email' => $email,
-                'tipoUsuario' => $tipoUsuario,
                 'telefone' => $telefone,
-                'senha' => $senha
             ];
+
+            if(!empty($senha) && $senha != $_SESSION['usuario']['senha'])
+            {
+                $campos_usuario['senha'] = password_hash($senha, PASSWORD_DEFAULT, ['cost' => 12]);
+                $_SESSION['usuario']['senha'] = $senha;
+            }
 
             if($tipoUsuario == 'Funcionario')
             {
@@ -229,16 +249,30 @@
                 ];
             }
 
-            if(atualiza('Usuario', $campos_usuario, $criterio_editar_usuario) &&
-               atualiza($tipoUsuario, $campos_especifico, $criterio_editar_especifico) == true
-              )
+            $atualizaUsuario = atualiza('Usuario', $campos_usuario, $criterio_editar);
+            $atualizaEspecifico = atualiza("{$tipoUsuario}", $campos_especifico, $criterio_editar);
+
+            $_SESSION['usuario']['nome'] = $nome;
+            $_SESSION['usuario']['email'] = $email;
+            $_SESSION['usuario']['telefone'] = $telefone;
+            $_SESSION['usuario']['senha'] = $senha;
+
+            if($tipoUsuario == 'Funcionario')
             {
-                $_SESSION['mensagem_perfil'] = "Dados editados com sucesso!";
+                $_SESSION['usuario']['dataContratacao'] = $dataContratacao;
+                $_SESSION['usuario']['turno'] = $turno;
             }
             else
             {
-                $_SESSION['mensagem_perfil'] = "Erro na edição de dados. Tente novamente!";
+                $_SESSION['usuario']['crm'] = $crm;
+                $_SESSION['usuario']['especialidade'] = $especialidade;
+                $_SESSION['usuario']['plantonista'] = $plantonista;
             }
+
+            $_SESSION['mensagem_perfil'] = "Dados editados com sucesso!";
+
+            header("Location: ../paginas/perfil_usuario.php?");
+            exit;
         break;
     }
 ?>

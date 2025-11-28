@@ -79,6 +79,22 @@
     color: #e71f1f;
 }
 
+.rsltd-acoes-container
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.rsltd-acoes-container p
+{
+    font-size: 25px;
+    font-weight: bold;
+    color: #183458;
+}
+
 .dados-usuario-container
 {
     width: 50%;

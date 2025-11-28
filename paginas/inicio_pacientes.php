@@ -105,15 +105,7 @@
                             <td>Data de Nascimento</td>
                             <td>Gênero</td>
                             <td>CPF</td>
-
-                            <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
-                                <td>Ações</td>
-                            <?php endif; ?>
-
-                            <?php
-                                require_once '../core/sql.php';
-                                require_once '../core/mysql.php';
-                            ?>
+                            <td>Ações</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,12 +125,12 @@
                                     <td><?=htmlspecialchars($paciente['genero'])?></td>
                                     <td><?=htmlspecialchars($paciente['cpf'])?></td>
 
-                                    <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
-                                        <td class="acoes-td-tbl">
-                                            <a href="visualizar_paciente.php?id=<?=urlencode($paciente['id'])?>">
-                                                <img src="../imagens/olho_visualizar.png">
-                                            </a>
+                                    <td class="acoes-td-tbl">
+                                        <a href="perfil_paciente.php?id=<?=urlencode($paciente['id'])?>">
+                                            <img src="../imagens/olho_visualizar.png">
+                                        </a>
 
+                                        <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"): ?>
                                             <a href="cadastrar_paciente.php?id=<?=urlencode($paciente['id'])?>">
                                                 <img src="../imagens/caderno_editar.png">
                                             </a>

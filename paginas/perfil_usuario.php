@@ -11,10 +11,7 @@
 
     function verificarEdicao() : void
     {
-        if(!isset($_GET['editar']))
-        {
-            echo "disabled";
-        }
+        if(!isset($_GET['editar'])) echo "disabled";
     }
 ?>
 
@@ -58,14 +55,28 @@
             </div>
         </div>
 
+        <?php if(isset($_SESSION['mensagem_perfil'])): ?>
+            <div class="rsltd-acoes-container">
+                <p><?=$_SESSION['mensagem_perfil']?></p>
+            </div>
+        <?php
+            unset($_SESSION['mensagem_perfil']);
+            endif;
+        ?>
+
         <form class="dados-usuario-container" action="../core/usuario_repositorio.php" method="POST">
             <input type="hidden" name="tipoUsuario" value="<?=$_SESSION['usuario']['tipoUsuario']?>">
             <input type="hidden" name="acao" value="Edição">
-
+            <input type="hidden" name="id" value="<?=$_SESSION['usuario']['id']?>">
             <input type="hidden" name="emailBefore" value="<?=$_SESSION['usuario']['email']?>">
 
             <div class="titulo-dados-usuario">
                 <h1>Dados do usuário</h1>
+            </div>
+
+            <div class="label-e-input-dados-container">
+                <label for="nome">Nome</label>
+                <input type="text" name="nome" value="<?=$_SESSION['usuario']['nome']?>" <?php verificarEdicao(); ?>>
             </div>
 
             <div class="label-e-input-dados-container">
@@ -75,7 +86,7 @@
 
             <div class="label-e-input-dados-container">
                 <label for="telefone">Telefone</label>
-                <input type="text" name="telefone" value="<?=$_SESSION['usuario']['telefone']?>" <?php verificarEdicao(); ?>>
+                <input type="text" name="telefone" value="<?=$_SESSION['usuario']['telefone']?>" <?php verificarEdicao(); ?> pattern="\([0-9]{2}\)\s[0-9]{4,5}-[0-9]{4}">
             </div>
 
             <div class="label-e-input-dados-container">
@@ -88,7 +99,7 @@
                 
                 <div class="label-e-input-dados-container">
                     <label for="crm">CRM</label>
-                    <input type="text" name="crm" value="<?=$_SESSION['usuario']['crm']?>" <?php verificarEdicao(); ?>>
+                    <input type="text" name="crm" value="<?=$_SESSION['usuario']['crm']?>" <?php verificarEdicao(); ?> pattern="^\d{4,6}\/[A-Z]{2}$">
                 </div>
 
                 <div class="label-e-input-dados-container">
