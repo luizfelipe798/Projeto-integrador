@@ -1,5 +1,4 @@
 <?php
-    require_once "../core/tempo_sessao.php";
     session_start();
 
     require_once "../core/verifica_login.php";

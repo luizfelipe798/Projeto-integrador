@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="../css/rodape.css">
     <link rel="stylesheet" href="../css/gerenciamento_geral.css">
 
-    <title>Pacientes - Sailus</title>
+    <title>Funcionários - Sailus</title>
 </head>
 <body>
     <?php
@@ -32,7 +32,7 @@
     ?>
 
     <div class="titleList">
-        <h1>Gerenciamento de pacientes</h1>
+        <h1><?=$_SESSION['usuario']['adm'] == true ? "Gerenciamento" : "Visualização" ?> de funcionários</h1>
     </div>
 
     <?php if(isset($_SESSION['mensagem_gerenciamento'])): ?>
@@ -60,7 +60,7 @@
                     $temBusca = false;
 
                     $criterio = [
-                        ['excluido', '=', 0],
+                        ['tipoUsuario', '=', 'Funcionario'],
                     ];
 
                     if(!empty($busca))
@@ -69,16 +69,15 @@
                         $temBusca = true;
                     }
 
-                    $pacientes = buscar(
-                            'Paciente',
+                    $funcionarios = buscar(
+                            'Usuario',
                             [
                                 'id',
                                 'nome',
                                 'email',
                                 'telefone',
-                                'dataNascimento',
-                                'cpf',
-                                'genero'
+                                'adm',
+                                'ativo'
                             ],
                             $criterio,
                             'nome ASC'
@@ -86,10 +85,6 @@
                 ?>
 
                 <div class="btn-adicionar-container">
-                    <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
-                        <a href="cadastrar_paciente.php">Adicionar</a>
-                    <?php endif; ?>
-                        <a href="historico_pacientes.php">Histórico</a>
                         <a href="home_usuario.php">Voltar</a>
                 </div>
             </div>
@@ -98,50 +93,42 @@
                 <table>
                     <thead>
                         <tr>
-                            <td>ID</td>
                             <td>Nome</td>
                             <td>E-mail</td>
                             <td>Telefone</td>
-                            <td>Data de Nascimento</td>
-                            <td>Gênero</td>
-                            <td>CPF</td>
-                            <td>Ações</td>
+                        
+                            <?php if($_SESSION['usuario']['adm'] == true): ?>
+                                <td>Administrador</td>
+                                <td>Status</td>
+                                <td>Ações</td>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(!empty($pacientes)): ?>
-                            <?php foreach($pacientes as $paciente): ?>
-                                <?php
-                                    $dataNascimento = date_create($paciente['dataNascimento']);
-                                    $dataNascimento = date_format($dataNascimento, 'd/m/Y');
-                                ?>
-
+                        <?php if(!empty($funcionarios)): ?>
+                            <?php foreach($funcionarios as $funcionario): ?>
                                 <tr>
-                                    <td><?=htmlspecialchars($paciente['id'])?></td>
-                                    <td><?=htmlspecialchars($paciente['nome'])?></td>
-                                    <td><?=htmlspecialchars($paciente['email'])?></td>
-                                    <td><?=htmlspecialchars($paciente['telefone'])?></td>
-                                    <td><?=htmlspecialchars($dataNascimento)?></td>
-                                    <td><?=htmlspecialchars($paciente['genero'])?></td>
-                                    <td><?=htmlspecialchars($paciente['cpf'])?></td>
+                                    <td><?=htmlspecialchars($funcionario['nome'])?></td>
+                                    <td><?=htmlspecialchars($funcionario['email'])?></td>
+                                    <td><?=htmlspecialchars($funcionario['telefone'])?></td>
 
-                                    <td class="acoes-td-tbl">
-                                        <a href="perfil_paciente.php?id=<?=urlencode($paciente['id'])?>">
-                                            <img src="../imagens/olho_visualizar.png">
-                                        </a>
+                                    <?php if($_SESSION['usuario']['adm'] == true): ?>
+                                        <td><?=$funcionario['adm'] == 1 ? 'Sim' : 'Não' ?></td>
+                                        <td><?=$funcionario['ativo'] == 1 ? 'Ativado' : 'Desativado' ?></td>
+                                        <td class="acoes-td-tbl">
+                                            <form class="form-btns-texto" action="../core/adm_repositorio.php" class="acoes-adm-form">
+                                                <input type="hidden" name="id" value="<?=$funcionario['id']?>">
+                                                <input type="hidden" name="acao" value="<?=$funcionario['adm'] == 1 ? 'Rebaixamento' : 'Promoção' ?>">
+                                                <input type="hidden" name="nome" value="<?=$funcionario['nome']?>">
 
-                                        <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"): ?>
-                                            <a href="cadastrar_paciente.php?id=<?=urlencode($paciente['id'])?>">
-                                                <img src="../imagens/caderno_editar.png">
-                                            </a>
+                                                <button class="btns-texto" type="submit"><?=$funcionario['adm'] == 1 ? 'Rebaixar' : 'Promover' ?></button>
+                                            </form>
 
-                                            <form action="../core/paciente_repositorio.php" method="POST">
-                                                <input type="hidden" name="acao" value="Exclusão">
-                                                <input type="hidden" name="id" value="<?=$paciente['id']?>">
-
-                                                <button type="submit">
-                                                    <img src="../imagens/lixeira_excluir.png">
-                                                </button>
+                                            <form class="form-btns-texto" action="../core/adm_repositorio.php" class="acoes-adm-form">
+                                                <input type="hidden" name="id" value="<?=$funcionario['id']?>">
+                                                <input type="hidden" name="acao" value="<?=$funcionario['ativo'] == 1 ? 'Desativação' : 'Ativação' ?>">
+                                                
+                                                <button class="btns-texto" type="submit"><?=$funcionario['ativo'] == 1 ? 'Desativar' : 'Ativar' ?></button>
                                             </form>
                                         </td>
                                     <?php endif; ?>
@@ -149,11 +136,11 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="8" class="not-resultado-linha">
+                                <td colspan="6" class="not-resultado-linha">
                                     <?php if($temBusca == false): ?>
-                                        Nenhum paciente cadastrado.
+                                        Nenhum funcionário cadastrado.
                                     <?php else: ?>
-                                        Nenhum paciente encontrado.
+                                        Nenhum funcionário encontrado.
                                     <?php endif; ?>
                                 </td>
                             </tr>

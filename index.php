@@ -14,7 +14,6 @@
 <body>
     <!--Menu Principal-->
     <?php
-        include_once "core/tempo_sessao.php";
         include_once "includes/menu_inicial.php";
     ?>
 

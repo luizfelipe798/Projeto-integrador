@@ -1,5 +1,4 @@
 <?php
-    require_once "../core/tempo_sessao.php";
     session_start();
 
     require_once "../core/verifica_login.php";
@@ -37,7 +36,7 @@
     <div class="global-containers">
         <div class="opcoes-container">
                 <img src="../imagens/medico.png" alt="Funcionários">
-                <a href="">Funcionários</a>
+                <a href="inicio_funcionarios.php">Funcionários</a>
         </div>
         <div class="opcoes-container">
                 <img src="../imagens/medico.png" alt="Médico">

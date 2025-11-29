@@ -1,5 +1,4 @@
 <?php
-    require_once "tempo_sessao.php";
     session_start();
 
     require_once "conexao.php";
