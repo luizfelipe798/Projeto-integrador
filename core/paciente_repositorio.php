@@ -48,16 +48,11 @@
 
             $id_paciente = buscar('Paciente', ['id'], $condicoes_buscar_paciente);
             
-            $condicoes_buscar_id_funcionario = [
-                ['email', '=', $_SESSION['usuario']['email']],
-                ['tipoUsuario', '=', $_SESSION['usuario']['tipoUsuario']]
-            ];
-            
-            $id_funcionario = buscar('Usuario', ['id'], $condicoes_buscar_id_funcionario);
+            $id_funcionario = $_SESSION['usuario']['id'];
 
             $dados_historico = [
                 'tipoAcao' => $acao,
-                'idFuncionario' => $id_funcionario[0]['id'],
+                'idFuncionario' => $id_funcionario,
                 'idPaciente' => $id_paciente[0]['id']
             ];
 
@@ -70,15 +65,20 @@
         break;
 
         case "Edição":
-            $criterio_buscar_paciente = [
-                ['email', '=', $email],
-                ['OR', 'cpf', '=', $cpf],
-                ['AND', 'id', '!=', $idPaciente]
+            $criterio1_buscar_paciente = [
+                ['id', '!=', $idPaciente],
+                ['AND', 'email', '=', $email],
             ];
 
-            $verificar_paciente = buscar('Paciente', ['nome'], $criterio_buscar_paciente);
+            $criterio2_buscar_paciente = [
+                ['id', '!=', $idPaciente],
+                ['AND', 'cpf', '=', $cpf],
+            ];
 
-            if(!empty($verificar_paciente))
+            $verificar1_paciente = buscar('Paciente', ['nome'], $criterio1_buscar_paciente);
+            $verificar2_paciente = buscar('Paciente', ['nome'], $criterio2_buscar_paciente);
+
+            if(!empty($verificar1_paciente) || !empty($verificar2_paciente))
             {
                 $_SESSION['mensagem_gerenciamento'] = "Este paciente já está cadastrado. Tente novamente!";
                 $_SESSION['dados_formulario_edicao'] = $_POST;

@@ -36,6 +36,14 @@
 
     <div class="global-containers">
         <div class="opcoes-container">
+                <img src="../imagens/medico.png" alt="Funcionários">
+                <a href="">Funcionários</a>
+        </div>
+        <div class="opcoes-container">
+                <img src="../imagens/medico.png" alt="Médico">
+                <a href="">Médicos</a>
+        </div>
+        <div class="opcoes-container">
             <img src="../imagens/paciente.png" alt="Paciente">
             <a href="inicio_pacientes.php">Pacientes</a>
         </div>
@@ -43,17 +51,10 @@
             <img src="../imagens/consulta.png" alt="Consulta">
             <a href="inicio_consultas.php">Consultas</a>
         </div>
-        <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"): ?>
-            <div class="opcoes-container">
-                <img src="../imagens/medico.png" alt="Médico">
-                <a href="">Médicos</a>
-            </div>
-        <?php else: ?>
-            <div class="opcoes-container">
-                <img src="../imagens/medico.png" alt="Médico">
-                <a href="">Funcionários</a>
-            </div>
-        <?php endif; ?>
+        <div class="opcoes-container">
+                <img src="../imagens/medico.png" alt="Funcionários">
+                <a href="">Atestados</a>
+        </div>
     </div>
 
     <?php

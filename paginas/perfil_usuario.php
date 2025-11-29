@@ -43,7 +43,7 @@
 
             <div class="nome-container">
                 <h1><?=$_SESSION['usuario']['nome']?></h1>
-                <h4><?=$_SESSION['usuario']['tipoUsuario']?></h4>
+                <h4><?=$_SESSION['usuario']['tipoUsuario'] == "Funcionario" ? "Funcionário" : "Médico" ?></h4>
 
                 <div class="alterar-container">
                     <?php if(isset($_GET['editar'])): ?>

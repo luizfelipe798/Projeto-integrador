@@ -82,7 +82,7 @@
                                 'genero'
                             ],
                             $criterio,
-                            'id'
+                            'nome ASC'
                         );
                 ?>
 

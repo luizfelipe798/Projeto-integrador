@@ -56,19 +56,19 @@
             </div>
             <div class="imagensDesenvolvedoresBody">
                 <div class="desenvolvedor">
-                    <a href="https://www.instagram.com/vinni3xx/"><img src="imagens/desenvolvedores/vinicius.jpg" alt="Desenvolvedor 2"></a>
+                    <a href="https://www.instagram.com/vinni3xx/" target="_blank"><img src="imagens/desenvolvedores/vinicius.jpg" alt="Desenvolvedor 2"></a>
                     <p>Vinicius de Sousa Molina</p>
                 </div>
                 <div class="desenvolvedor">
-                    <a href="https://www.instagram.com/luizfeliipe_14/"><img src="imagens/desenvolvedores/luizfelipe.jpg" alt="Desenvolvedor 2"></a>
+                    <a href="https://www.instagram.com/luizfeliipe_14/" target="_blank"><img src="imagens/desenvolvedores/luizfelipe.jpg" alt="Desenvolvedor 2"></a>
                     <p>Luiz Felipe Vignoto Silva</p>
                 </div>
                 <div class="desenvolvedor">
-                    <a href="https://www.instagram.com/_mari._silvap/"><img src="imagens/desenvolvedores/mariana.jpg" alt="Desenvolvedor 2"></a>
+                    <a href="https://www.instagram.com/_mari._silvap/" target="_blank"><img src="imagens/desenvolvedores/mariana.jpg" alt="Desenvolvedor 2"></a>
                     <p>Mariana da Silva Peres</p>
                 </div>
                 <div class="desenvolvedor">
-                    <a href="https://www.instagram.com/murilo_s.am/"><img src="imagens/desenvolvedores/murilo.jpg" alt="Desenvolvedor 2"></a>
+                    <a href="https://www.instagram.com/murilo_s.am/" target="_blank"><img src="imagens/desenvolvedores/murilo.jpg" alt="Desenvolvedor 2"></a>
                     <p>Murilo Silva Amâncio</p>
                 </div>
             </div>

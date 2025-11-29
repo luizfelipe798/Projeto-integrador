@@ -1,3 +1,29 @@
+<?php
+    $urlDirecionamento = "perfil_usuario.php";
+    $urlPerfilBase = "http://localhost/Projeto-integrador/paginas/perfil_usuario.php";
+
+    if($acesso_perfil == true)
+    {
+        if(isset($_SERVER['HTTP_REFERER'])) 
+        {
+            $referer = $_SERVER['HTTP_REFERER'];
+            
+            if(strpos($referer, $urlPerfilBase) === 0)
+            {
+                $urlDirecionamento = "home_usuario.php";
+            }
+            else
+            {
+                $urlDirecionamento = $referer;
+            }
+        }
+        else
+        {
+            $urlDirecionamento = "home_usuario.php";
+        }
+    }
+?>
+
 <menu class="menuPrincipal">
         <div class="logotipoLinks">
             <?php if($paginaAtual == "HomeUsuario"):?>
@@ -17,10 +43,6 @@
                 <button type="submit" class="btnSair">Sair</button>
             </form>
 
-            <?php if($acesso_perfil == false): ?>
-                <a href="perfil_usuario.php"><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
-            <?php else: ?>
-                <a href="home_usuario.php"><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
-            <?php endif; ?>
+            <a href="<?=$urlDirecionamento?>"><img src="../imagens/perfil_usuario.png" alt="Perfil do usuário"></a>
         </div>
 </menu>
