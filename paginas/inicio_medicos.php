@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="../css/rodape.css">
     <link rel="stylesheet" href="../css/gerenciamento_geral.css">
 
-    <title>Funcionários - Sailus</title>
+    <title>Médicos - Sailus</title>
 </head>
 <body>
     <?php
@@ -32,7 +32,7 @@
     ?>
 
     <div class="titleList">
-        <h1><?=$_SESSION['usuario']['adm'] == true ? "Gerenciamento" : "Visualização" ?> de funcionários</h1>
+        <h1><?=$_SESSION['usuario']['adm'] == true ? "Gerenciamento" : "Visualização" ?> de médicos</h1>
     </div>
 
     <?php if(isset($_SESSION['mensagem_gerenciamento'])): ?>
@@ -59,12 +59,8 @@
 
                     $temBusca = false;
 
-                    $criterio_turno = [
-                        ['id', '!=', $_SESSION['usuario']['id']],
-                    ];
-
                     $criterio = [
-                        ['tipoUsuario', '=', 'Funcionario'],
+                        ['tipoUsuario', '=', 'Medico'],
                         ['AND', 'id', '!=', $_SESSION['usuario']['id']],
                     ];
 
@@ -74,7 +70,7 @@
                         $temBusca = true;
                     }
 
-                    $funcionarios = buscar(
+                    $medicos = buscar(
                             'Usuario',
                             [
                                 'id',
@@ -88,7 +84,11 @@
                             'nome ASC'
                         );
 
-                    $turno = buscar('Funcionario', ['turno'], $criterio_turno);
+                        $criterio_medico = [
+                            ['id', '!=', $_SESSION['usuario']['id']]
+                        ];
+
+                    $especifico_medico = buscar('Medico', ['especialidade', 'plantonista'], $criterio_medico);
                 ?>
 
                 <div class="btn-adicionar-container">
@@ -103,7 +103,8 @@
                             <td>Nome</td>
                             <td>E-mail</td>
                             <td>Telefone</td>
-                            <td>Turno</td>
+                            <td>Especialidade</td>
+                            <td>Plantonista</td>
                         
                             <?php if($_SESSION['usuario']['adm'] == true): ?>
                                 <td>Administrador</td>
@@ -113,34 +114,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(!empty($funcionarios)): ?>
-                            <?php foreach($funcionarios as $funcionario): ?>
+                        <?php if(!empty($medicos)): ?>
+                            <?php foreach($medicos as $medico): ?>
                                 <tr>
-                                    <td><?=htmlspecialchars($funcionario['nome'])?></td>
-                                    <td><?=htmlspecialchars($funcionario['email'])?></td>
-                                    <td><?=htmlspecialchars($funcionario['telefone'])?></td>
-                                    <td><?=htmlspecialchars($turno[array_search($funcionario, $funcionarios)]['turno'])?></td>
+                                    <td><?=htmlspecialchars($medico['nome'])?></td>
+                                    <td><?=htmlspecialchars($medico['email'])?></td>
+                                    <td><?=htmlspecialchars($medico['telefone'])?></td>
+                                    <td><?=htmlspecialchars($especifico_medico[array_search($medico, $medicos)]['especialidade'])?></td>
+                                    <td><?=htmlspecialchars($especifico_medico[array_search($medico, $medicos)]['plantonista'])?></td>
 
                                     <?php if($_SESSION['usuario']['adm'] == true): ?>
-                                        <td><?=$funcionario['adm'] == 1 ? 'Sim' : 'Não' ?></td>
-                                        <td><?=$funcionario['ativo'] == 1 ? 'Ativado' : 'Desativado' ?></td>
+                                        <td><?=$medico['adm'] == 1 ? 'Sim' : 'Não' ?></td>
+                                        <td><?=$medico['ativo'] == 1 ? 'Ativado' : 'Desativado' ?></td>
                                         <td class="acoes-td-tbl">
                                             <form class="form-btns-texto" action="../core/adm_repositorio.php" class="acoes-adm-form">
-                                                <input type="hidden" name="id" value="<?=$funcionario['id']?>">
-                                                <input type="hidden" name="acao" value="<?=$funcionario['adm'] == 1 ? 'Rebaixamento' : 'Promoção' ?>">
-                                                <input type="hidden" name="nome" value="<?=$funcionario['nome']?>">
-                                                <input type="hidden" name="tipoUser" value="Funcionario">
+                                                <input type="hidden" name="id" value="<?=$medico['id']?>">
+                                                <input type="hidden" name="acao" value="<?=$medico['adm'] == 1 ? 'Rebaixamento' : 'Promoção' ?>">
+                                                <input type="hidden" name="nome" value="<?=$medico['nome']?>">
+                                                <input type="hidden" name="tipoUser" value="Medico">
 
-                                                <button class="btns-texto" type="submit"><?=$funcionario['adm'] == 1 ? 'Rebaixar' : 'Promover' ?></button>
+                                                <button class="btns-texto" type="submit"><?=$medico['adm'] == 1 ? 'Rebaixar' : 'Promover' ?></button>
                                             </form>
 
                                             <form class="form-btns-texto" action="../core/adm_repositorio.php" class="acoes-adm-form">
-                                                <input type="hidden" name="id" value="<?=$funcionario['id']?>">
-                                                <input type="hidden" name="acao" value="<?=$funcionario['ativo'] == 1 ? 'Desativação' : 'Ativação' ?>">
-                                                <input type="hidden" name="nome" value="<?=$funcionario['nome']?>">
-                                                <input type="hidden" name="tipoUser" value="Funcionario">
+                                                <input type="hidden" name="id" value="<?=$medico['id']?>">
+                                                <input type="hidden" name="acao" value="<?=$medico['ativo'] == 1 ? 'Desativação' : 'Ativação' ?>">
+                                                <input type="hidden" name="nome" value="<?=$medico['nome']?>">
+                                                <input type="hidden" name="tipoUser" value="Medico">
                                                 
-                                                <button class="btns-texto" type="submit"><?=$funcionario['ativo'] == 1 ? 'Desativar' : 'Ativar' ?></button>
+                                                <button class="btns-texto" type="submit"><?=$medico['ativo'] == 1 ? 'Desativar' : 'Ativar' ?></button>
                                             </form>
                                         </td>
                                     <?php endif; ?>
@@ -150,9 +152,9 @@
                             <tr>
                                 <td colspan="6" class="not-resultado-linha">
                                     <?php if($temBusca == false): ?>
-                                        Nenhum funcionário cadastrado.
+                                        Nenhum médico cadastrado.
                                     <?php else: ?>
-                                        Nenhum funcionário encontrado.
+                                        Nenhum médico encontrado.
                                     <?php endif; ?>
                                 </td>
                             </tr>

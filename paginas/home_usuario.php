@@ -40,7 +40,7 @@
         </div>
         <div class="opcoes-container">
                 <img src="../imagens/medico.png" alt="Médico">
-                <a href="">Médicos</a>
+                <a href="inicio_medicos.php">Médicos</a>
         </div>
         <div class="opcoes-container">
             <img src="../imagens/paciente.png" alt="Paciente">

@@ -102,7 +102,7 @@
                 ['AND', 'ativo', '=', 1]
             ];
 
-            $linhas_login = buscar('Usuario', ['id', 'nome', 'email', 'tipoUsuario', 'telefone', 'senha'], $criterio_login);
+            $linhas_login = buscar('Usuario', ['id', 'nome', 'email', 'tipoUsuario', 'telefone', 'senha', 'adm'], $criterio_login);
 
             if(empty($linhas_login))
             {
@@ -148,7 +148,7 @@
                     'telefone' => $linhas_login[0]['telefone'],
                     'senha' => $senha,
                     'logado' => true,
-                    'adm' => true,
+                    'adm' => $linhas_login[0]['adm'],
                 ];
 
                 if($linhas_login[0]['tipoUsuario'] == "Medico")

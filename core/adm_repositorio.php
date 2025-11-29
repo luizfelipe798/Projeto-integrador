@@ -15,67 +15,59 @@
         $$indice = htmlspecialchars($dado);
     }
 
+    $criterio = [['id', '=', $id]];
+
     switch($acao)
     {
         case "Desativação":
-            $dados_funcionario = [
+            $dados = [
                 'ativo' => 0
             ];
 
-            $criterio_desativar = [['id', '=', $id]];
+            atualiza('Usuario', $dados, $criterio);
 
-            atualiza('Usuario', $dados_funcionario, $criterio_desativar);
-
-            $_SESSION['mensagem_gerenciamento'] = $nome . " desativado(a) com sucesso!";
-            
-            header("Location: ../paginas/inicio_funcionarios.php");
-            exit;
+            $_SESSION['mensagem_gerenciamento'] = "$nome desativado(a) com sucesso!";
         break;
 
         case "Ativação":
-            $dados_funcionario = [
+            $dados = [
                 'ativo' => 1
             ];
 
-            $criterio_ativar = [['id', '=', $id]];
+            atualiza('Usuario', $dados, $criterio);
 
-            atualiza('Usuario', $dados_funcionario, $criterio_ativar);
-
-            $_SESSION['mensagem_gerenciamento'] = $nome . " ativado(a) com sucesso!";
-            
-            header("Location: ../paginas/inicio_funcionarios.php");
-            exit;
+            $_SESSION['mensagem_gerenciamento'] = "$nome ativado(a) com sucesso!";
         break;
 
         case "Promoção":
-            $dados_funcionario = [
+            $dados = [
                 'adm' => 1
             ];
 
-            $criterio_promover = [['id', '=', $id]];
+            atualiza('Usuario', $dados, $criterio);
 
-            atualiza('Usuario', $dados_funcionario, $criterio_promover);
-
-            $_SESSION['mensagem_gerenciamento'] = $nome . " promovido(a) com sucesso!";
-            
-            header("Location: ../paginas/inicio_funcionarios.php");
-            exit;
+            $_SESSION['mensagem_gerenciamento'] = "$nome promovido(a) com sucesso!";
         break;
 
         case "Rebaixamento":
-            $dados_funcionario = [
+            $dados = [
                 'adm' => 0
             ];
 
-            $criterio_rebaixar = [['id', '=', $id]];
+            atualiza('Usuario', $dados, $criterio);
 
-            atualiza('Usuario', $dados_funcionario, $criterio_rebaixar);
-
-            $_SESSION['mensagem_gerenciamento'] = $nome . " rebaixado(a) com sucesso!";
-            
-            header("Location: ../paginas/inicio_funcionarios.php");
-            exit;
+            $_SESSION['mensagem_gerenciamento'] = "$nome rebaixado(a) com sucesso!";
         break;
     }
 
+    if($tipoUser == "Medico")
+    {
+        header("Location: ../paginas/inicio_medicos.php");
+        exit;
+    }
+    else
+    {
+        header("Location: ../paginas/inicio_funcionarios.php");
+        exit;
+    }
 ?>
