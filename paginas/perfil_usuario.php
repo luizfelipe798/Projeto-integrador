@@ -160,7 +160,7 @@
             <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario" || $_SESSION['usuario']['tipoUsuario'] == "Adm"): ?>
                 <a href="acoes_funcionario_pacientes.php">Pacientes</a>
             <?php endif; ?>
-                <a href="consultas.php">Acessar</a>
+                <a href="acoes_consultas.php">Consultas</a>
         </div>
     </div>
     
