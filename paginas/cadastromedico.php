@@ -55,7 +55,24 @@
 
             <input type="text" placeholder="CRM: XXXXXX/UF" name="crm" value="<?=$crm?>" pattern="^\d{4,6}\/[A-Z]{2}$" required>
 
-            <input type="text" placeholder="Especialidade" name="especialidade" value="<?=$especialidade?>" required>
+            <div>
+                <label for="plantonista">Especialidade:</label>
+            </div>
+
+            <select name="especialidade" id="especialidade">
+                <option value="Clínica Médica" <?= $especialidade == 'Clínica Médica' ? 'selected' : '' ?>>Clínica Médica</option>
+                <option value="Pediatria" <?= $especialidade == 'Pediatria' ? 'selected' : '' ?>>Pediatria</option>
+                <option value="Ginecologia" <?= $especialidade == 'Ginecologia' ? 'selected' : '' ?>>Ginecologia</option>
+                <option value="Dermatologia" <?= $especialidade == 'Dermatologia' ? 'selected' : '' ?>>Dermatologia</option>
+                <option value="Ortopedia" <?= $especialidade == 'Ortopedia' ? 'selected' : '' ?>>Ortopedia</option>
+                <option value="Otorrinolaringologia" <?= $especialidade == 'Otorrinolaringologia' ? 'selected' : '' ?>>Otorrinolaringologia</option>
+                <option value="Neurologia" <?= $especialidade == 'Neurologia' ? 'selected' : '' ?>>Neurologia</option>
+                <option value="Endocrinologia" <?= $especialidade == 'Endocrinologia' ? 'selected' : '' ?>>Endocrinologia</option>
+                <option value="Gastroenterologia" <?= $especialidade == 'Gastroenterologia' ? 'selected' : '' ?>>Gastroenterologia</option>
+                <option value="Urologia" <?= $especialidade == 'Urologia' ? 'selected' : '' ?>>Urologia</option>
+                <option value="Infectologia" <?= $especialidade == 'Infectologia' ? 'selected' : '' ?>>Infectologia</option>
+                <option value="Reumatologia" <?= $especialidade == 'Reumatologia' ? 'selected' : '' ?>>Reumatologia</option>
+            </select>
 
             <div>
                 <label for="plantonista">Plantonista?</label>
