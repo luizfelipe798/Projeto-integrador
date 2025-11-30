@@ -35,6 +35,15 @@
         <h1><?=$_SESSION['usuario']['tipoUsuario'] == 'Funcionario' ? 'Suas ações com consultas' : 'Suas consultas agendadas' ?></h1>
     </div>
 
+    <?php if(isset($_SESSION['mensagem_gerenciamento'])): ?>
+        <div class="rsltd-acoes-container">
+            <p><?=$_SESSION['mensagem_gerenciamento']?></p>
+        </div>
+    <?php
+        unset($_SESSION['mensagem_gerenciamento']);
+        endif;
+    ?>
+
     <div class="global-list-container">
         <div class="list-container">
             <div class="buscar-e-adicionar-container">
@@ -44,9 +53,9 @@
 
                 <div class="btn-adicionar-container">
                     <?php if($_SESSION['usuario']['tipoUsuario'] == 'Medico'): ?>
-                        <a href="acoes_consultas_adicionar.php">Concluídas</a>
+                        <a href="consultas_concluidas.php">Concluídas</a>
                     <?php endif; ?>
-                    <a href="inicio_pacientes.php">Voltar</a>
+                    <a href="perfil_usuario.php">Voltar</a>
                 </div>
             </div>
 
@@ -83,7 +92,7 @@
                         }
                         else
                         {
-                            $criterio[] = ['AND', 'tipo', 'LIKE', "%$busca%"];
+                            $criterio[] = ['AND', 'especialidade', 'LIKE', "%$busca%"];
                         }
                     }
 
@@ -146,7 +155,7 @@
                                     if($_SESSION['usuario']['tipoUsuario'] == 'Medico')
                                     {
                                         $horario = date_create($dado['horario']);
-                                        $horario = date_format($horario, 'd/m/Y às H:i:s');
+                                        $horario = date_format($horario, 'd/m/Y H:i:s');
 
                                         $criterio_buscar_paciente = [
                                             ['id', '=', $dado['idPaciente']]
@@ -157,7 +166,7 @@
                                     else
                                     {
                                         $dtAcao = date_create($dado['dtAcao']);
-                                        $dtAcao = date_format($dtAcao, 'd/m/Y às H:i:s');
+                                        $dtAcao = date_format($dtAcao, 'd/m/Y H:i:s');
 
                                         $criterio_buscar_consulta = [
                                             ['id', '=', $dado['idConsulta']]
@@ -175,14 +184,17 @@
 
                                 <tr>
                                     <td><?=htmlspecialchars($horario ?? $dtAcao)?></td>
-                                    <td><?=htmlspecialchars($dado['valor'] ?? $consulta[0]['valor'])?></td>
+                                    <td><?=htmlspecialchars($paciente[0]['nome'])?></td>
+                                    <td>R$ <?=number_format(htmlspecialchars($dado['valor'] ?? $consulta[0]['valor']), 2, ',', '.')?></td>
                                     <td><?=htmlspecialchars($dado['especialidade'] ?? $consulta[0]['especialidade'])?></td>
 
                                     <?php if($_SESSION['usuario']['tipoUsuario'] == 'Medico'): ?>
-                                        <td>
-                                            <form action="consulta_repositorio.php" method="POST">
+                                        <td class="acoes-td-tbl">
+                                            <form action="../core/consultas_repositorio.php" method="POST" class="form-btns-texto">
                                                 <input type="hidden" name="id" value="<?=htmlspecialchars($dado['id'])?>">
-                                                <button type="submit" name="acao" value="concluir">Concluir</button>
+                                                <input type="hidden" name="acao" value="Concluir">
+
+                                                <button type="submit" class="btns-texto">Concluir</button>
                                             </form>
                                         </td>
                                     <?php else: ?>
