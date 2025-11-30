@@ -4,7 +4,7 @@
     require_once "../core/verifica_login.php";
     verificar_login();
 
-    require_once "../core/saudacao.php";
+    require_once "../core/funcoes_especificas.php";
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +35,7 @@
 
     <div class="global-containers">
         <div class="opcoes-container">
-                <img src="../imagens/medico.png" alt="Funcionários">
+                <img src="../imagens/funcionario.png" alt="Funcionários">
                 <a href="inicio_funcionarios.php">Funcionários</a>
         </div>
         <div class="opcoes-container">

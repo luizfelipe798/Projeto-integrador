@@ -158,7 +158,7 @@
 
         <div class="opcoes-acoes-container">
             <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario" || $_SESSION['usuario']['tipoUsuario'] == "Adm"): ?>
-                <a href="pacientes_funcionario.php">Pacientes</a>
+                <a href="acoes_funcionario_pacientes.php">Pacientes</a>
             <?php endif; ?>
                 <a href="consultas.php">Acessar</a>
         </div>

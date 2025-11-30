@@ -92,7 +92,11 @@
                 ?>
 
                 <div class="btn-adicionar-container">
-                        <a href="home_usuario.php">Voltar</a>
+                    <?php if($_SESSION['usuario']['adm'] == true): ?>
+                        <a href="historico_funcionario.php">Histórico</a>
+                    <?php endif; ?>
+                    
+                    <a href="home_usuario.php">Voltar</a>
                 </div>
             </div>
 

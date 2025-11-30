@@ -11,6 +11,11 @@
     $id = $_GET['id'];
 
     $paciente = buscar('Paciente', ['*'], [['id', '=', $id]]);
+
+    function verificarEdicao() : void
+    {
+        if(!isset($_GET['editar'])) echo "disabled";
+    }
 ?>
 
 <!DOCTYPE html>
