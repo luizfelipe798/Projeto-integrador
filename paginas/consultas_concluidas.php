@@ -76,7 +76,7 @@
                         }
                     }
 
-                    $consultas = buscar('Consulta', ['*'], $criterio, 'horario ASC');
+                    $consultas = buscar('Consulta', ['*'], $criterio, 'Id DESC');
                 ?>
 
                 <div class="btn-adicionar-container">
