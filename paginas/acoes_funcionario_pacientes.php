@@ -88,7 +88,7 @@
                     <thead>
                         <tr>
                             <td>Data</td>
-                            <td>Paciente relacionado</td>
+                            <td>Paciente</td>
                             <td>Tipo</td>
                         </tr>
                     </thead>

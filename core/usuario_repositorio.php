@@ -60,14 +60,7 @@
                 exit;
             }
 
-            $insercao_usuario = insere('Usuario', $dados_comuns);
-
-            if($insercao_usuario == true)
-            {
-                $criterio_usuario = [['email', '=', $email]];
-                $linhas_usuario = buscar('Usuario', ['id'], $criterio_usuario);
-                $id_usuario = $linhas_usuario[0]['id'];
-            }
+            $id_usuario = insere('Usuario', $dados_comuns);
 
             if($tipo_user == "Funcionario")
             {
@@ -87,13 +80,12 @@
                 ];
             }
 
-            $insercao_especifica = insere("{$tipo_user}", $dados_especificos);
+            insere("{$tipo_user}", $dados_especificos);
 
-            if($insercao_especifica == true)
-            {
-                $_SESSION['mensagem_cadastro'] = "Cadastro realizado com sucesso! Faça login para continuar.";
-                header("Location: " . $redirecionamento);
-            }
+            $_SESSION['mensagem_cadastro'] = "Cadastro realizado com sucesso! Faça login para continuar.";
+            
+            header("Location: " . $redirecionamento);
+            exit;
         break;
 
         case 'Login':

@@ -50,10 +50,10 @@
                 <?php
                     include_once '../includes/busca.php';
                 ?>
-
+    
                 <div class="btn-adicionar-container">
                     <?php if($_SESSION['usuario']['tipoUsuario'] == 'Medico'): ?>
-                        <a href="consultas_concluidas.php">Concluídas</a>
+                        <a href="consultas_concluidas.php?medico">Concluídas</a>
                     <?php endif; ?>
                     <a href="perfil_usuario.php">Voltar</a>
                 </div>

@@ -6,7 +6,7 @@
 
     require_once "../core/conexao.php";
     require_once "../core/sql.php";
-    require_once "../core/mysql.php";
+    require_once '../core/mysql.php';
 ?>
 
 <!DOCTYPE html>
@@ -67,39 +67,34 @@
                     {
                         $temBusca = true;
 
-                        $criterio_nome_paciente = [
-                            ['nome', '=', $busca]
-                        ];
-
-                        $id_paciente = buscar('Paciente', ['id'], $criterio_nome_paciente);
-
-                        $criterio[] = [
-                            ['AND', 'idPaciente', 'like', "%$id_paciente%"],
-                        ];
+                        if(DateTime::createFromFormat('d/m/Y', $busca) !== false)
+                        {
+                            $data_string_antiga =  $busca;
+                            $timestamp = strtotime(str_replace('/', '-', $data_string_antiga));
+                            $data_brasileira = date("Y-m-d", $timestamp);
+                        
+                            $criterio[] = ['AND', 'horario', 'LIKE', "%$data_brasileira%"];
+                        }
+                        else if(DateTime::createFromFormat('H:i:s', $busca) !== false) 
+                        {
+                            $criterio[] = ['AND', 'horario', 'LIKE', "%$busca%"];
+                        }
+                        else
+                        {
+                            $criterio[] = ['AND', 'especialidade', 'LIKE', "%$busca%"];
+                        }
                     }
 
-                    $pacientes = buscar(
-                            'Paciente',
-                            [
-                                'id',
-                                'nome',
-                                'email',
-                                'telefone',
-                                'dataNascimento',
-                                'cpf',
-                                'genero'
-                            ],
-                            $criterio,
-                            'id'
-                        );
+                    $consultas = buscar('Consulta', ['*'], $criterio, 'horario ASC');
                 ?>
 
                 <div class="btn-adicionar-container">
                     <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
-                        <a href="cadastrar_paciente.php">Adicionar</a>
+                        <a href="agendar_editar_consultas.php">Agendar</a>
                     <?php endif; ?>
-                        <a href="historico_pacientes.php">Concluídas</a>
-                        <a href="">Histórico</a>
+                        <a href="consultas_concluidas.php">Concluídas</a>
+                        <a href="historico_consultas.php">Histórico</a>
+                        <a href="home_usuario.php">Voltar</a>
                 </div>
             </div>
 
@@ -108,67 +103,58 @@
                     <thead>
                         <tr>
                             <td>ID</td>
-                            <td>Nome</td>
-                            <td>E-mail</td>
-                            <td>Telefone</td>
-                            <td>Data de Nascimento</td>
-                            <td>Gênero</td>
-                            <td>CPF</td>
+                            <td>Data</td>
+                            <td>Paciente</td>
+                            <td>Médico</td>
+                            <td>Valor</td>
+                            <td>Especialidade</td>
 
                             <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
                                 <td>Ações</td>
                             <?php endif; ?>
-
-                            <?php
-                                require_once '../core/sql.php';
-                                require_once '../core/mysql.php';
-                            ?>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(!empty($pacientes)): ?>
-                            <?php foreach($pacientes as $paciente): ?>
+                        <?php if(!empty($consultas)): ?>
+                            <?php foreach($consultas as $consulta): ?>
                                 <?php
-                                    $dataNascimento = date_create($paciente['dataNascimento']);
-                                    $dataNascimento = date_format($dataNascimento, 'd/m/Y');
+                                    $data = date_create($consulta['horario']);
+                                    $data = date_format($data, 'd/m/Y H:i:s');
+
+                                    $criterio_buscar_paciente = [
+                                        ['id', '=', $consulta['idPaciente']],
+                                    ];
+
+                                    $criterio_buscar_medico = [
+                                        ['id', '=', $consulta['idMedico']],
+                                    ];
+
+                                    $paciente = buscar('Paciente', ['nome'], $criterio_buscar_paciente);
+                                    $medico = buscar('Usuario', ['nome'], $criterio_buscar_medico);
                                 ?>
 
                                 <tr>
-                                    <td><?=htmlspecialchars($paciente['id'])?></td>
-                                    <td><?=htmlspecialchars($paciente['nome'])?></td>
-                                    <td><?=htmlspecialchars($paciente['email'])?></td>
-                                    <td><?=htmlspecialchars($paciente['telefone'])?></td>
-                                    <td><?=htmlspecialchars($dataNascimento)?></td>
-                                    <td><?=htmlspecialchars($paciente['genero'])?></td>
-                                    <td><?=htmlspecialchars($paciente['cpf'])?></td>
+                                    <td><?=htmlspecialchars($consulta['id'])?></td>
+                                    <td><?=htmlspecialchars($data)?></td>
+                                    <td><?=htmlspecialchars($paciente[0]['nome'])?></td>
+                                    <td>Dr. <?=htmlspecialchars($medico[0]['nome'])?></td>
+                                    <td>R$ <?=number_format(htmlspecialchars($consulta['valor']), 2, ',', '.')?></td>
+                                    <td><?=htmlspecialchars($consulta['especialidade'])?></td>
 
                                     <?php if($_SESSION['usuario']['tipoUsuario'] == "Funcionario"):?>
                                         <td class="acoes-td-tbl">
-                                            <a href="visualizar_paciente.php?id=<?=urlencode($paciente['id'])?>">
-                                                <img src="../imagens/olho_visualizar.png">
-                                            </a>
-
-                                            <a href="cadastrar_paciente.php?id=<?=urlencode($paciente['id'])?>">
+                                            <a href="agendar_editar_consultas.php?id=<?=urlencode($consulta['id'])?>">
                                                 <img src="../imagens/caderno_editar.png">
                                             </a>
-
-                                            <form action="../core/paciente_repositorio.php" method="POST">
-                                                <input type="hidden" name="acao" value="Exclusão">
-                                                <input type="hidden" name="id" value="<?=$paciente['id']?>">
-
-                                                <button type="submit">
-                                                    <img src="../imagens/lixeira_excluir.png">
-                                                </button>
-                                            </form>
                                         </td>
                                     <?php endif; ?>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="8" class="not-resultado-linha">
+                                <td colspan="7" class="not-resultado-linha">
                                     <?php if($temBusca == false): ?>
-                                        Nenhuma consulta cadastrada.
+                                        Nenhuma consulta agendada.
                                     <?php else: ?>
                                         Nenhuma consulta encontrada.
                                     <?php endif; ?>

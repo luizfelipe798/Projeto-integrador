@@ -32,7 +32,7 @@
     ?>
 
     <div class="titleList">
-        <h1>Histórico de pacientes</h1>
+        <h1>Histórico de ações entre funcionários e pacientes</h1>
     </div>
 
     <div class="global-list-container">
@@ -94,8 +94,8 @@
                     <thead>
                         <tr>
                             <td>Data da ação</td>
-                            <td>Funcionário relacionado</td>
-                            <td>Paciente relacionado</td>
+                            <td>Funcionário</td>
+                            <td>Paciente</td>
                             <td>Tipo da ação</td>
                         </tr>
                     </thead>
