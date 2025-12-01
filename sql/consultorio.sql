@@ -4,13 +4,14 @@ DROP DATABASE sailus;
 
 CREATE TABLE Usuario
 (
-	id           INT                AUTO_INCREMENT PRIMARY KEY,
-    nome         VARCHAR(150)       NOT NULL,
-    email        VARCHAR(100)       NOT NULL UNIQUE,
-    tipo         VARCHAR(20)        NOT NULL,
-    telefone     CHAR(15)           NOT NULL,
-    senha        VARCHAR(255)       NOT NULL,
-    ativo        INT                NOT NULL
+	id                 INT                AUTO_INCREMENT PRIMARY KEY,
+    nome               VARCHAR(150)       NOT NULL,
+    email              VARCHAR(100)       NOT NULL UNIQUE,
+    tipoUsuario        VARCHAR(20)        NOT NULL,
+    telefone           CHAR(15)           NOT NULL,
+    senha              VARCHAR(255)       NOT NULL,
+    ativo              INT                NOT NULL DEFAULT 0,
+    adm                INT                NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Funcionario
@@ -24,10 +25,10 @@ CREATE TABLE Funcionario
 
 CREATE TABLE Medico 
 (
-    id                          INT              PRIMARY KEY,
-    crm                         CHAR(10)         NOT NULL UNIQUE,
-    especialidade               VARCHAR(40)      NOT NULL,
-    plantonista                 VARCHAR(3)       NOT NULL,
+    id                  INT              PRIMARY KEY,
+    crm                 CHAR(10)         NOT NULL UNIQUE,
+    especialidade       VARCHAR(40)      NOT NULL,
+    plantonista         VARCHAR(3)       NOT NULL,
     
     FOREIGN KEY(id)      REFERENCES       Usuario(id)
 );
@@ -47,15 +48,14 @@ CREATE TABLE Paciente
 /*Consulta - Relacionamento entre Medico e Paciente e que se relaciona com Funcionario*/
 CREATE TABLE Consulta
 (
-    id              INT             AUTO_INCREMENT PRIMARY KEY,
-    horario         CHAR(5)         NOT NULL,
-    observacao      VARCHAR(500)    NOT NULL,
-    stattus         VARCHAR(20)     NOT NULL,
-    valor           NUMERIC(5,2)    NOT NULL,
-    tipo            VARCHAR(20)     NOT NULL,
-    idMedico        INT             NOT NULL,
-    idPaciente      INT             NOT NULL,
-    excluida        BOOL            NOT NULL DEFAULT FALSE,
+    id                    INT              AUTO_INCREMENT PRIMARY KEY,
+    horario               DATETIME         NOT NULL,
+    stattus               VARCHAR(20)      NOT NULL DEFAULT "Agendada",
+    valor           	  NUMERIC(5,2)     NOT NULL,
+    especialidade         VARCHAR(20)      NOT NULL,
+    idMedico              INT              NOT NULL,
+    idPaciente            INT              NOT NULL,
+    excluida              INT              NOT NULL DEFAULT 0,
 
     FOREIGN KEY(idMedico)     REFERENCES   Medico(id),
     FOREIGN KEY(idPaciente)   REFERENCES   Paciente(id)

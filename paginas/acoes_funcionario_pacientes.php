@@ -43,7 +43,7 @@
                 ?>
 
                 <div class="btn-adicionar-container">
-                    <a href="inicio_pacientes.php">Voltar</a>
+                    <a href="perfil_usuario.php">Voltar</a>
                 </div>
             </div>
 

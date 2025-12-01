@@ -103,7 +103,21 @@
 
                 <div class="label-e-input-dados-container">
                     <label for="especialidade">Especialidade</label>
-                    <input type="text" name="especialidade" value="<?=$_SESSION['usuario']['especialidade']?>" <?php verificarEdicao(); ?>>
+
+                    <select name="especialidade" id="especialidade">
+                        <option value="Clínica Médica" <?= $_SESSION['usuario']['especialidade'] == 'Clínica Médica' ? 'selected' : '' ?>>Clínica Médica</option>
+                        <option value="Pediatria" <?= $_SESSION['usuario']['especialidade'] == 'Pediatria' ? 'selected' : '' ?>>Pediatria</option>
+                        <option value="Ginecologia" <?= $_SESSION['usuario']['especialidade'] == 'Ginecologia' ? 'selected' : '' ?>>Ginecologia</option>
+                        <option value="Dermatologia" <?= $_SESSION['usuario']['especialidade'] == 'Dermatologia' ? 'selected' : '' ?>>Dermatologia</option>
+                        <option value="Ortopedia" <?= $_SESSION['usuario']['especialidade'] == 'Ortopedia' ? 'selected' : '' ?>>Ortopedia</option>
+                        <option value="Otorrinolaringologia" <?= $_SESSION['usuario']['especialidade'] == 'Otorrinolaringologia' ? 'selected' : '' ?>>Otorrinolaringologia</option>
+                        <option value="Neurologia" <?= $_SESSION['usuario']['especialidade'] == 'Neurologia' ? 'selected' : '' ?>>Neurologia</option>
+                        <option value="Endocrinologia" <?= $_SESSION['usuario']['especialidade'] == 'Endocrinologia' ? 'selected' : '' ?>>Endocrinologia</option>
+                        <option value="Gastroenterologia" <?= $_SESSION['usuario']['especialidade'] == 'Gastroenterologia' ? 'selected' : '' ?>>Gastroenterologia</option>
+                        <option value="Urologia" <?= $_SESSION['usuario']['especialidade'] == 'Urologia' ? 'selected' : '' ?>>Urologia</option>
+                        <option value="Infectologia" <?= $_SESSION['usuario']['especialidade'] == 'Infectologia' ? 'selected' : '' ?>>Infectologia</option>
+                        <option value="Reumatologia" <?= $_SESSION['usuario']['especialidade'] == 'Reumatologia' ? 'selected' : '' ?>>Reumatologia</option>
+                    </select>
                 </div>
 
                 <div class="label-e-input-dados-container">

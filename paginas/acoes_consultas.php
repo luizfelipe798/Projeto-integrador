@@ -53,8 +53,9 @@
     
                 <div class="btn-adicionar-container">
                     <?php if($_SESSION['usuario']['tipoUsuario'] == 'Medico'): ?>
-                        <a href="consultas_concluidas.php?medico">Concluídas</a>
+                        <a href="consultas_concluidas_medico.php">Concluídas</a>
                     <?php endif; ?>
+
                     <a href="perfil_usuario.php">Voltar</a>
                 </div>
             </div>
@@ -101,7 +102,7 @@
                 else
                 {
                     $criterio = [
-                        ['idFuncionario', '=', $_SESSION['usuario']['id']],
+                        ['idFuncionario', '=', $_SESSION['usuario']['id']]
                     ];
 
                     if(!empty($busca))
@@ -126,8 +127,6 @@
                         $temBusca = true;
                     }
 
-                    $criterio = [['idFuncionario', '=', $_SESSION['usuario']['id']]];
-
                     $dados = buscar('HistFuncConsulta', ['*'], $criterio, 'dtAcao DESC');
                 }
             ?>
@@ -138,6 +137,11 @@
                         <tr>
                             <td>Data</td>
                             <td>Paciente</td>
+
+                            <?php if($_SESSION['usuario']['tipoUsuario'] == 'Funcionario'): ?>
+                                <td>Médico</td>
+                            <?php endif; ?>
+
                             <td>Valor</td>
                             <td>Especialidade</td>
 
@@ -165,8 +169,8 @@
                                     }
                                     else
                                     {
-                                        $dtAcao = date_create($dado['dtAcao']);
-                                        $dtAcao = date_format($dtAcao, 'd/m/Y H:i:s');
+                                        $horario = date_create($dado['dtAcao']);
+                                        $horario = date_format($horario, 'd/m/Y H:i:s');
 
                                         $criterio_buscar_consulta = [
                                             ['id', '=', $dado['idConsulta']]
@@ -174,17 +178,27 @@
 
                                         $consulta = buscar('Consulta', ['*'], $criterio_buscar_consulta);
 
+                                        $criterio_buscar_medico = [
+                                            ['id', '=', $consulta[0]['idMedico']]
+                                        ];
+
                                         $criterio_buscar_paciente = [
                                             ['id', '=', $consulta[0]['idPaciente']]
                                         ];
 
+                                        $medico = buscar('Usuario', ['nome'], $criterio_buscar_medico);
                                         $paciente = buscar('Paciente', ['nome'], $criterio_buscar_paciente);
                                     }
                                 ?>
 
                                 <tr>
-                                    <td><?=htmlspecialchars($horario ?? $dtAcao)?></td>
+                                    <td><?=htmlspecialchars($horario)?></td>
                                     <td><?=htmlspecialchars($paciente[0]['nome'])?></td>
+
+                                    <?php if($_SESSION['usuario']['tipoUsuario'] == 'Funcionario'): ?>
+                                        <td>Dr. <?=htmlspecialchars($medico[0]['nome'])?></td>
+                                    <?php endif; ?>
+
                                     <td>R$ <?=number_format(htmlspecialchars($dado['valor'] ?? $consulta[0]['valor']), 2, ',', '.')?></td>
                                     <td><?=htmlspecialchars($dado['especialidade'] ?? $consulta[0]['especialidade'])?></td>
 
@@ -192,7 +206,7 @@
                                         <td class="acoes-td-tbl">
                                             <form action="../core/consultas_repositorio.php" method="POST" class="form-btns-texto">
                                                 <input type="hidden" name="id" value="<?=htmlspecialchars($dado['id'])?>">
-                                                <input type="hidden" name="acao" value="Concluir">
+                                                <input type="hidden" name="acao" value="Conclusão">
 
                                                 <button type="submit" class="btns-texto">Concluir</button>
                                             </form>
@@ -204,7 +218,7 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" class="not-resultado-linha">
+                                <td colspan="6" class="not-resultado-linha">
                                     <?php if($temBusca == false): ?>
                                         <?=$_SESSION['usuario']['tipoUsuario'] == 'Funcionario' ? 'Nenhum histórico de consultas registrado.' : 'Nenhuma consulta agendada.' ?>
                                     <?php else: ?>

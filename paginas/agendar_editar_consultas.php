@@ -8,12 +8,13 @@
     require_once "../core/sql.php";
     require_once "../core/mysql.php";
 
+    date_default_timezone_set('America/Sao_Paulo');
+
     $dadosGeral = [];
     $modoEdicao = false;
     $id = '';
     $data_horario = '';
     $hora_horario = '';
-    $stattus = '';
     $valor = '';
     $especialidade = '';
     $idMedico = '';
@@ -46,8 +47,7 @@
         
         $data_horario = htmlspecialchars($dadosConsulta['data_horario']); 
         $hora_horario = htmlspecialchars($dadosConsulta['hora_horario']);
-        
-        $stattus = htmlspecialchars($dadosConsulta['stattus']);
+
         $valor = htmlspecialchars($dadosConsulta['valor']);
         $especialidade = htmlspecialchars($dadosConsulta['especialidade']);
         $idMedico = htmlspecialchars($dadosConsulta['idMedico']);
@@ -65,7 +65,6 @@
 
         $id = htmlspecialchars($dadosConsulta[0]['id']);
         $horario = htmlspecialchars($dadosConsulta[0]['horario']);
-        $stattus = htmlspecialchars($dadosConsulta[0]['stattus']);
         $valor = htmlspecialchars($dadosConsulta[0]['valor']);
         $especialidade = htmlspecialchars($dadosConsulta[0]['especialidade']);
         $idMedico = htmlspecialchars($dadosConsulta[0]['idMedico']);

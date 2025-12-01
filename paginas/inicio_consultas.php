@@ -60,7 +60,8 @@
                     $temBusca = false;
 
                     $criterio = [
-                        ['stattus', '!=', 'Concluída']
+                        ['stattus', '!=', 'Concluída'],
+                        ['AND', 'excluida', '=', 0]
                     ];
 
                     if(!empty($busca))
@@ -146,6 +147,15 @@
                                             <a href="agendar_editar_consultas.php?id=<?=urlencode($consulta['id'])?>">
                                                 <img src="../imagens/caderno_editar.png">
                                             </a>
+
+                                            <form action="../core/consultas_repositorio.php" method="POST" class="form-acao-tbl">
+                                                <input type="hidden" name="id" value="<?=htmlspecialchars($consulta['id'])?>">
+                                                <input type="hidden" name="acao" value="Exclusão">
+
+                                                <button type="submit" class="btn-acao-tbl-form">
+                                                    <img src="../imagens/lixeira_excluir.png">
+                                                </button>
+                                            </form>
                                         </td>
                                     <?php endif; ?>
                                 </tr>

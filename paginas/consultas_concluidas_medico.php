@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="../css/rodape.css">
     <link rel="stylesheet" href="../css/gerenciamento_geral.css">
 
-    <title>Consultas concluídas - Sailus</title>
+    <title>Suas consultas concluídas - Sailus</title>
 </head>
 <body>
     <?php
@@ -32,7 +32,7 @@
     ?>
 
     <div class="titleList">
-        <h1>Consultas concluídas</h1>
+        <h1>Suas consultas concluídas</h1>
     </div>
 
     <div class="global-list-container">
@@ -51,7 +51,8 @@
                     $temBusca = false;
 
                     $criterio = [
-                        ['stattus', '=', 'Concluída']
+                        ['stattus', '=', 'Concluída'],
+                        ['AND', 'idMedico', '=', $_SESSION['usuario']['id']]
                     ];
 
                     if(!empty($busca))
@@ -80,7 +81,7 @@
                 ?>
 
                 <div class="btn-adicionar-container">
-                    <a href="inicio_consultas.php">Voltar</a>
+                    <a href="acoes_consultas.php">Voltar</a>
                 </div>
             </div>
 
@@ -91,7 +92,6 @@
                             <td>ID</td>
                             <td>Data</td>
                             <td>Paciente</td>
-                            <td>Medico</td>
                             <td>Valor</td>
                             <td>Especialidade</td>
                         </tr>
@@ -100,8 +100,8 @@
                         <?php if(!empty($consultas)): ?>
                             <?php foreach($consultas as $consulta): ?>
                                 <?php
-                                    $data = date_create($consulta['horario']);
-                                    $data = date_format($data, 'd/m/Y H:i:s');
+                                    $horario = date_create($consulta['horario']);
+                                    $horario = date_format($horario, 'd/m/Y H:i:s');
 
                                     $criterio_buscar_paciente = [
                                         ['id', '=', $consulta['idPaciente']],
@@ -117,9 +117,8 @@
 
                                 <tr>
                                     <td><?=htmlspecialchars($consulta['id'])?></td>
-                                    <td><?=htmlspecialchars($data)?></td>
+                                    <td><?=htmlspecialchars($horario)?></td>
                                     <td><?=htmlspecialchars($paciente[0]['nome'])?></td>
-                                    <td><?=htmlspecialchars($medico[0]['nome'])?></td>
                                     <td>R$ <?=number_format(htmlspecialchars($consulta['valor']), 2, ',', '.')?></td>
                                     <td><?=htmlspecialchars($consulta['especialidade'])?></td>
                                 </tr>

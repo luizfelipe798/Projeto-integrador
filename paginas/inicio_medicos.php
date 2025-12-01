@@ -70,23 +70,11 @@
                         $temBusca = true;
                     }
 
-                    $medicos = buscar(
-                            'Usuario',
-                            [
-                                'id',
-                                'nome',
-                                'email',
-                                'telefone',
-                                'adm',
-                                'ativo'
-                            ],
-                            $criterio,
-                            'nome ASC'
-                        );
+                    $medicos = buscar('Usuario', ['*'], $criterio, 'nome ASC');
 
-                        $criterio_medico = [
-                            ['id', '!=', $_SESSION['usuario']['id']]
-                        ];
+                    $criterio_medico = [
+                        ['id', '!=', $_SESSION['usuario']['id']]
+                    ];
 
                     $especifico_medico = buscar('Medico', ['especialidade', 'plantonista'], $criterio_medico);
                 ?>
@@ -104,6 +92,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <td>ID</td>
                             <td>Nome</td>
                             <td>E-mail</td>
                             <td>Telefone</td>
@@ -121,6 +110,7 @@
                         <?php if(!empty($medicos)): ?>
                             <?php foreach($medicos as $medico): ?>
                                 <tr>
+                                    <td><?=htmlspecialchars($medico['id'])?></td>
                                     <td><?=htmlspecialchars($medico['nome'])?></td>
                                     <td><?=htmlspecialchars($medico['email'])?></td>
                                     <td><?=htmlspecialchars($medico['telefone'])?></td>
