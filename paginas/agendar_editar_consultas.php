@@ -11,8 +11,8 @@
     $dadosGeral = [];
     $modoEdicao = false;
     $id = '';
-    $data_horario = ''; // Inicializado como vazio
-    $hora_horario = ''; // Inicializado como vazio
+    $data_horario = '';
+    $hora_horario = '';
     $stattus = '';
     $valor = '';
     $especialidade = '';
@@ -23,14 +23,11 @@
     $txtBotao = "Agendar";
     $acao = "Agendamento";
 
-    // 1. LÓGICA DE RE-HIDRATAÇÃO (Dados de erro no Cadastro)
     if(isset($_SESSION['dados_formulario_cadastro']))
     {
         $dadosConsulta = $_SESSION['dados_formulario_cadastro'];
         unset($_SESSION['dados_formulario_cadastro']);
         
-        // CORREÇÃO: Extrair os dados de volta para as variáveis individuais
-        // Esses campos vêm diretamente do $_POST
         $data_horario = htmlspecialchars($dadosConsulta['data_horario']);
         $hora_horario = htmlspecialchars($dadosConsulta['hora_horario']);
         $valor = htmlspecialchars($dadosConsulta['valor']);
@@ -38,7 +35,6 @@
         $idMedico = htmlspecialchars($dadosConsulta['idMedico']);
         $idPaciente = htmlspecialchars($dadosConsulta['idPaciente']);
     }
-    // 2. LÓGICA DE EDIÇÃO (Dados de erro na Edição)
     else if(isset($_SESSION['dados_formulario_edicao']))
     {
         $dadosConsulta = $_SESSION['dados_formulario_edicao'];
@@ -48,7 +44,6 @@
 
         $id = htmlspecialchars($dadosConsulta['id']);
         
-        // No caso de erro de Edição, as variáveis de data/hora vêm separadas no $_POST original
         $data_horario = htmlspecialchars($dadosConsulta['data_horario']); 
         $hora_horario = htmlspecialchars($dadosConsulta['hora_horario']);
         
@@ -58,7 +53,6 @@
         $idMedico = htmlspecialchars($dadosConsulta['idMedico']);
         $idPaciente = htmlspecialchars($dadosConsulta['idPaciente']);
     }
-    // 3. LÓGICA DE CARREGAMENTO (Carregar dados do Banco de Dados para Edição)
     else if(isset($_GET['id']))
     {
         $modoEdicao = true;
@@ -77,10 +71,9 @@
         $idMedico = htmlspecialchars($dadosConsulta[0]['idMedico']);
         $idPaciente = htmlspecialchars($dadosConsulta[0]['idPaciente']);
 
-        // Conversão para o formato HTML (YYYY-MM-DD e HH:MM:SS)
         $horario_obj = date_create($horario);
         $data_horario = date_format($horario_obj, 'Y-m-d');
-        $hora_horario = date_format($horario_obj, 'H:i'); // Inputs type="time" geralmente usam HH:MM
+        $hora_horario = date_format($horario_obj, 'H:i');
     }
 
     if($modoEdicao == true)
