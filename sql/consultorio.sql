@@ -33,6 +33,18 @@ CREATE TABLE Medico
     FOREIGN KEY(id)      REFERENCES       Usuario(id)
 );
 
+CREATE TABLE Administracoes
+(
+	id              INT             PRIMARY KEY AUTO_INCREMENT,
+    dtAcao          DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tipoAcao        VARCHAR(50)     NOT NULL,
+    idAdm           INT             NOT NULL,
+    idUsuario       INT             NOT NULL,
+     
+    FOREIGN KEY(idAdm)   REFERENCES    Usuario(id),
+    FOREIGN KEY(idUsuario)   REFERENCES  Usuario(id)
+);
+
 CREATE TABLE Paciente
 (
     id                 INT              AUTO_INCREMENT PRIMARY KEY,

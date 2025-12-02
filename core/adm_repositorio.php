@@ -25,6 +25,14 @@
             ];
 
             atualiza('Usuario', $dados, $criterio);
+            
+            $campos_historico = [
+                'idAdm' => $_SESSION['usuario']['id'],
+                'idUsuario' => $id,
+                'tipoAcao' => $acao,
+            ];
+
+            insere('Administracoes', $campos_historico);
 
             $_SESSION['mensagem_gerenciamento'] = "$nome desativado(a) com sucesso!";
         break;
@@ -36,6 +44,14 @@
 
             atualiza('Usuario', $dados, $criterio);
 
+            $campos_historico = [
+                'idAdm' => $_SESSION['usuario']['id'],
+                'idUsuario' => $id,
+                'tipoAcao' => $acao,
+            ];
+
+            insere('Administracoes', $campos_historico);
+
             $_SESSION['mensagem_gerenciamento'] = "$nome ativado(a) com sucesso!";
         break;
 
@@ -46,6 +62,14 @@
 
             atualiza('Usuario', $dados, $criterio);
 
+            $campos_historico = [
+                'idAdm' => $_SESSION['usuario']['id'],
+                'idUsuario' => $id,
+                'tipoAcao' => $acao,
+            ];
+
+            insere('Administracoes', $campos_historico);
+
             $_SESSION['mensagem_gerenciamento'] = "$nome promovido(a) com sucesso!";
         break;
 
@@ -55,6 +79,14 @@
             ];
 
             atualiza('Usuario', $dados, $criterio);
+
+            $campos_historico = [
+                'idAdm' => $_SESSION['usuario']['id'],
+                'idUsuario' => $id,
+                'tipoAcao' => $acao,
+            ];
+
+            insere('Administracoes', $campos_historico);
 
             $_SESSION['mensagem_gerenciamento'] = "$nome rebaixado(a) com sucesso!";
         break;

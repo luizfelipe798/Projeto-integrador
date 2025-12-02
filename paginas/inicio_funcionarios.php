@@ -93,7 +93,7 @@
 
                 <div class="btn-adicionar-container">
                     <?php if($_SESSION['usuario']['adm'] == true): ?>
-                        <a href="historico_funcionario.php">Histórico</a>
+                        <a href="historico_funcionarios.php">Histórico</a>
                     <?php endif; ?>
                     
                     <a href="home_usuario.php">Voltar</a>

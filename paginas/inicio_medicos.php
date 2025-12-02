@@ -71,17 +71,11 @@
                     }
 
                     $medicos = buscar('Usuario', ['*'], $criterio, 'nome ASC');
-
-                    $criterio_medico = [
-                        ['id', '!=', $_SESSION['usuario']['id']]
-                    ];
-
-                    $especifico_medico = buscar('Medico', ['especialidade', 'plantonista'], $criterio_medico);
                 ?>
 
                 <div class="btn-adicionar-container">
                     <?php if($_SESSION['usuario']['adm'] == true): ?>
-                        <a href="historico_medico.php">Histórico</a>
+                        <a href="historico_medicos.php">Histórico</a>
                     <?php endif; ?>
                     
                     <a href="home_usuario.php">Voltar</a>
@@ -109,14 +103,16 @@
                     <tbody>
                         <?php if(!empty($medicos)): ?>
                             <?php foreach($medicos as $medico): ?>
+                                <?php
+                                    $especifico_medico = buscar('Medico', ['especialidade', 'plantonista'], [['id', '=', $medico['id']]]);
+                                ?>
                                 <tr>
                                     <td><?=htmlspecialchars($medico['id'])?></td>
                                     <td><?=htmlspecialchars($medico['nome'])?></td>
                                     <td><?=htmlspecialchars($medico['email'])?></td>
                                     <td><?=htmlspecialchars($medico['telefone'])?></td>
-                                    <td><?=htmlspecialchars($especifico_medico[array_search($medico, $medicos)]['especialidade'])?></td>
-                                    <td><?=htmlspecialchars($especifico_medico[array_search($medico, $medicos)]['plantonista'])?></td>
-
+                                    <td><?=htmlspecialchars($especifico_medico[0]['especialidade'])?></td>
+                                    <td><?=htmlspecialchars($especifico_medico[0]['plantonista'])?></td>
                                     <?php if($_SESSION['usuario']['adm'] == true): ?>
                                         <td><?=$medico['adm'] == 1 ? 'Sim' : 'Não' ?></td>
                                         <td><?=$medico['ativo'] == 1 ? 'Ativado' : 'Desativado' ?></td>
