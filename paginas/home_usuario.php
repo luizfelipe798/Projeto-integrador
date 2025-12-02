@@ -52,7 +52,7 @@
         </div>
         <div class="opcoes-container">
                 <img src="../imagens/medico.png" alt="Funcionários">
-                <a href="">Atestados</a>
+                <a href="inicio_atestados.php">Atestados</a>
         </div>
     </div>
 

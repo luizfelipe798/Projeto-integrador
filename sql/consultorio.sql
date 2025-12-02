@@ -77,9 +77,9 @@ CREATE TABLE Atestado
 (
     id              INT             AUTO_INCREMENT PRIMARY KEY,
     dtEmissao       DATE            NOT NULL,
+    dtValidade      DATE            NOT NULL,
     descricao       VARCHAR(500)    NOT NULL,
     motivo          VARCHAR(150)    NOT NULL,
-    numeroDias      INT             NOT NULL,
     idPaciente      INT             NOT NULL,
     idMedico        INT             NOT NULL,
 
@@ -125,6 +125,7 @@ DESC HistFuncPaciente;
 SELECT * FROM Usuario;
 SELECT * FROM Funcionario;
 SELECT * FROM Medico;
+SELECT * FROM Administracoes;
 SELECT * FROM Paciente WHERE excluido = 0;
 SELECT * FROM Paciente WHERE excluido = 1;
 SELECT * FROM Consulta;
@@ -146,6 +147,7 @@ DELETE FROM HistFuncPaciente;
 DROP TABLE Usuario;
 DROP TABLE Funcionario;
 DROP TABLE Medico;
+DROP TABLE Administracoes;
 DROP TABLE Paciente;
 DROP TABLE Consulta;
 DROP TABLE Atestado;
