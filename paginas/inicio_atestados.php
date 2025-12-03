@@ -74,7 +74,7 @@
                         }
                     }
 
-                    $atestados = buscar('Atestado', ['*'], $criterio);
+                    $atestados = buscar('Atestado', ['*'], $criterio, 'dtEmissao DESC');
                 ?>
 
                 <div class="btn-adicionar-container">
