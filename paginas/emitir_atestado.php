@@ -50,7 +50,7 @@
 <body>
     <form action="../core/atestado_repositorio.php" method="POST">
         <div class="logoFormulario">
-            <a href="../index.php"><img src="../imagens/logosomentetexto.png" alt="Logotipo Sailus"></a>
+            <a href="perfil_paciente.php?id=<?=$idPaciente?>"><img src="../imagens/logosomentetexto.png" alt="Logotipo Sailus"></a>
         </div>
 
         <div class="inputsFormulario">

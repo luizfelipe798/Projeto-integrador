@@ -21,7 +21,7 @@
 
     if($dataAtestado <= $data_atual)
     {
-        $_SESSION['mensagem_mensagem_emissao'] = "Não é possível emitir atestados no passado.";
+        $_SESSION['mensagem_emissao'] = "Não é possível emitir atestados no passado.";
         $_SESSION['dados_formulario'] = $_POST;
 
         header("Location: ../paginas/emitir_atestado.php?id=$idPaciente");
