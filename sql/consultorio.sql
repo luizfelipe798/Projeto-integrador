@@ -76,7 +76,7 @@ CREATE TABLE Consulta
 CREATE TABLE Atestado 
 (
     id              INT             AUTO_INCREMENT PRIMARY KEY,
-    dtEmissao       DATE            NOT NULL,
+    dtEmissao       DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dtValidade      DATE            NOT NULL,
     descricao       VARCHAR(500)    NOT NULL,
     motivo          VARCHAR(150)    NOT NULL,

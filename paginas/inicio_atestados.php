@@ -35,15 +35,6 @@
         <h1>Gerenciamento de atestados</h1>
     </div>
 
-    <?php if(isset($_SESSION['mensagem_gerenciamento'])): ?>
-        <div class="rsltd-acoes-container">
-            <p><?=$_SESSION['mensagem_gerenciamento']?></p>
-        </div>
-    <?php
-        unset($_SESSION['mensagem_gerenciamento']);
-        endif;
-    ?>
-
     <div class="global-list-container">
         <div class="list-container">
             <div class="buscar-e-adicionar-container">
@@ -83,14 +74,10 @@
                         }
                     }
 
-                    $atestados = buscar('atestados', ['*'], $criterio);
+                    $atestados = buscar('Atestado', ['*'], $criterio);
                 ?>
 
                 <div class="btn-adicionar-container">
-                    <?php if($_SESSION['usuario']['tipoUsuario'] == "Medico"):?>
-                        <a href="emitir_atestado.php">Emitir</a>
-                    <?php endif; ?>
-
                     <a href="home_usuario.php">Voltar</a>
                 </div>
             </div>
@@ -101,6 +88,8 @@
                         <tr>
                             <td>ID</td>
                             <td>Data de emissão</td>
+                            <td>Médico</td>
+                            <td>Paciente</td>
                             <td>Data de validade</td>
                             <td>Descrição</td>
                             <td>Motivo</td>
@@ -115,11 +104,17 @@
 
                                     $dataValidade = date_create($atestado['dtValidade']);
                                     $dataValidade = date_format($dataValidade, 'd/m/Y');
+
+                                    $medico = buscar('Usuario', ['nome'], [['id', '=', $atestado['idMedico']]]);
+
+                                    $paciente = buscar('Paciente', ['nome'], [['id', '=', $atestado['idPaciente']]]);
                                 ?>
 
                                 <tr>
                                     <td><?=htmlspecialchars($atestado['id'])?></td>
                                     <td><?=htmlspecialchars($dataEmissao)?></td>
+                                    <td><?=htmlspecialchars($medico[0]['nome'])?></td>
+                                    <td><?=htmlspecialchars($paciente[0]['nome'])?></td>
                                     <td><?=htmlspecialchars($dataValidade)?></td>
                                     <td><?=htmlspecialchars($atestado['descricao'])?></td>
                                     <td><?=htmlspecialchars($atestado['motivo'])?></td>
@@ -129,7 +124,7 @@
                             <tr>
                                 <td colspan="8" class="not-resultado-linha">
                                     <?php if($temBusca == false): ?>
-                                        Nenhum atestado cadastrado.
+                                        Nenhum atestado emitido.
                                     <?php else: ?>
                                         Nenhum atestado encontrado.
                                     <?php endif; ?>

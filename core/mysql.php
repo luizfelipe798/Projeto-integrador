@@ -38,43 +38,6 @@
             return 0; 
         }
     }
-    
-    
-    
-    
-    /* FUNÇÃO CRIADA PELO STERSI E O MURILO
-    function insere(string $entidade, array $dados) : bool
-    {
-        $retorno = false;
-        $coringa = [];
-        $tipo = [];
-
-        foreach($dados as $campo => $dado)
-        {
-            $coringa[$campo] = '?';
-            $tipo[] = gettype($dado)[0];
-            $$campo = $dado;
-        }
-
-        $instrucao = insert($entidade, $coringa);
-        $conexao = conecta();
-
-        $stmt = mysqli_prepare($conexao, $instrucao);
-      
-        eval('mysqli_stmt_bind_param($stmt, \'' . implode('', $tipo) . '\',$' . implode(', $', array_keys($dados)) . ');');
-       
-        mysqli_stmt_execute($stmt);
-
-        $retorno = true;
-
-        $_SESSION['erros'] = mysqli_stmt_error_list($stmt);
-
-        mysqli_stmt_close($stmt);
-
-        desconecta($conexao);
-
-        return $retorno;
-    }*/
 
     function atualiza(string $entidade, array $dados, array $criterio = []) : bool
     {

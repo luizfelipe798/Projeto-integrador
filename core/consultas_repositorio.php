@@ -241,7 +241,7 @@
 
             $_SESSION['mensagem_gerenciamento'] = "Consulta concluída com sucesso!";
 
-            header("Location: ../paginas/inicio_consultas.php");
+            header("Location: ../paginas/acoes_consultas.php");
             exit;
         break;
 

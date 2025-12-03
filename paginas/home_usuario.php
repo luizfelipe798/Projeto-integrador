@@ -35,7 +35,7 @@
 
     <div class="global-containers">
         <div class="opcoes-container">
-                <img src="../imagens/funcionario.png" alt="Funcionários">
+                <img src="../imagens/funcionario2.png" alt="Funcionários">
                 <a href="inicio_funcionarios.php">Funcionários</a>
         </div>
         <div class="opcoes-container">
@@ -51,7 +51,7 @@
             <a href="inicio_consultas.php">Consultas</a>
         </div>
         <div class="opcoes-container">
-                <img src="../imagens/medico.png" alt="Funcionários">
+                <img src="../imagens/atestado.png" alt="Funcionários">
                 <a href="inicio_atestados.php">Atestados</a>
         </div>
     </div>
